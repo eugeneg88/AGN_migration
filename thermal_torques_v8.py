@@ -794,6 +794,7 @@ CS=plt.imshow( (np.transpose(how_many_traps)), extent=[6,9,-3,0])
 plt.figure(2)
 plt.contourf(np.log10(ms)+8, np.log10(m_dot), np.transpose(how_many_traps), cmap='RdBu')
 plt.colorbar()
+plt.xscale(r'$\log M$')
 #%%
 if True:
     rs= np.logspace(6,1,1000)
