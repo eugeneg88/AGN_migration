@@ -715,7 +715,7 @@ plot_kappa_regions()
 #%%
 if True:
     N_r=1000
-    N_mm=300
+    N_mm=20
     rs= np.logspace(6,0.1,N_r)
     rgs = [6*r for r in rs]
     r1 = []
@@ -739,6 +739,7 @@ if True:
                 else:
                     r2.append(rgs[i])
                 print (m_dot, np.log10(rgs[i]))
+                plt.figure(3)
                 plt.scatter(np.log10(m_dot), np.log10(rgs[i]), color='red')
               #  plt.xlabel(r'$\log\ \alpha $')    
              #   plt.ylabel(r'$\log r \ \rm [r_g] $')
@@ -767,27 +768,31 @@ plt.xlim([-3,-1.1])
 
 #%%
 if True:
-    N=10
-    rs= np.logspace(6,1,1000)
+    N=100
+    rs= np.logspace(6,0.1,2000)
     rgs = [6*r for r in rs]
     r1 = []
     r2 = []
     alpha = 0.01
-    ms = np.logspace(-4,1,N)
-    m_dot = np.logspace(-3,0,5)
+    ms = np.logspace(-2,1,N)
+    m_dot = np.logspace(-3,0,N)
     how_many_traps = np.zeros([N,N])   
     for i in range(0,N):
         for j in range(0,N):
-            print(i,j)
             rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,ms[i],m_dot[j],alpha)[k] for x in rs] for k in range(0,13)]
             chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(ms[i],m_dot[j],alpha)[k] for k in range (0,7)]
             signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
             for k in range(0, len(signs)-1):
                 if signs[k+1] != signs[k]:
                     how_many_traps[i,j]+=1
+            print('m= ', ms[i], '; md= ', m_dot[j], '; #traps= ', how_many_traps[i][j])
+
                     #%%
 #plt.imshow(ms, m_dot, how_many_traps)
-CS=plt.imshow( np.transpose((how_many_traps)))
+CS=plt.imshow( (np.transpose(how_many_traps)), extent=[6,9,-3,0])
+#plt.contourf(np.transpose(how_many_traps))
+plt.figure(2)
+plt.contourf(np.log10(ms)+8, np.log10(m_dot), np.transpose(how_many_traps), cmap='RdBu')
 plt.colorbar()
 #%%
 if True:
@@ -845,13 +850,13 @@ which_prefactor='GS21'
 
 if True:
     N_r=1000
-    N_mm=300
+    N_mm=20
     rs= np.logspace(0.1,6,N_r)
     rgs = [6*r for r in rs]
     r1 = []
     r2 = []
     r_t1 = []
-    mms= np.logspace(-4,1,N_mm)
+    mms= np.logspace(-2,1,N_mm)
 
     type_i_torque_matrix = np.zeros(shape=(N_mm,N_r))
     tot_torque_matrix = np.zeros(shape=(N_mm,N_r))
@@ -861,7 +866,7 @@ if True:
         Rgs = [G*msun*1e8*mm/c/c for mm in mms]
         #    mm = 1e-2; 
         alpha =0.01; 
-        m_dot=0.1;
+        m_dot=1;
         rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,mms[i],m_dot,alpha)[j] for x in rs] for j in range(0,13)]
         chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(mms[i],m_dot,alpha)[j] for j in range (0,7)]
         signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
@@ -875,7 +880,8 @@ if True:
    #             print (Gamma_I[j], type_i_torque_matrix[i][j], rs[j], Hs[j]/rs[j], Hs[j]/rs[j]/Rgs[i])
             #print (i)
             if signs[j+1] != signs[j]:
-  #              plt.scatter(np.log10(mms[i]) + 8, np.log10(rgs[j]), color='red')
+                plt.scatter(np.log10(mms[i]) + 8, np.log10(rgs[j]), color='red')
+                print(i)
                 if len(mmm)==0 or mmm[-1] != mms[i]:
                     r1.append(rgs[j])
                     mmm.append(mms[i])
