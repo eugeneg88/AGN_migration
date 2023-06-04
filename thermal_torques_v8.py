@@ -28,22 +28,48 @@ rs= np.logspace(0.01,6,1000)
 #%%
 #load data from shmuel
 TSD=np.loadtxt('shmuel_data/Toomre_stable_disc.txt')
+TSD9=np.loadtxt('shmuel_data/Toomre_stable_disc_1e9.txt')
+TSD8=np.loadtxt('shmuel_data/Toomre_stable_disc_1e8.txt')
+TSD7=np.loadtxt('shmuel_data/Toomre_stable_disc_1e7.txt')
 TSD6=np.loadtxt('shmuel_data/Toomre_stable_disc_1e6.txt')
 TSD5=np.loadtxt('shmuel_data/Toomre_stable_disc_1e5.txt')
 TSD4=np.loadtxt('shmuel_data/Toomre_stable_disc_1e4.txt')
 
 #[R,T,P,rho,Sigma,H,cs] 
 #conver to cgs units
-R_shmuel = TSD[:,0]*100
-T_shmuel=TSD[:,1]
-P_shmuel=TSD[:,2]*10
-rho_shmuel=TSD[:,3]*1e-3
-Sigma_shmuel=TSD[:,4]*1e-1
-H_shmuel=TSD[:,5]*100
-cs_shmuel=TSD[:,6]*100
-r_isco = 1 * G * msun * 1e8/c**2
-kappa_shmuel = np.loadtxt('shmuel_data/Kappa.txt')*10 
-tau_shmuel = np.loadtxt('shmuel_data/Tau.txt') 
+R_shmuel9 = TSD9[:,0]*100
+T_shmuel9=TSD9[:,1]
+P_shmuel9=TSD9[:,2]*10
+rho_shmuel9=TSD9[:,3]*1e-3
+Sigma_shmuel9=TSD9[:,4]*1e-1
+H_shmuel9=TSD9[:,5]*100
+cs_shmuel9=TSD9[:,6]*100
+r_isco9 = 1 * G * msun * 1e9/c**2
+kappa_shmuel9 = np.loadtxt('shmuel_data/Kappa_1e9.txt')*10 
+tau_shmuel9 = np.loadtxt('shmuel_data/Tau_1e9.txt') 
+
+R_shmuel8 = TSD8[:,0]*100
+T_shmuel8=TSD8[:,1]
+P_shmuel8=TSD8[:,2]*10
+rho_shmuel8=TSD8[:,3]*1e-3
+Sigma_shmuel8=TSD8[:,4]*1e-1
+H_shmuel8=TSD8[:,5]*100
+cs_shmuel8=TSD8[:,6]*100
+r_isco8 = 1 * G * msun * 1e8/c**2
+kappa_shmuel8 = np.loadtxt('shmuel_data/Kappa_1e8.txt')*10 
+tau_shmuel8 = np.loadtxt('shmuel_data/Tau_1e8.txt') 
+
+
+R_shmuel7 = TSD[:,0]*100
+T_shmuel7=TSD[:,1]
+P_shmuel7=TSD[:,2]*10
+rho_shmuel7=TSD[:,3]*1e-3
+Sigma_shmuel7=TSD[:,4]*1e-1
+H_shmuel7=TSD[:,5]*100
+cs_shmuel7=TSD[:,6]*100
+r_isco7 = 1 * G * msun * 1e7/c**2
+kappa_shmuel7 = np.loadtxt('shmuel_data/Kappa_1e7.txt')*10 
+tau_shmuel7 = np.loadtxt('shmuel_data/Tau_1e7.txt') 
 
 R_shmuel6 = TSD6[:,0]*100
 T_shmuel6=TSD6[:,1]
@@ -187,7 +213,7 @@ def get_disc_params(r,m, m_dot, alpha):
 
         # here we need to do some tricks because we don't know if the pressure is rad or gas
         # let's define some more constants in cgs        
-        mu = 0.62; # mean molecular weight
+        mu = 4/(3+5*X-Z)  #0.62; # mean molecular weight
         kb=1.38e-16; # Boltzmann constant 
         mp=1.67e-24 # proton mass
         
@@ -306,8 +332,12 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         
         plt.subplot(421)  
         if shmuel_flag:
+            if mm==10:
+                plt.plot(np.log10(R_shmuel9/r_isco9), np.log10(rho_shmuel9), linestyle='dashed',color=col)
             if mm==1:
-                plt.plot(np.log10(R_shmuel/r_isco), np.log10(rho_shmuel), linestyle='dashed',color=col)
+                plt.plot(np.log10(R_shmuel8/r_isco8), np.log10(rho_shmuel8), linestyle='dashed',color=col)
+            if mm==1e-1:
+                plt.plot(np.log10(R_shmuel7/r_isco7), np.log10(rho_shmuel7),linestyle='dashed', color=col)
             if mm==1e-2:
                 plt.plot(np.log10(R_shmuel6/r_isco6), np.log10(rho_shmuel6),linestyle='dashed', color=col)
             if mm==1e-3:
@@ -324,12 +354,16 @@ def plot_disc_solution(mm,m_dot,alpha, col):
                 
         plt.subplot(422)  
         if shmuel_flag:
+            if mm==10:
+                plt.plot(np.log10(R_shmuel9/r_isco9), np.log10(tau_shmuel9), linestyle='dashed',color=col)
             if mm==1:
-                plt.plot(np.log10(R_shmuel/r_isco), np.log10(tau_shmuel),linestyle='dashed', color=col)
+                plt.plot(np.log10(R_shmuel8/r_isco8), np.log10(tau_shmuel8), linestyle='dashed',color=col)
+            if mm==1e-1:
+                plt.plot(np.log10(R_shmuel7/r_isco7), np.log10(tau_shmuel7),linestyle='dashed', color=col)
             if mm==1e-2:
                 plt.plot(np.log10(R_shmuel6/r_isco6), np.log10(tau_shmuel6),linestyle='dashed', color=col)
             if mm==1e-3:
-                plt.plot(np.log10(R_shmuel5/r_isco5), np.log10(tau_shmuel5),linestyle='dashed', color=col)
+                plt.plot(np.log10(R_shmuel5/r_isco5), np.log10(tau_shmuel5), linestyle='dashed',color=col)
             if mm==1e-4:
                 plt.plot(np.log10(R_shmuel4/r_isco4), np.log10(tau_shmuel4),linestyle='dashed', color=col)
 
@@ -346,12 +380,16 @@ def plot_disc_solution(mm,m_dot,alpha, col):
               
         plt.subplot(423)  
         if shmuel_flag:
+            if mm==10:
+                plt.plot(np.log10(R_shmuel9/r_isco9), np.log10(Sigma_shmuel9), linestyle='dashed',color=col)
             if mm==1:
-                plt.plot(np.log10(R_shmuel/r_isco), np.log10(Sigma_shmuel),linestyle='dashed', color=col)
+                plt.plot(np.log10(R_shmuel8/r_isco8), np.log10(Sigma_shmuel8), linestyle='dashed',color=col)
+            if mm==1e-1:
+                plt.plot(np.log10(R_shmuel7/r_isco7), np.log10(Sigma_shmuel7),linestyle='dashed', color=col)
             if mm==1e-2:
                 plt.plot(np.log10(R_shmuel6/r_isco6), np.log10(Sigma_shmuel6),linestyle='dashed', color=col)
             if mm==1e-3:
-                plt.plot(np.log10(R_shmuel5/r_isco5), np.log10(Sigma_shmuel5),linestyle='dashed', color=col)
+                plt.plot(np.log10(R_shmuel5/r_isco5), np.log10(Sigma_shmuel5), linestyle='dashed',color=col)
             if mm==1e-4:
                 plt.plot(np.log10(R_shmuel4/r_isco4), np.log10(Sigma_shmuel4),linestyle='dashed', color=col)
 
@@ -365,15 +403,19 @@ def plot_disc_solution(mm,m_dot,alpha, col):
        
         plt.subplot(424) 
         if shmuel_flag:
+            if mm==10:
+                plt.plot(np.log10(R_shmuel9/r_isco9), np.log10(T_shmuel9), linestyle='dashed',color=col)
             if mm==1:
-                plt.plot(np.log10(R_shmuel/r_isco), np.log10(T_shmuel), linestyle='dashed',color=col)
+                plt.plot(np.log10(R_shmuel8/r_isco8), np.log10(T_shmuel8), linestyle='dashed',color=col)
+            if mm==1e-1:
+                plt.plot(np.log10(R_shmuel7/r_isco7), np.log10(T_shmuel7),linestyle='dashed', color=col)
             if mm==1e-2:
-                plt.plot(np.log10(R_shmuel6/r_isco6), np.log10(T_shmuel6), linestyle='dashed',color=col)
+                plt.plot(np.log10(R_shmuel6/r_isco6), np.log10(T_shmuel6),linestyle='dashed', color=col)
             if mm==1e-3:
                 plt.plot(np.log10(R_shmuel5/r_isco5), np.log10(T_shmuel5), linestyle='dashed',color=col)
             if mm==1e-4:
-                plt.plot(np.log10(R_shmuel4/r_isco4), np.log10(T_shmuel4), linestyle='dashed',color=col)
-
+                plt.plot(np.log10(R_shmuel4/r_isco4), np.log10(T_shmuel4),linestyle='dashed', color=col)
+                
         plt.plot(np.log10(rgs), np.log10(Ts), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
         plt.ylabel(r'$\log T_c\ \rm[K] $')
         plt.xticks([1,2,3,4,5,6])
@@ -382,15 +424,19 @@ def plot_disc_solution(mm,m_dot,alpha, col):
 
         plt.subplot(425)  
         if shmuel_flag:
+            if mm==10:
+                plt.plot(np.log10(R_shmuel9/r_isco9), np.log10(H_shmuel9/R_shmuel9), linestyle='dashed',color=col)
             if mm==1:
-                plt.plot(np.log10(R_shmuel/r_isco), np.log10(H_shmuel/R_shmuel),linestyle='dashed', color=col)
+                plt.plot(np.log10(R_shmuel8/r_isco8), np.log10(H_shmuel8/R_shmuel8), linestyle='dashed',color=col)
+            if mm==1e-1:
+                plt.plot(np.log10(R_shmuel7/r_isco7), np.log10(H_shmuel7/R_shmuel7),linestyle='dashed', color=col)
             if mm==1e-2:
                 plt.plot(np.log10(R_shmuel6/r_isco6), np.log10(H_shmuel6/R_shmuel6),linestyle='dashed', color=col)
             if mm==1e-3:
-                plt.plot(np.log10(R_shmuel5/r_isco5), np.log10(H_shmuel5/R_shmuel5),linestyle='dashed', color=col)
+                plt.plot(np.log10(R_shmuel5/r_isco5), np.log10(H_shmuel5/R_shmuel5), linestyle='dashed',color=col)
             if mm==1e-4:
                 plt.plot(np.log10(R_shmuel4/r_isco4), np.log10(H_shmuel4/R_shmuel4),linestyle='dashed', color=col)
-
+            
         plt.plot(np.log10(rgs), [np.log10(x/r/(G*msun*1e8*mm/c/c)) for (x,r) in zip(Hs,rgs)], linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
         plt.ylabel(r'$\log H/r$')
         plt.xticks([1,2,3,4,5,6])
@@ -400,13 +446,16 @@ def plot_disc_solution(mm,m_dot,alpha, col):
 
         plt.subplot(426)  
         if shmuel_flag:
+            if mm==10:
+                plt.plot(np.log10(R_shmuel9/r_isco9), np.log10(kappa_shmuel9), linestyle='dashed',color=col)
             if mm==1:
-                plt.plot(np.log10(R_shmuel/r_isco), np.log10(kappa_shmuel),linestyle='dashed', color=col)
+                plt.plot(np.log10(R_shmuel8/r_isco8), np.log10(kappa_shmuel8), linestyle='dashed',color=col)
+            if mm==1e-1:
+                plt.plot(np.log10(R_shmuel7/r_isco7), np.log10(kappa_shmuel7),linestyle='dashed', color=col)
             if mm==1e-2:
                 plt.plot(np.log10(R_shmuel6/r_isco6), np.log10(kappa_shmuel6),linestyle='dashed', color=col)
-        if shmuel_flag:
             if mm==1e-3:
-                plt.plot(np.log10(R_shmuel5/r_isco5), np.log10(kappa_shmuel5),linestyle='dashed', color=col)
+                plt.plot(np.log10(R_shmuel5/r_isco5), np.log10(kappa_shmuel5), linestyle='dashed',color=col)
             if mm==1e-4:
                 plt.plot(np.log10(R_shmuel4/r_isco4), np.log10(kappa_shmuel4),linestyle='dashed', color=col)
 
@@ -419,12 +468,16 @@ def plot_disc_solution(mm,m_dot,alpha, col):
      
         plt.subplot(427)  
         if shmuel_flag:
+            if mm==10:
+                plt.plot(np.log10(R_shmuel9/r_isco9), np.log10(cs_shmuel9), linestyle='dashed',color=col)
             if mm==1:
-                plt.plot(np.log10(R_shmuel/r_isco), np.log10(cs_shmuel),linestyle='dashed', color=col)
+                plt.plot(np.log10(R_shmuel8/r_isco8), np.log10(cs_shmuel8), linestyle='dashed',color=col)
+            if mm==1e-1:
+                plt.plot(np.log10(R_shmuel7/r_isco7), np.log10(cs_shmuel7),linestyle='dashed', color=col)
             if mm==1e-2:
                 plt.plot(np.log10(R_shmuel6/r_isco6), np.log10(cs_shmuel6),linestyle='dashed', color=col)
             if mm==1e-3:
-                plt.plot(np.log10(R_shmuel5/r_isco5), np.log10(cs_shmuel5),linestyle='dashed', color=col)
+                plt.plot(np.log10(R_shmuel5/r_isco5), np.log10(cs_shmuel5), linestyle='dashed',color=col)
             if mm==1e-4:
                 plt.plot(np.log10(R_shmuel4/r_isco4), np.log10(cs_shmuel4),linestyle='dashed', color=col)
 
