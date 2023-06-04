@@ -767,13 +767,37 @@ plt.xlim([-3,-1.1])
 
 #%%
 if True:
+    N=10
+    rs= np.logspace(6,1,1000)
+    rgs = [6*r for r in rs]
+    r1 = []
+    r2 = []
+    alpha = 0.01
+    ms = np.logspace(-4,1,N)
+    m_dot = np.logspace(-3,0,5)
+    how_many_traps = np.zeros([N,N])   
+    for i in range(0,N):
+        for j in range(0,N):
+            print(i,j)
+            rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,ms[i],m_dot[j],alpha)[k] for x in rs] for k in range(0,13)]
+            chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(ms[i],m_dot[j],alpha)[k] for k in range (0,7)]
+            signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
+            for k in range(0, len(signs)-1):
+                if signs[k+1] != signs[k]:
+                    how_many_traps[i,j]+=1
+                    #%%
+#plt.imshow(ms, m_dot, how_many_traps)
+CS=plt.imshow( np.transpose((how_many_traps)))
+plt.colorbar()
+#%%
+if True:
     rs= np.logspace(6,1,1000)
     rgs = [6*r for r in rs]
     r1 = []
     r2 = []
     r3=[]
     r4=[]
-    alphass = np.logspace(-4.7,0,300)
+    alphass = np.logspace(-4.7,0,30)
     alphasss = []
     for alpha in alphass: #def find_when_torqrues_equal(mm, m_dot, alpha):
         mm = 1e-1; 
