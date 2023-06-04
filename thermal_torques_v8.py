@@ -27,7 +27,6 @@ rs= np.logspace(0.01,6,1000)
 
 #%%
 #load data from shmuel
-TSD=np.loadtxt('shmuel_data/Toomre_stable_disc.txt')
 TSD9=np.loadtxt('shmuel_data/Toomre_stable_disc_1e9.txt')
 TSD8=np.loadtxt('shmuel_data/Toomre_stable_disc_1e8.txt')
 TSD7=np.loadtxt('shmuel_data/Toomre_stable_disc_1e7.txt')
@@ -60,13 +59,13 @@ kappa_shmuel8 = np.loadtxt('shmuel_data/Kappa_1e8.txt')*10
 tau_shmuel8 = np.loadtxt('shmuel_data/Tau_1e8.txt') 
 
 
-R_shmuel7 = TSD[:,0]*100
-T_shmuel7=TSD[:,1]
-P_shmuel7=TSD[:,2]*10
-rho_shmuel7=TSD[:,3]*1e-3
-Sigma_shmuel7=TSD[:,4]*1e-1
-H_shmuel7=TSD[:,5]*100
-cs_shmuel7=TSD[:,6]*100
+R_shmuel7 = TSD7[:,0]*100
+T_shmuel7=TSD7[:,1]
+P_shmuel7=TSD7[:,2]*10
+rho_shmuel7=TSD7[:,3]*1e-3
+Sigma_shmuel7=TSD7[:,4]*1e-1
+H_shmuel7=TSD7[:,5]*100
+cs_shmuel7=TSD7[:,6]*100
 r_isco7 = 1 * G * msun * 1e7/c**2
 kappa_shmuel7 = np.loadtxt('shmuel_data/Kappa_1e7.txt')*10 
 tau_shmuel7 = np.loadtxt('shmuel_data/Tau_1e7.txt') 
@@ -647,9 +646,9 @@ def plot_disc_solution(mm,m_dot,alpha, col):
      #%% 
 shmuel_flag = True
 fig_1_flag = 1
-fig_2_flag=1
-fig_3_flag=1
-fig_4_flag=1
+fig_2_flag=0
+fig_3_flag=0
+fig_4_flag=0
 m_d=0.1; alp=0.01
 args1 = [10,m_d,alp, 'orange']
 args2 = [1, m_d,alp, 'red']
@@ -662,11 +661,11 @@ args6 = [1e-4, m_d,alp, 'green']
 #args4 = [1,0.1,1, 'blue']#[0.01,m_d,alp, 'green']
 #from IPython import get_ipython
 
-#plot_disc_solution(*args1)
+plot_disc_solution(*args1)
 plot_disc_solution(*args2)
-#plot_disc_solution(*args3)
+plot_disc_solution(*args3)
 plot_disc_solution(*args4)
-#plot_disc_solution(*args5)
+plot_disc_solution(*args5)
 plot_disc_solution(*args6)
 
 #%%
@@ -828,26 +827,43 @@ if True:
     r2 = []
     alpha = 0.01
     ms = np.logspace(-2,1,N)
-    m_dot = np.logspace(-3,0,N)
+    m_dot = np.logspace(0,-3,N)
     how_many_traps = np.zeros([N,N])   
     for i in range(0,N):
         for j in range(0,N):
+            if how_many_traps[i][j-1]==2:
+                how_many_traps[i][j:]=2
+                i=i+1
+                j=0
+                break;
+
             rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,ms[i],m_dot[j],alpha)[k] for x in rs] for k in range(0,13)]
             chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(ms[i],m_dot[j],alpha)[k] for k in range (0,7)]
             signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
             for k in range(0, len(signs)-1):
                 if signs[k+1] != signs[k]:
                     how_many_traps[i,j]+=1
-            print('m= ', ms[i], '; md= ', m_dot[j], '; #traps= ', how_many_traps[i][j])
 
+            print('m= ', ms[i], '; md= ', m_dot[j], '; #traps= ', how_many_traps[i][j])
+   #         print(i,j, how_many_traps[i][j])
+
+ 
                     #%%
+m_dot2 = np.logspace(-3,0,N)
+
+log_AGN_lum = [[45.16 + np.log10(m) + np.log10(md) for m in ms] for md in m_dot2]    
+ll = np.asarray(log_AGN_lum)
+#%%                
 #plt.imshow(ms, m_dot, how_many_traps)
-CS=plt.imshow( (np.transpose(how_many_traps)), extent=[6,9,-3,0])
+CS=plt.imshow( (np.transpose(how_many_traps)), extent=[6,9,-3,0], alpha=0.4, cmap='RdBu')
 #plt.contourf(np.transpose(how_many_traps))
-plt.figure(2)
-plt.contourf(np.log10(ms)+8, np.log10(m_dot), np.transpose(how_many_traps), cmap='RdBu')
+plt.figure(1)
+plt.subplots_adjust(left=0.02, bottom=0.16, right=0.97, top=0.98)
+plt.contour(np.log10(ms)+8, np.log10(m_dot2), np.transpose(ll),levels=[43, 44, 44.2, 45], linewidths=3, cmap='copper')
 plt.colorbar()
-plt.xscale(r'$\log M$')
+plt.xlabel(r'$\log M$')
+plt.ylabel(r'$\log \dot{m}$')
+plt.xlim([7,9])
 #%%
 if True:
     rs= np.logspace(6,1,1000)
