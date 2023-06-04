@@ -1,0 +1,704 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement H
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 2cm
+\rightmargin 3cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Negative AGN migration
+\end_layout
+
+\begin_layout Author
+Evgeni Grishin
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+evgeni.grishin@monash.edu
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Section
+Intro
+\end_layout
+
+\begin_layout Standard
+Gravitational interactions between massive bodies in their nascient discs
+ lead to net energy change and migration, and were stidues extensively in
+ planetary science 
+\begin_inset CommandInset citation
+LatexCommand citep
+before "see review by"
+key "Paardekooper_review"
+literal "false"
+
+\end_inset
+
+.
+ In the standard picture, the gravitational interaction raises two spiral
+ density waves excited at various resonances (corotation, inner and outer
+ Lindblad, ref), and their imbalance leads to net migration.
+ Low mass object don't form a gap and migrate as type I migrate, where the
+ net torque is 
+\begin_inset Formula $T_{I}\propto m_{p}^{2}$
+\end_inset
+
+, where 
+\begin_inset Formula $m_{p}$
+\end_inset
+
+ is the mass of the planet.
+ Massive planets open a gap and their migration rate is independent of the
+ mass of the planet.
+\end_layout
+
+\begin_layout Standard
+The type I torque is 
+\begin_inset Formula 
+\[
+\Gamma_{0}\sim\frac{q^{2}}{h^{2}}\Sigma r^{4}\Omega^{2}
+\]
+
+\end_inset
+
+ where 
+\begin_inset Formula $q=m/M$
+\end_inset
+
+ is the mass ratio, 
+\begin_inset Formula $h=H/r$
+\end_inset
+
+ is the aspect ratio and 
+\begin_inset Formula $\Omega=(GM/r^{3})^{1/2}$
+\end_inset
+
+ is the Keplerian frequency.
+\end_layout
+
+\begin_layout Standard
+The migration timescale is 
+\begin_inset Formula 
+\[
+\tau_{0}=\frac{L}{2\Gamma_{0}}=\frac{mr^{2}\Omega}{2\Gamma_{0}}=\frac{1}{2\Omega}\frac{h^{2}}{q}\frac{M}{\Sigma r^{2}}
+\]
+
+\end_inset
+
+ For type II, the timescale is the viscous timescale of the disc, 
+\begin_inset Formula $\tau_{\nu}=\Omega^{-1}\times(\alpha h^{2})^{-1}.$
+\end_inset
+
+ This could be fast, unless the planet is massive than the disc, than it
+ will slow down by a factor is 
+\begin_inset Formula $m/4\pi\Sigma r^{2}.$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Subsection
+What is the gap opening criterion?
+\end_layout
+
+\begin_layout Standard
+Naively, at some critical mass ratio 
+\begin_inset Formula $q_{c},$
+\end_inset
+
+ the viscous torques will not be able to replenish the annular gap cleared
+ out by the gravitational torques.
+ Comparing the timescales, the transition is expected to occur in 
+\begin_inset Formula 
+\[
+\frac{h^{2}}{q}\frac{M}{\Sigma r^{2}}\le\frac{1}{\alpha h^{2}}\left(1+\frac{m}{4\pi\Sigma r^{2}}\right)
+\]
+
+\end_inset
+
+if 
+\begin_inset Formula $m\gg\Sigma r^{2}$
+\end_inset
+
+ we have 
+\begin_inset Formula $h^{2}M^{2}/m\le m/4\pi\alpha h^{2}$
+\end_inset
+
+ or 
+\begin_inset Formula $q\ge\sqrt{4\pi\alpha}h^{2}\approx3\cdot10^{-4}.$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Conversely, for 
+\begin_inset Formula $m\le\Sigma r^{2}$
+\end_inset
+
+ but still type II dominated, we have (
+\begin_inset Formula $\Sigma r^{2}/M)\ge q\ge\frac{M}{\Sigma r^{2}}\alpha h^{4}$
+\end_inset
+
+.
+ The latter has a very narrow range.
+\end_layout
+
+\begin_layout Standard
+This is really not the case.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "crida2006"
+literal "false"
+
+\end_inset
+
+ realised that additional pressure torque are important and derived a semi-empir
+ical criterion: 
+\begin_inset Formula 
+\[
+\frac{h}{q^{1/3}}+50\frac{\alpha h^{2}}{q}\lesssim1.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Currently the gap opening criterion had been revised to (Kanagawa+2015)
+ 
+\begin_inset Formula 
+\[
+q\ge5\sqrt{\alpha h^{5}}\approx10^{-4}\alpha_{0.01}^{1/2}h_{0.04}^{5/2},
+\]
+
+\end_inset
+
+ so we're back to 
+\begin_inset Formula $q\propto\sqrt{\alpha}$
+\end_inset
+
+, although the scaling with 
+\begin_inset Formula $h$
+\end_inset
+
+ varies again.
+ The extra 
+\begin_inset Formula $1/2$
+\end_inset
+
+ power of h could be from 3D analysis (Tanaka+2002).
+\end_layout
+
+\begin_layout Subsection
+How migration can be reversed?
+\end_layout
+
+\begin_layout Standard
+Accretion may result in feedback and imbalance the vicinity of the planet.
+ For gas accretion, it is expected to accelerate the migration 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "lega14"
+literal "false"
+
+\end_inset
+
+, but accretion of pebbles could stall, or even reverse it 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "b-l15"
+literal "false"
+
+\end_inset
+
+.
+ Local simulations had shown that the heating torque can be important for
+ wide range of configurations in accretion discs 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "hankla2020"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "masset17"
+literal "false"
+
+\end_inset
+
+ studies analytically the responce of a disc to a thermal torque.
+ The additional variables are the thermal conductivity 
+\begin_inset Formula $\chi$
+\end_inset
+
+ which enter into the heat transport part of the diffusion equation: The
+ heat flux is 
+\begin_inset Formula $\boldsymbol{F}_{H}=-\chi\rho\nabla(e/\rho)$
+\end_inset
+
+ (eq.
+ 4), where 
+\begin_inset Formula $e$
+\end_inset
+
+ is the energy density and 
+\begin_inset Formula $\rho$
+\end_inset
+
+ is the gas density.
+ Without and sources, 
+\begin_inset Formula $\partial_{t}e=\boldsymbol{\nabla}\cdot\boldsymbol{F}_{H}$
+\end_inset
+
+, which looks like diffusion if the density gradient is small.
+\end_layout
+
+\begin_layout Standard
+The other length scale is the heat deposition scale is 
+\begin_inset Formula $\lambda=\sqrt{\chi/q\Omega\gamma}$
+\end_inset
+
+ (eq.
+ 120) where 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ is the adiabatic index, 
+\begin_inset Formula $\Omega$
+\end_inset
+
+ is the Keplerian frequency and 
+\begin_inset Formula $q=-d\ln\Omega/d\ln r=3/2$
+\end_inset
+
+ is the shear strength.
+ Usually, the heat deposition scale is small compared to the scale height,
+ 
+\begin_inset Formula $\lambda/H\ll1$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Radiative diffusion is usually the main source of diffesion, thus 
+\begin_inset Formula $\chi=16(\gamma-1)\sigma_{{\rm SB}}T^{3}/3\rho^{2}\kappa(\mathcal{R}/\mu)$
+\end_inset
+
+, where 
+\begin_inset Formula $R$
+\end_inset
+
+ is the gas constant and 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is the mean molar mass.
+ 
+\end_layout
+
+\begin_layout Standard
+Eq.
+ 146 of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "masset17"
+literal "false"
+
+\end_inset
+
+ for the total thermal torque reads 
+\begin_inset Formula 
+\[
+\Gamma_{{\rm th}}^{{\rm tot}}=1.61\frac{\gamma-1}{\gamma}\eta\frac{H^{2}}{\lambda r}\left(\frac{L}{L_{c}}-1\right)\Gamma_{0}
+\]
+
+\end_inset
+
+ where 
+\begin_inset Formula $\Gamma_{0}=\Sigma r^{4}\Omega^{2}(m/M_{\star})^{2}(H/r)^{-3}$
+\end_inset
+
+ is the nominal type I torque (eq.
+ 134), 
+\begin_inset Formula $L_{c}=4\pi Gm\chi\rho_{0}/\gamma$
+\end_inset
+
+ is the heat release from the planet (eq.
+ 132), 
+\begin_inset Formula $L$
+\end_inset
+
+ is the luminosity and 
+\begin_inset Formula $\eta=\alpha/3+(\beta+3)/6$
+\end_inset
+
+ is related to the gradients of the surface density (
+\begin_inset Formula $\Sigma\propto r^{-\alpha}$
+\end_inset
+
+) and the temperature (
+\begin_inset Formula $T\propto r^{-\beta}$
+\end_inset
+
+) gradients, and usually is of order unity.
+ It is valid for planets of mass less than 
+\begin_inset Formula $m<m_{c}=\chi c_{s}/G,$
+\end_inset
+
+ othewise the heat is deposited beyond the Bondi radius and the effect is
+ greatly reduced.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Fro19"
+literal "false"
+
+\end_inset
+
+ also found that the eccentricity and inclination grow if 
+\begin_inset Formula $L/L_{c}>1$
+\end_inset
+
+ or dampen when 
+\begin_inset Formula $L/L_{c}<1$
+\end_inset
+
+ exponentially.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+AGNS
+\end_layout
+
+\begin_layout Standard
+Migration traps had been involved in AGN discs as fruitful locations for
+ BH accumulation 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "bellovary16"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "hankla2020"
+literal "false"
+
+\end_inset
+
+ looked on both AGNS and protoplanetary discs: corotation torque is complex.
+\end_layout
+
+\begin_layout Standard
+They investigate the validity of the liner approach of Masset and directly
+ apply to AGN disc.
+ For the conductivity we have 
+\begin_inset Formula 
+\begin{align*}
+\chi & =\frac{16\gamma(\gamma-1)\sigma T^{4}}{3\kappa\rho_{0}^{2}H^{2}\Omega^{2}}=\frac{6\gamma(\gamma-1)}{\kappa\rho_{0}^{2}}\tau\alpha\Omega\Sigma\\
+ & =12\pi\gamma(\gamma-1)\alpha H^{2}\Omega\sim0.167\frac{\alpha}{0.01}H^{2}\Omega
+\end{align*}
+
+\end_inset
+
+ checking length scales: 
+\begin_inset Formula 
+\[
+\frac{\lambda}{H}=\sqrt{24\pi^{3}\gamma(\gamma-1)\alpha}=1.8
+\]
+
+\end_inset
+
+ not that great..
+\end_layout
+
+\begin_layout Standard
+The ratio between the torques is 
+\begin_inset Formula 
+\[
+\frac{\Gamma_{{\rm heat}}}{\Gamma_{0}}=0.07\frac{c}{v_{k}}\frac{1}{\alpha^{3/2}\tau}
+\]
+
+\end_inset
+
+so for optically thick, but not too thick (
+\begin_inset Formula $\tau\lesssim2000),$
+\end_inset
+
+ the thermal torque can possible dominate.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "li2020"
+literal "false"
+
+\end_inset
+
+ numerically studies the Gruzinov negative DFs and find it's consistent.
+ 
+\end_layout
+
+\begin_layout Standard
+Kaaz+2022 studies jet launching mechanisms from magnetised gas in BHL accretion.
+ 
+\begin_inset Formula $\gamma=5/3$
+\end_inset
+
+ launches nice jets and reduces (or even) reversed the drag force, while
+ 
+\begin_inset Formula $\gamma=4/3$
+\end_inset
+
+ doesn't really do much.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "tagawa2022"
+literal "false"
+
+\end_inset
+
+ studies the role of mechanical feedback of rapidly accreting BHs.
+ Winds can be launched for super-eddington accretion, but it doesn't hamper
+ the flow too much.
+ Jet feedback mechanism (JFM) causes episodic accretion and reduces rates
+ by a factor of 
+\begin_inset Formula $10-100.$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Derdzinski+2000 discuss the birth and evolution of stars from gravitationally-un
+stable AGN discs.
+ The IMF is probably top heavy.
+ The initial stars are small, below 
+\begin_inset Formula $M_{{\rm \odot}}$
+\end_inset
+
+, but could rapidly accrete and grow.
+\end_layout
+
+\begin_layout Section
+refs
+\end_layout
+
+\begin_layout Standard
+feedback limited accretion - after forming a gap - https://ui.adsabs.harvard.edu/ab
+s/2021MNRAS.501.3113G/abstract
+\end_layout
+
+\begin_layout Standard
+halting planetary migration with heating tirque - https://ui.adsabs.harvard.edu/abs
+/2015Natur.520...63B/abstract
+\end_layout
+
+\begin_layout Standard
+heating torque - some analytics and AGN discs! Condition for thermal torque
+ to dominate.
+ - https://ui.adsabs.harvard.edu/abs/2020ApJ...902...50H/abstract
+\end_layout
+
+\begin_layout Standard
+negative dynamical friction on compact objects - https://ui.adsabs.harvard.edu/abs/
+2020MNRAS.492.2755G/abstract
+\end_layout
+
+\begin_layout Standard
+simulation of the latter - https://ui.adsabs.harvard.edu/abs/2020MNRAS.494.2327L/abst
+ract
+\end_layout
+
+\begin_layout Standard
+in situ EMRIs in AGN discs, has many ingredients - https://ui.adsabs.harvard.edu/ab
+s/2022arXiv220510382D/abstract
+\end_layout
+
+\begin_layout Standard
+mechanical feedback reduces gas accretion on sBH - https://ui.adsabs.harvard.edu/ab
+s/2022ApJ...927...41T/abstract
+\end_layout
+
+\begin_layout Standard
+DF for imbh - https://ui.adsabs.harvard.edu/abs/2020MNRAS.496.1909T/abstract
+\end_layout
+
+\begin_layout Standard
+- orbit expanaion from outflows in binary systemshttps://ui.adsabs.harvard.edu/abs/
+2022arXiv220302615W/abstract 
+\begin_inset Formula 
+\[
+\frac{m_{{\rm tot}}}{m_{{\rm out}}}\frac{m_{in}^{1/2}}{m_{tot}^{3/2}}=\frac{1}{m_{{\rm out}}}\frac{m_{in}^{1/2}}{m_{tot}^{1/2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+TDEs
+\end_layout
+
+\begin_layout Standard
+ISM pressure: 
+\begin_inset Formula $P_{ism}/k_{B}=10^{5}K/cm^{3}$
+\end_inset
+
+ or 
+\begin_inset Formula $P_{{\rm ism}}\sim10^{21}$
+\end_inset
+
+[cgs]
+\end_layout
+
+\begin_layout Standard
+Nayakshin+ discuss an ouflow of an initially massive envelope.
+\end_layout
+
+\begin_layout Standard
+The pressure need to overcome the SMBH gravity, or 
+\begin_inset Formula $P>GM_{{\rm BH}}m/4\pi R^{4}\approx10^{6}m_{3}R_{{\rm mpc}}^{-4}$
+\end_inset
+
+ [cgs] at 
+\begin_inset Formula $R=mpc=3.08\cdot10^{15}cm.$
+\end_inset
+
+ For 10mpc we have 
+\begin_inset Formula $P\sim10^{2}$
+\end_inset
+
+ in cgs.
+ 
+\end_layout
+
+\begin_layout Standard
+The enrgy is 
+\begin_inset Formula $E=3PV=GM_{{\rm BH}}m/3R\approx10^{52}erg.$
+\end_inset
+
+ The mass accretion might be larger.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "refs_AGN_migration"
+options "plainnat"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

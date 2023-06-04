@@ -1,0 +1,2430 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement H
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 2cm
+\rightmargin 3cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Stellar and dynamical evolution in AGN discs
+\end_layout
+
+\begin_layout Author
+Evgeni Grishin
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+evgeni.grishin@monash.edu
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Section
+Intro
+\end_layout
+
+\begin_layout Standard
+Gravitational interactions between massive bodies in their nascent discs
+ lead to net energy change and migration, and were stidued extensively in
+ planetary science 
+\begin_inset CommandInset citation
+LatexCommand citep
+before "see review by"
+key "Paardekooper_review"
+literal "false"
+
+\end_inset
+
+.
+ In the standard picture, the gravitational interaction raises two spiral
+ density waves excited at various resonances (corotation, inner and outer
+ Lindblad), and their imbalance leads to net migration.
+ Low mass object don't form a gap and migrate as type I migrate, where the
+ net torque is 
+\begin_inset Formula $T_{I}\propto m_{p}^{2}$
+\end_inset
+
+, where 
+\begin_inset Formula $m_{p}$
+\end_inset
+
+ is the mass of the planet.
+ Massive planets open a gap and their migration rate is independent of the
+ mass of the planet.
+\end_layout
+
+\begin_layout Standard
+The type I torque is 
+\begin_inset Formula 
+\[
+\Gamma_{0}\sim\frac{q^{2}}{h^{2}}\Sigma r^{4}\Omega^{2}
+\]
+
+\end_inset
+
+ where 
+\begin_inset Formula $q=m/M$
+\end_inset
+
+ is the mass ratio, 
+\begin_inset Formula $h=H/r$
+\end_inset
+
+ is the aspect ratio and 
+\begin_inset Formula $\Omega=(GM/r^{3})^{1/2}$
+\end_inset
+
+ is the Keplerian frequency.
+\end_layout
+
+\begin_layout Standard
+The migration timescale is 
+\begin_inset Formula 
+\[
+\tau_{0}=\frac{L}{2\Gamma_{0}}=\frac{mr^{2}\Omega}{2\Gamma_{0}}=\frac{1}{2\Omega}\frac{h^{2}}{q}\frac{M}{\Sigma r^{2}}
+\]
+
+\end_inset
+
+ For type II, the timescale is the viscous timescale of the disc, 
+\begin_inset Formula $\tau_{\nu}=\Omega^{-1}\times(\alpha h^{2})^{-1}.$
+\end_inset
+
+ This could be fast, unless the planet is massive than the disc, than it
+ will slow down by a factor is 
+\begin_inset Formula $m/4\pi\Sigma r^{2}.$
+\end_inset
+
+ 
+\begin_inset Formula 
+\[
+\kappa\ [{\rm cm^{2}\ g^{-1}]}=\begin{cases}
+0.4 & r<2\times10^{4}r_{s}\\
+0.4(r/2\times10r_{s}^{4})^{-9} & 2\times10^{4}r_{s}<r<4\times10^{4}r_{s}\\
+7.8\times10^{-4} & r>4\times10^{4}r_{s}
+\end{cases}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+r=(\frac{1.5e5}{\tau_{0}})^{2/3}=
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+What is the gap opening criterion?
+\end_layout
+
+\begin_layout Standard
+Currently the gap opening criterion had been revised to 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "kanagawa2015"
+literal "false"
+
+\end_inset
+
+ 
+\begin_inset Formula 
+\[
+q\ge5\sqrt{\alpha h^{5}}\approx10^{-4}\alpha_{0.01}^{1/2}h_{0.04}^{5/2},
+\]
+
+\end_inset
+
+ and widely used.
+ We can define 
+\begin_inset Formula $K=q^{2}/\alpha h^{5}$
+\end_inset
+
+.
+ The migration is type II if 
+\begin_inset Formula $K>25.$
+\end_inset
+
+ The gap depth is generally parametrised by 
+\begin_inset Formula $\Sigma/\Sigma_{0}\approx1/(1+0.04K).$
+\end_inset
+
+ In order to make the migration continuous, the type I/II migration torque
+ is 
+\begin_inset Formula 
+\[
+m=5M\alpha^{1/2}h^{5/2}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+r_{{\rm gap}} & =a\left(\frac{m}{3M}\right)^{1/3}=\left(\frac{5\alpha^{1/2}c_{s}^{5/2}}{6\pi}Tr^{1/2}\right)^{1/3}\\
+ & =\nu rT=\alpha H^{2}r
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\Gamma_{I/II}=\Gamma_{0}\frac{1}{1+K'}
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $K'=K/25.$
+\end_inset
+
+ The gap is also formed for 
+\begin_inset Formula $K'>1.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+torques again 
+\end_layout
+
+\begin_layout Standard
+Lets write down the type I torque: 
+\begin_inset Formula 
+\[
+\Gamma_{I}=-C_{I}h\Gamma_{0}
+\]
+
+\end_inset
+
+ and the thermal torque is 
+\begin_inset Formula 
+\begin{align*}
+\Gamma_{{\rm th}} & =1.61\frac{\gamma-1}{\gamma}\frac{x}{\lambda}\left(\frac{L}{L_{c}}-1\right)\Gamma_{0}\\
+ & =1.61\frac{\gamma-1}{\gamma}h\sqrt{\frac{\pi}{3\gamma^{2}(\gamma-1)\mathcal{A}^{2}\alpha}}\left(\frac{L}{L_{c}}-1\right)\Gamma_{0}
+\end{align*}
+
+\end_inset
+
+Uding the expression for 
+\begin_inset Formula $\chi$
+\end_inset
+
+ and 
+\begin_inset Formula $L/L_{c}$
+\end_inset
+
+ we have (
+\begin_inset Formula $\tau=\kappa\Sigma/2=A\kappa\rho H=$
+\end_inset
+
+)
+\begin_inset Formula 
+\begin{align*}
+\Gamma_{{\rm th}} & =1.61\frac{h}{\gamma^{2}\mathcal{A}}\sqrt{\frac{\pi(\gamma-1)}{3\alpha}}\left(\frac{2\pi\epsilon c}{9(\gamma-1)\mathcal{A}\alpha c_{s}\tau}-1\right)\Gamma_{0}\\
+ & \equiv B_{0}h\left(\frac{\tau_{\pm}}{\tau}-1\right)\Gamma_{0}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The optical depth where the total torque vanishes is
+\begin_inset Formula 
+\[
+\frac{\Gamma_{{\rm th}}}{h\Gamma_{0}}=\frac{1.61}{\gamma^{2}\mathcal{A}}\sqrt{\frac{\pi(\gamma-1)}{3\alpha}}\left(\frac{\tau_{{\rm pm}}}{\tau}-1\right)
+\]
+
+\end_inset
+
+ 
+\begin_inset Formula 
+\[
+\Gamma_{{\rm th}}+\Gamma_{I}=B_{0}h\left(\frac{\tau_{\pm}}{\tau}-1\right)\Gamma_{0}-C_{I}h\Gamma_{0}\ge0
+\]
+
+\end_inset
+
+ or 
+\begin_inset Formula 
+\begin{align*}
+B_{0}\left(\frac{\tau_{\pm}}{\tau}-1\right) & \ge C_{I}\\
+\frac{\tau_{\pm}}{\tau} & \ge\frac{C_{I}+B_{0}}{B_{0}}\\
+\tau= & \tau_{0}\le\tau_{\pm}\frac{B_{0}}{C_{I}+B_{0}}=\tau_{\pm}\frac{1.61\frac{1}{\gamma^{2}\mathcal{A}}\sqrt{\frac{\pi(\gamma-1)}{3\alpha}}}{C_{I}+1.61\frac{1}{\gamma^{2}\mathcal{A}}\sqrt{\frac{\pi(\gamma-1)}{3\alpha}}}=\tau_{\pm}\frac{1.61\sqrt{\frac{\pi(\gamma-1)}{3\alpha}}}{\gamma^{2}\mathcal{A}C_{I}+1.61\sqrt{\frac{\pi(\gamma-1)}{3\alpha}}}=\tau_{\pm}\frac{1.61\sqrt{\pi(\gamma-1)}}{\gamma^{2}\mathcal{A}C_{I}\sqrt{3\alpha}+1.61\sqrt{\pi(\gamma-1)}}\\
+ & \approx\tau_{\pm}\frac{1.65}{1.14\alpha_{0.01}^{-1/2}+1.65}\\
+ & =\frac{2\pi\epsilon c}{9\mathcal{A}\alpha c_{s}}\frac{1.61\sqrt{\pi}}{\gamma^{2}\mathcal{A}C_{I}\sqrt{3\alpha(\gamma-1)}+1.61(\gamma-1)\sqrt{\pi}}\\
+ & =\tau_{\pm}\frac{1.45\alpha_{0.01}^{-1/2}}{1+1.45\alpha_{0.01}^{-1/2}}=8\cdot10^{5}c_{7}^{-1}\epsilon_{1}\frac{\alpha_{0.01}^{-3/2}}{1+1.44\alpha_{0.01}^{-1/2}}\\
+ & =8\cdot10^{5}c_{7}^{-1}\epsilon_{1}\alpha_{0.01}^{-3/2}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+How migration can be reversed?
+\end_layout
+
+\begin_layout Standard
+Accretion may result in feedback and imbalance the vicinity of the planet.
+ For gas accretion, it is expected to accelerate the migration 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "lega14"
+literal "false"
+
+\end_inset
+
+, but accretion of pebbles could stall, or even reverse it 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "b-l15"
+literal "false"
+
+\end_inset
+
+.
+ Local simulations had shown that the heating torque can be important for
+ wide range of configurations in accretion discs 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "hankla2020"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+after "hereafter M17"
+key "masset17"
+literal "false"
+
+\end_inset
+
+ studies analytically the responce of a disc to a thermal torque.
+ The additional variables are the thermal conductivity 
+\begin_inset Formula $\chi$
+\end_inset
+
+ which enters into the heat transport part of the diffusion equation: The
+ heat flux is 
+\begin_inset Formula $\boldsymbol{F}_{H}=-\chi\rho\nabla(e/\rho)$
+\end_inset
+
+ (eq.
+ 4), where 
+\begin_inset Formula $e$
+\end_inset
+
+ is the energy density and 
+\begin_inset Formula $\rho$
+\end_inset
+
+ is the gas density.
+ Without extra heat sources sources, 
+\begin_inset Formula $\partial_{t}e=\boldsymbol{\nabla}\cdot\boldsymbol{F}_{H}$
+\end_inset
+
+, which looks like diffusion if the density gradient is small.
+\end_layout
+
+\begin_layout Standard
+The other length scale is the heat deposition scale is 
+\begin_inset Formula $\lambda=\sqrt{\chi/q\Omega\gamma}$
+\end_inset
+
+ (eq.
+ 120) where 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ is the adiabatic index, 
+\begin_inset Formula $\Omega$
+\end_inset
+
+ is the Keplerian frequency and 
+\begin_inset Formula $q=-d\ln\Omega/d\ln r=3/2$
+\end_inset
+
+ is the shear strength.
+ Usually, the heat deposition scale is small compared to the scale height,
+ 
+\begin_inset Formula $\lambda/H\ll1$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Radiative diffusion is usually the main source of diffesion, thus 
+\begin_inset Formula 
+\[
+\chi=\frac{16\gamma(\gamma-1)\sigma_{{\rm SB}}T^{4}}{3\kappa\rho_{0}^{2}H^{2}\Omega^{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Eq.
+ 146 of M17 for the total thermal torque reads 
+\begin_inset Formula 
+\[
+\Gamma_{{\rm th}}^{{\rm tot}}=1.61\frac{\gamma-1}{\gamma}\eta\frac{H^{2}}{\lambda r}\left(\frac{L}{L_{c}}-1\right)\Gamma_{0}
+\]
+
+\end_inset
+
+ where 
+\begin_inset Formula $\Gamma_{0}=\Sigma r^{4}\Omega^{2}(m/M_{\star})^{2}(H/r)^{-2}$
+\end_inset
+
+ is the nominal type I torque (eq.
+ 134), 
+\begin_inset Formula $L_{c}=4\pi Gm\chi\rho_{0}/\gamma$
+\end_inset
+
+ is the heat release from the planet (eq.
+ 132 in M17), 
+\begin_inset Formula $L$
+\end_inset
+
+ is the luminosity and 
+\begin_inset Formula $\eta=\alpha/3+(\beta+3)/6$
+\end_inset
+
+ is related to the gradients of the surface density (
+\begin_inset Formula $\Sigma\propto r^{-\alpha}$
+\end_inset
+
+) and the temperature (
+\begin_inset Formula $T\propto r^{-\beta}$
+\end_inset
+
+) gradients, and usually is of order unity.
+ It is valid for planets of mass less than 
+\begin_inset Formula $m<m_{c}=\chi c_{s}/G,$
+\end_inset
+
+ othewise the heat is deposited beyond the Bondi radius and the effect is
+ greatly reduced.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Fro19"
+literal "false"
+
+\end_inset
+
+ also found that the eccentricity and inclination grow if 
+\begin_inset Formula $L/L_{c}>1$
+\end_inset
+
+ or dampen when 
+\begin_inset Formula $L/L_{c}<1$
+\end_inset
+
+ exponentially.
+ 
+\end_layout
+
+\begin_layout Subsection
+AGNS
+\end_layout
+
+\begin_layout Standard
+Migration traps had been involved in AGN discs as fruitful locations for
+ BH accumulation 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "bellovary16"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "hankla2020"
+literal "false"
+
+\end_inset
+
+ looked on both AGNS and protoplanetary discs: corotation torque is complex.
+\end_layout
+
+\begin_layout Standard
+They investigate the validity of the liner approach of Masset and directly
+ apply to AGN disc.
+ The accretion disc equations read 
+\begin_inset Formula 
+\begin{align*}
+T^{4} & =\frac{3\tau\Omega^{2}}{8\pi\sigma_{{\rm SB}}}{\color{red}\dot{M}}=\frac{3\tau\Omega^{2}}{8\pi\sigma_{{\rm SB}}}{\color{red}3\pi\Sigma{\color{purple}\nu}}=\frac{3\tau\Omega^{2}}{8\pi\sigma_{{\rm SB}}}{\color{red}3\pi\Sigma{\color{purple}\alpha c_{s}H}}\\
+H & =c_{s}/\Omega=\Sigma/\sqrt{2\pi}\rho_{0};\ \tau=\kappa\Sigma
+\end{align*}
+
+\end_inset
+
+For the conductivity we have 
+\begin_inset Formula 
+\begin{align*}
+\chi & =\frac{16\gamma(\gamma-1)\sigma T^{4}}{3\kappa\rho_{0}^{2}H^{2}\Omega^{2}}=12\pi\gamma(\gamma-1){\color{red}{\color{purple}\alpha H^{2}\Omega}}\\
+ & =\bar{A}^{2}12\gamma(\gamma-1)\alpha H^{2}\Omega\sim1.67\frac{\alpha}{0.1}H^{2}\Omega
+\end{align*}
+
+\end_inset
+
+ checking length scales: 
+\begin_inset Formula 
+\[
+\frac{\lambda}{H}=\sqrt{24\pi^{3}\gamma(\gamma-1)\alpha}=1.8
+\]
+
+\end_inset
+
+Which is not really valid in the assumption.
+ But this guarantees that 
+\begin_inset Formula $\lambda\gg x_{p},$
+\end_inset
+
+ which is really what's important.
+\end_layout
+
+\begin_layout Standard
+The ratio between the torques is 
+\begin_inset Formula 
+\[
+\frac{\Gamma_{{\rm heat}}}{\Gamma_{0}}=0.07\frac{c}{v_{k}}\frac{1}{\alpha^{3/2}\tau}
+\]
+
+\end_inset
+
+so for optically thick, but not too thick (
+\begin_inset Formula $\tau\lesssim2000),$
+\end_inset
+
+ the thermal torque can possibly dominate.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "li2020"
+literal "false"
+
+\end_inset
+
+ numerically studies the Gruzinov negative DFs and find it's consistent.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "kaaz22"
+literal "false"
+
+\end_inset
+
+ studies jet launching mechanisms from magnetised gas in BHL accretion.
+ 
+\begin_inset Formula $\gamma=5/3$
+\end_inset
+
+ launches nice jets and reduces (or even) reversed the drag force, while
+ 
+\begin_inset Formula $\gamma=4/3$
+\end_inset
+
+ doesn't really do much.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "tagawa2022"
+literal "false"
+
+\end_inset
+
+ studies the role of mechanical feedback of rapidly accreting BHs.
+ Winds can be launched for super-eddington accretion, but it doesn't hamper
+ the flow too much.
+ Jet feedback mechanism (JFM) causes episodic accretion and reduces rates
+ by a factor of 
+\begin_inset Formula $10-100.$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "d22"
+literal "false"
+
+\end_inset
+
+ discuss the birth and evolution of stars from gravitationally-unstable
+ AGN discs.
+ The IMF is probably top heavy.
+ The initial stars are small, below 
+\begin_inset Formula $M_{{\rm \odot}}$
+\end_inset
+
+, but could rapidly accrete and grow.
+\end_layout
+
+\begin_layout Section
+Future work (?)
+\end_layout
+
+\begin_layout Standard
+The birth, growth and dynamical evolution of stars anf BH in AGN discs is
+ intriguing.
+ Binary BH could also be interesting.
+ The direction of the torque is circumbinary discs is also debated (Refs).
+ I'd be happy to work/understand hte following:
+\end_layout
+
+\begin_layout Itemize
+Incorporate the feedback from thermal conductivity and outflows into migration
+ models.
+ Identify the sign and magnitude of the total torque in 
+\begin_inset Formula $m-R$
+\end_inset
+
+ space (star/stellar BH mass - radial separation).
+ Take some prescriptoin for gas accretion (Eddington limited, super-Edd
+ Bondi accretion, but maybe reduced) and initial conditions of a population
+ (SF rate, mass function etc) and estimate how many mergers and EMRIs could
+ be.
+ Potential showcase could be unequal mass merger of two BH - the least massive
+ could go outward while the outward one might go inward.
+ 
+\end_layout
+
+\begin_layout Itemize
+More detailed evolution could be N-body + prescriptions for the migration
+ torques.
+ At super-Eddington accretion rates, allows winds and outflows and invoke
+ the Gruzinov negative DF when the Mach number is 
+\begin_inset Formula $>1.$
+\end_inset
+
+ Maybe add routines for resolving binaries?!
+\end_layout
+
+\begin_layout Itemize
+Extend the outflow studies 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Gruzinov2020,li2020"
+literal "false"
+
+\end_inset
+
+ for sheared medium to mimic a disc and get a torque formula.
+\end_layout
+
+\begin_layout Subsection
+Hankla+2021 and extensions 
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="35" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Symbol
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Expression/Value
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Disc
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+parameters
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+mass
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+scales
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SMBH mass
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $M_{\bullet}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $10^{4}-10^{9}M_{\odot}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+normalised
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $m$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $M_{\odot}/10^{8}M_{\odot}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Stellar mass BH
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $m_{{\rm BH}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $10-10^{4}M_{\odot}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Mass accretion
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+and
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Luminosity
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+critical accretion rate
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\dot{M}_{{\rm cr}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\mathcal{L}_{{\rm Edd}}/\eta c^{2}=3\left(\frac{0.06}{\eta}\right)mM_{\odot}{\rm yr^{^{-1}}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+normalised
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\dot{m}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\dot{M}/\dot{M}_{{\rm cr}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Eddington Luminosity
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+of the SMBH
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\mathcal{L}_{{\rm Edd}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $4\pi GM_{\bullet}c/\kappa$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+of the stellar BH
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $L_{{\rm Edd}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $4\pi Gm_{{\rm BH}}c/\kappa$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Critical Luminosity 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $L_{c}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $4\pi Gm\rho\chi/\gamma$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+length
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+scales
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Scale height
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $H$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $c_{s}/\Omega$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Diffusion length
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\lambda$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\sqrt{2\chi/3\gamma\Omega}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Corotation radius
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $x_{c}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\nabla_{P}c_{s}^{2}/3\gamma r\Omega^{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Mean free path
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\ell$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1/\kappa\rho$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Hill radius
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $r_{H}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $r(m_{{\rm BH}}/3M_{\bullet})^{1/3}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gravitational radius
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $r_{g}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $GM_{\bullet}/c^{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ISCO
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $r_{{\rm ISCO}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $6r_{g}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Dics parameters
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Viscosity
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\nu$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha c_{s}H=\alpha h^{2}\Omega;$
+\end_inset
+
+
+\begin_inset Formula $\alpha\le1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Surface density
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Sigma$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $ $
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Density 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\rho$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Sigma/2H$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Temperature
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $T_{c}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Opacity 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\kappa$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $10-10^{-4}{\rm cm^{2}\ g^{-1}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optical Depth
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\tau$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\kappa\Sigma/2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Thermal diffusivity
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\chi$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Toomre 
+\begin_inset Formula $Q$
+\end_inset
+
+ parameter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $Q_{T}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Torques
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Nominal torque
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Gamma_{0}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Type I net torque
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Gamma_{I}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C_{I}(H/r)\Gamma_{0}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Net Thermal torque
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Gamma_{{\rm thermal}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1.61\frac{\gamma-1}{\gamma}\frac{x_{c}}{\lambda}(L/L_{c}-1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gradients
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\nabla_{X}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $-d\ln X/d\ln r$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Formula $x/\lambda=\nabla_{P}c_{s}^{2}/3\gamma r\Omega^{2}/H\sqrt{3(\gamma-1)\alpha}=\frac{\nabla_{P}}{3\gamma\sqrt{3(\gamma-1)\alpha}}\frac{H}{R}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The length scales in the problem are the scale height 
+\begin_inset Formula $H$
+\end_inset
+
+, the heat deposition length 
+\begin_inset Formula $\lambda_{c}$
+\end_inset
+
+, and the corotation length 
+\begin_inset Formula $x_{p}$
+\end_inset
+
+ and defines as 
+\begin_inset Formula 
+\[
+m_{c}=\chi\frac{c_{s}}{G}=H\frac{c_{s}^{2}}{G}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+H & =c_{s}/\Omega\\
+\lambda & =2\pi\sqrt{\frac{2\chi}{3\gamma\Omega}}\\
+x_{p} & =\frac{n}{3\gamma}\frac{c_{s}^{2}}{r_{0}\Omega^{2}}
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $c_{s}$
+\end_inset
+
+ is the sound speed, 
+\begin_inset Formula $\chi$
+\end_inset
+
+ is the heat diffusivity, 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ is the adiabatic index and 
+\begin_inset Formula $n$
+\end_inset
+
+ is the pressure gradient power law 
+\begin_inset Formula $P\propto r^{-n}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The torques in the problem are the one-sided migration and heating torques
+ 
+\begin_inset Formula $\Gamma_{0}$
+\end_inset
+
+ and 
+\begin_inset Formula $\Gamma_{h}:$
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\frac{c}{\kappa}>\rho\chi\implies\frac{\epsilon cH}{\tau_{0}}=\chi\implies\tau_{0}<\epsilon\frac{cH}{\chi}=\epsilon\frac{cc_{s}}{\lambda^{2}\Omega^{2}}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\tau_{0}=\kappa\rho H=2\kappa\sqrt{\pi/2}\Sigma=\sqrt{\pi/2}\tau
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+\Gamma_{0} & =q^{2}\Sigma r^{4}\Omega^{2}h^{-3}\\
+\Gamma_{h} & =\frac{\gamma-1}{\gamma}\Gamma_{0}
+\end{align*}
+
+\end_inset
+
+ The total differencial torques are 
+\begin_inset Formula 
+\begin{align*}
+\Gamma_{0}^{{\rm tot}} & =C_{I}\Gamma_{0}h\\
+\Gamma_{h}^{{\rm tot}} & =D_{I}\Gamma_{0}\frac{x_{c}}{\lambda_{c}}
+\end{align*}
+
+\end_inset
+
+For the graviational torques, 
+\begin_inset Formula $C_{I}$
+\end_inset
+
+ includes the inner and outer Lindblad resonances and the corotations torques,
+ and depends on the power law densities.
+ E.g.
+ in XX it is found that 
+\begin_inset Formula 
+\begin{align*}
+\epsilon\gamma\frac{c}{\kappa\rho} & >\chi\implies\chi=\lambda^{2}\Omega<\epsilon\gamma\frac{c}{\kappa\rho}\implies\lambda^{2}\Omega<\epsilon\gamma c\ell\\
+T & >\frac{\lambda^{2}}{c\ell}=\frac{\lambda}{c}\frac{v}{c}
+\end{align*}
+
+\end_inset
+
+random walk: 
+\begin_inset Formula $N=\lambda^{2}/l^{2}$
+\end_inset
+
+, time between collisions 
+\begin_inset Formula $t=l/c$
+\end_inset
+
+ so 
+\begin_inset Formula $v=\lambda/t=\lambda c/l.$
+\end_inset
+
+ Diffusion time: 
+\begin_inset Formula $T=tN=\lambda^{2}/lc$
+\end_inset
+
+
+\begin_inset Formula 
+\[
+C_{I}=0.8+s+0.9p
+\]
+
+\end_inset
+
+ with 
+\begin_inset Formula $\Sigma\propto r^{-p}$
+\end_inset
+
+ and 
+\begin_inset Formula $T\propto r^{-s}.$
+\end_inset
+
+ The themal torque changes sign at a critical watershed luminosity 
+\begin_inset Formula 
+\[
+L_{c}=\frac{4\pi Gm\chi\rho_{0}}{\gamma}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and 
+\begin_inset Formula 
+\[
+D_{I}=1.61\left(\frac{L}{L_{c}}-1\right)
+\]
+
+\end_inset
+
+i.e.
+ cold planets 
+\begin_inset Formula $L\ll L_{c}$
+\end_inset
+
+ will migrate inward, while warm planets 
+\begin_inset Formula $L>L_{c}$
+\end_inset
+
+ migrate outward.
+ 
+\end_layout
+
+\begin_layout Standard
+For thermal diffusivity, 
+\begin_inset Formula 
+\begin{align*}
+\chi & =\frac{16\gamma(\gamma-1)\sigma T^{4}}{3\kappa\rho_{0}^{2}H^{2}\Omega^{2}}=\frac{9\gamma(\gamma-1)}{2\pi}\mathcal{A}^{2}\alpha H^{2}\Omega=\frac{2}{\pi}A^{2}\alpha H^{2}\Omega\\
+ & =\frac{\gamma(\gamma-1)}{}\frac{9}{2\pi}{\color{red}(AH)^{2}\alpha\Omega}\\
+\end{align*}
+
+\end_inset
+
+so 
+\begin_inset Formula 
+\begin{align*}
+\lambda & =2\pi\sqrt{\frac{2\chi}{3\gamma\Omega}}=\sqrt{12\pi(\gamma-1)\mathcal{A}^{2}\alpha}H\\
+x & =\frac{c_{s}^{2}}{\gamma r\Omega^{2}}=H\times\frac{H}{\gamma r}
+\end{align*}
+
+\end_inset
+
+from the accretion disc models, we have 
+\begin_inset Formula 
+\[
+\frac{\Gamma_{th}}{\Gamma_{I}}=\frac{1.61\frac{\gamma-1}{\gamma}\frac{x}{\lambda}\frac{L}{L_{c}}}{C\frac{H}{r}}=\frac{1.61\frac{\gamma-1}{\gamma}\frac{x}{\lambda}\frac{L}{L_{c}}}{C\frac{H}{r}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The expressions are 
+\begin_inset Formula 
+\begin{align*}
+\frac{L}{L_{c}} & =\frac{c\gamma}{\kappa\chi\rho}=\frac{c\gamma}{\kappa\rho\frac{16\gamma(\gamma-1)\sigma T^{4}}{3\kappa\rho^{2}c_{s}^{2}}}=\frac{8\pi c\gamma}{\kappa\rho\frac{16\gamma(\gamma-1)3\tau3\pi\alpha c_{s}H\Sigma\Omega^{2}}{3\kappa\rho^{2}c_{s}^{2}}}=\frac{1}{12(\gamma-1)\tau\alpha}\frac{c}{c_{s}}\\
+\frac{x}{\lambda} & =\frac{\nabla_{P}H^{2}}{\gamma r\sqrt{2\chi/3\gamma\Omega}}=\frac{\nabla_{P}H^{2}}{\gamma r\sqrt{\frac{2}{3\gamma\Omega}\frac{16\gamma(\gamma-1)3\tau3\pi\Sigma\alpha c_{s}H\Omega^{2}}{24\pi\kappa\rho^{2}H^{2}\Omega^{2}}}}=\frac{\nabla_{P}}{\gamma\sqrt{8(\gamma-1)\alpha}}\frac{H}{r}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+so...
+\begin_inset Formula 
+\begin{align*}
+\frac{\Gamma_{th}}{\Gamma_{i}} & =\frac{1.61\frac{\gamma-1}{\gamma}\frac{\nabla_{P}}{\gamma\sqrt{8(\gamma-1)\alpha}}\frac{H}{r}}{C\frac{H}{r}}\frac{1}{12(\gamma-1)\tau\alpha}\frac{c}{c_{s}}\\
+\tau & <\frac{1.61\nabla_{P}}{12C\gamma^{2}\sqrt{8(\gamma-1)}}\frac{1}{\alpha^{3/2}}\frac{c}{c_{s}}=
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\sigma T^{4} & =\frac{3\sigma\tau}{8\pi}T_{{\rm eff}}^{4}=\frac{3\tau}{8\pi}\frac{3}{8\pi}\dot{M}\Omega^{2}\\
+ & =\frac{27\tau}{64\pi}{\color{red}\Sigma\alpha c_{s}H}\Omega^{2}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\sigma T^{4}=\frac{3\tau\Omega^{2}}{8\pi}{\color{red}\dot{M}}=\frac{3\tau\Omega^{2}}{8\pi}{\color{red}3\pi\Sigma{\color{purple}\nu}}=\frac{3\tau\Omega^{2}}{8\pi}{\color{red}3\pi\Sigma{\color{purple}\alpha c_{s}H}}
+\]
+
+\end_inset
+
+thus 
+\begin_inset Formula 
+\begin{align*}
+\tau & \propto m^{1/5}r^{-12/20}=c_{s}^{-1}=H^{-1}\Omega^{-1}=m^{-9/10+1}r^{9/20}\\
+ & m^{2/21}=r
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+c_{s3}^{-1} & =m^{1/10}r^{3/8}=m^{1/5}r^{-3/4}\\
+ & =r=m^{4/45}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+m^{1/10}r^{3/8} & =m^{1/5}r^{-3/4}m^{-7/10}r^{-15/8}m^{7/10}r^{-28/6}\\
+r^{22/3} & =m^{1/10};\ 45/24+112/24=157/24=6.54
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline linebreak
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+\chi & =\frac{16\gamma(\gamma-1)\frac{3\tau\Omega^{2}}{8\pi}{\color{red}3\pi\Sigma{\color{purple}\alpha c_{s}H}}}{3\tau_{0}\rho_{0}H\Omega^{2}}\\
+ & =\frac{\tau}{\tau_{0}}\frac{2\gamma(\gamma-1){\color{red}3\Sigma{\color{purple}\alpha c_{s}}}}{\rho_{0}}
+\end{align*}
+
+\end_inset
+
+ 
+\begin_inset Formula 
+\begin{align*}
+\frac{1}{\rho\chi} & \sim\frac{m}{H^{2}\Omega}\sim\frac{m}{m}-z1\\
+\frac{1}{\rho\xhi} & \sim m^{-7/10}m^{-9/10}m^{-1/10}=m^{-17/10}\\
+z3\\
+\frac{1}{\kappa\rho\chi} & =\frac{1}{\tau c_{s}}=m^{-1/10}\frac{1}{\kappa\Sigma}=m^{-3/10}\frac{T^{7/2}}{\rho}=m^{-3/10}m^{7/10}m^{-7/10}=m^{-3/10}
+\end{align*}
+
+\end_inset
+
+we can use 
+\begin_inset Formula $\bar{A}=\tau/\tau_{0}$
+\end_inset
+
+ and it is of order unity.
+ and 
+\begin_inset Formula $\Sigma/\rho=2H\bar{A}.$
+\end_inset
+
+ We end up with 
+\begin_inset Formula 
+\[
+\tau<\epsilon\frac{2\pi}{9(\gamma-1)\mathcal{A}\alpha}\frac{c}{c_{s}}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\chi=\bar{A}^{2}12\gamma(\gamma-1)\alpha H^{2}\Omega
+\]
+
+\end_inset
+
+ The watershed luminosity is 
+\begin_inset Formula 
+\[
+L_{c}=\frac{4\pi Gm\Sigma}{\gamma}\bar{A}6\gamma(\gamma-1)\alpha H\Omega
+\]
+
+\end_inset
+
+ if the emerging luminosity is 
+\begin_inset Formula $L=\epsilon L_{{\rm edd}}=\epsilon4\pi GMc/\kappa$
+\end_inset
+
+ we have 
+\begin_inset Formula 
+\begin{align*}
+\frac{L}{L_{c}} & =\epsilon\frac{4\pi\gamma Gmc}{\kappa4\pi Gm\Sigma\bar{A}6\gamma(\gamma-1)\alpha H\Omega}\\
+ & =\epsilon\frac{c}{12\tau\bar{A}(\gamma-1)\alpha c_{s}}
+\end{align*}
+
+\end_inset
+
+The torque will be positive if 
+\begin_inset Formula $L>L_{c}$
+\end_inset
+
+ or 
+\begin_inset Formula 
+\[
+\tau<\epsilon\frac{c}{12\bar{A}(\gamma-1)\alpha c_{s}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The sound speed seems to be flat in our area of interest, 
+\begin_inset Formula $c_{s}\sim10^{7}.$
+\end_inset
+
+ For 
+\begin_inset Formula $\epsilon=0.1$
+\end_inset
+
+ and 
+\begin_inset Formula $\alpha=0.01,$
+\end_inset
+
+ gas dominated discs have 
+\begin_inset Formula $\bar{A}=\sqrt{\pi/2}\approx1.25$
+\end_inset
+
+ and 
+\begin_inset Formula $\gamma=5/3$
+\end_inset
+
+ we get 
+\begin_inset Formula $\tau_{{\rm gas}}\gtrsim3000,$
+\end_inset
+
+ while for radiation dominated discs we have 
+\begin_inset Formula $\bar{A}=1.12$
+\end_inset
+
+ and 
+\begin_inset Formula $\gamma=4/3,$
+\end_inset
+
+ we have 
+\begin_inset Formula $\tau_{{\rm rad}}\lesssim6700.$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Subsection
+torque comparison:
+\end_layout
+
+\begin_layout Standard
+Gravitational torque: 
+\begin_inset Formula 
+\[
+\Gamma=-C\frac{H}{r}\Gamma_{0}
+\]
+
+\end_inset
+
+ thermal torque 
+\begin_inset Formula 
+\[
+\Gamma=1.61\frac{\gamma-1}{\gamma}\frac{x}{\lambda}\left(\frac{L}{L_{c}}-1\right)\Gamma_{0}
+\]
+
+\end_inset
+
+ we went that 
+\begin_inset Formula 
+\[
+1>1.61\frac{\gamma-1}{\gamma}\frac{x}{\lambda}\left(\frac{L}{L_{c}}-1\right)\frac{r}{CH}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula 
+\[
+\frac{x}{\lambda}=\frac{H}{\gamma rA}\sqrt{\frac{\pi}{3(\gamma-1)\alpha}}
+\]
+
+\end_inset
+
+so 
+\begin_inset Formula 
+\[
+1<1.61\frac{\gamma-1}{\gamma}\frac{1}{\gamma AC}\sqrt{\frac{\pi}{3(\gamma-1)\alpha}}\left(\frac{L}{L_{c}}-1\right)
+\]
+
+\end_inset
+
+If 
+\begin_inset Formula $L>2L_{c}$
+\end_inset
+
+ we can neglect the second term and get 
+\begin_inset Formula 
+\[
+1<1.61\frac{\gamma-1}{\gamma}\frac{1}{\gamma AC}\sqrt{\frac{\pi}{3(\gamma-1)\alpha}}\frac{\epsilon c\gamma}{\kappa\rho_{0}\chi}=1.61\frac{\gamma-1}{\gamma AC}\sqrt{\frac{\pi}{3(\gamma-1)\alpha}}\frac{\epsilon c}{\kappa\rho_{0}\chi}
+\]
+
+\end_inset
+
+plugging in the diffusivity 
+\begin_inset Formula $\chi=9\gamma(\gamma-1)A^{2}\alpha H^{2}\omega/2\pi$
+\end_inset
+
+ yields 
+\begin_inset Formula 
+\[
+\tau<1.61\frac{2\pi}{9\gamma^{2}A^{2}C}\sqrt{\frac{\pi}{3(\gamma-1)}}\frac{\epsilon c}{\alpha^{3/2}c_{s}}=\frac{\epsilon c}{\tau\alpha^{3/2}c_{s}}\begin{cases}
+0.1 & gas\\
+0.27 & rad
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "refs_AGN_migration"
+options "plainnat"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
