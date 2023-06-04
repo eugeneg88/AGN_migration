@@ -493,7 +493,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.xlabel(r'$\log r\ \rm{[r_g]}$')
         plt.xticks([0,1,2,3,4,5,6])
         plt.yticks([-5,-4,-3,-2,-1, 0,1, 2,3,])
-        plt.ylim([-5.5, 3.5])
+        plt.ylim([-5.5, 3.5]) #
      
     if fig_3_flag:
 
