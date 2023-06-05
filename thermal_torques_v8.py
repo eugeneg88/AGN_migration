@@ -369,7 +369,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.plot(np.log10(rgs), np.log10(taus), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
 #        plt.plot(np.log10(rgs), np.log10(taus_17), linewidth=3, color=col, linestyle='dashed'); #plt.xscale('log'); plt.yscale('log')
         plt.axhline(np.log10(1), color='gray')
-        plt.text(1.2, 1.6+1.3*np.log10(mm), 'log M= ' + str(int(np.log10(1e8*mm))), color=col, size=22)
+        plt.text(1.2, 0.6+1.6*np.log10(mm), 'log M= ' + str(int(np.log10(1e8*mm))), color=col, size=22)
 
         plt.ylabel(r'$\log \tau$')
         plt.xticks([1,2,3,4,5,6])
@@ -652,10 +652,10 @@ fig_4_flag=0
 m_d=0.1; alp=0.01
 args1 = [10,m_d,alp, 'orange']
 args2 = [1, m_d,alp, 'red']
-args3 = [1e-1,m_d,alp, 'purple']
-args4 = [1e-2, m_d,alp, 'blue']
+args3 = [1e-1,m_d,alp, 'blue']
+args4 = [1e-2, m_d,alp, 'green']
 args5 = [1e-3, m_d,alp, 'slategrey']
-args6 = [1e-4, m_d,alp, 'green']
+args6 = [1e-4, m_d,alp, 'purple']
 
 #args3 = [1,0.1,0.1, 'green']#[0.1,m_d,alp, 'blue']
 #args4 = [1,0.1,1, 'blue']#[0.01,m_d,alp, 'green']
@@ -665,8 +665,8 @@ plot_disc_solution(*args1)
 plot_disc_solution(*args2)
 plot_disc_solution(*args3)
 plot_disc_solution(*args4)
-plot_disc_solution(*args5)
-plot_disc_solution(*args6)
+#plot_disc_solution(*args5)
+#plot_disc_solution(*args6)
 
 #%%
 rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,1,0.1,0.01)[i] for x in rs] for i in range(0,13)]
@@ -825,7 +825,7 @@ if True:
     rgs = [6*r for r in rs]
     r1 = []
     r2 = []
-    alpha = 0.01
+    alpha = 0.1
     ms = np.logspace(-2,1,N)
     m_dot = np.logspace(0,-3,N)
     how_many_traps = np.zeros([N,N])   
@@ -849,6 +849,41 @@ if True:
 
  
                     #%%
+m_sol_minus1=[]
+m_sol_minus2=[]
+dm1 = []
+dm2 = []
+
+d_h = np.gradient(how_many_traps)[0]
+d_h2 = np.gradient(how_many2)[0]
+for i in range(0,N):
+    for j in range(N):                 
+        if d_h[i][j] !=0:
+            m_sol_minus1.append(ms[i])
+            dm1.append(m_dot[j])
+            break;
+            
+for i in range(0,N):
+    for j in range(N):                             
+        if d_h2[i][j] !=0:
+            m_sol_minus2.append(ms[i])
+            dm2.append(m_dot[j])
+            break;
+
+plt.plot(np.log10(m_sol_minus1)+8, np.log10(dm1), color='red', linewidth=3, label=r'$\alpha=0.1$')    
+plt.plot(np.log10(m_sol_minus2)+8, np.log10(dm2),color='green', linewidth=3, label=r'$\alpha=0.01$')    
+plt.contour(np.log10(ms)+8, np.log10(m_dot2), np.transpose(ll),levels=[ 44, 44.25, 44.5, 44.75, 45], alpha=0.3, linewidths=3, linestyles='dashed', cmap='flag')                
+plt.subplots_adjust(left=0.2, bottom=0.16, right=0.97, top=0.96)
+plt.xlabel(r'$\log M$')
+plt.ylabel(r'$\log \dot{m}$')
+plt.text(6.9, -1.5, r'$L_{\rm AGN}=10^{44}\ \rm erg\ s^{-1}$', rotation=-38, color='lightcoral', alpha=0.7, fontsize=24)
+plt.text(7.9, -1.1, r'$L_{\rm AGN}=10^{45}\ \rm erg\ s^{-1}$', rotation=-38, color='gray', alpha=0.7, fontsize=24)
+plt.text(7.9, -0.5, 'No traps', rotation=0, color='black', alpha=0.7, fontsize=20)
+
+plt.xlim([6.9,9.1])
+plt.ylim([-2.1,0.1])
+plt.legend(fontsize=20, loc=3)
+                    #%%
 m_dot2 = np.logspace(-3,0,N)
 
 log_AGN_lum = [[45.16 + np.log10(m) + np.log10(md) for m in ms] for md in m_dot2]    
@@ -858,12 +893,13 @@ ll = np.asarray(log_AGN_lum)
 CS=plt.imshow( (np.transpose(how_many_traps)), extent=[6,9,-3,0], alpha=0.4, cmap='RdBu')
 #plt.contourf(np.transpose(how_many_traps))
 plt.figure(1)
-plt.subplots_adjust(left=0.02, bottom=0.16, right=0.97, top=0.98)
-plt.contour(np.log10(ms)+8, np.log10(m_dot2), np.transpose(ll),levels=[43, 44, 44.2, 45], linewidths=3, cmap='copper')
+plt.subplots_adjust(left=0.03, bottom=0.16, right=0.97, top=0.86)
+plt.contour(np.log10(ms)+8, np.log10(m_dot2), np.transpose(ll),levels=[43, 44, 44.4, 45], linewidths=3, cmap='flag')
 plt.colorbar()
 plt.xlabel(r'$\log M$')
 plt.ylabel(r'$\log \dot{m}$')
-plt.xlim([7,9])
+plt.text(8,0.15, r'$\log L_{\rm AGN}\ \rm [erg\ s^{-1}]$')
+plt.xlim([6,9])
 #%%
 if True:
     rs= np.logspace(6,1,1000)
