@@ -530,7 +530,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.xticks([0,1,2,3,4,5,6])
         plt.yticks([-3, -2,-1, 0,1, 2])
         plt.ylim([-3.5,2.2])
-        if col == 'red':
+        if mm==1:
             plt.legend()
             plt.axhline(0, color='grey')
 
@@ -538,14 +538,14 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.plot(np.log10(rgs), np.log10(lambdas) - np.log10(Hs), linewidth=3, color=col, label=r'$\log \lambda/H$'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(rgs), np.log10(np.fabs(x_cs)) - np.log10(lambdas), linewidth=3, color=col, linestyle='dashed', label=r'$\log x_c/\lambda$'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(rgs), np.log10(r_Hills) - np.log10(Hs), linewidth=3, color=col, linestyle='dotted', label=r'$\log r_H/H$'); #plt.xscale('log'); plt.yscale('log')
-        if col == 'red':
+        if mm == 1:
             plt.legend()
             plt.axhline(0, color='grey')
  #       plt.ylabel(r'$\log \lambda/h$')
         plt.xlabel(r'$\log r\ \rm{[r_g]}$')
         plt.xticks([0,1,2,3,4,5,6])
         plt.yticks([-5,-4,-3,-2,-1, 0,1, 2,3,])
-        plt.ylim([-5.5, 3.5]) #
+        plt.ylim([-3.5, 2.2]) #
      
     if fig_3_flag:
 
@@ -562,7 +562,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.xticks([0,1,2,3,4,5,6])
         plt.ylabel(r'$\log \Gamma / \Gamma_0$')
         plt.yticks([-4,-3,-2,-1,0,1])
-        plt.ylim([-4.3,1.95])
+        plt.ylim([-3.2,1.95])
         plt.xlim([0.5,6.3])
         R12 = 449.842 * alpha**(2/21) * mm**(2/21) * m_dot**(16/21)
         R23 = 987.891 * m_dot**(2/3)
@@ -573,7 +573,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         R3Q = 580.65 * alpha**(28/45) * mm**(-52/45) * m_dot**(-22/45)
 #       R4Q = 2550.56 * alpha**(-0.467) * mm**(-0.033) * m_dot**(0.63333)
         R4Q = 1737.68 * alpha**(-0.467) * mm**(-0.033) * m_dot**(0.63333)
-        plt.axvline(np.log10(6*R23), color=col)
+      #  plt.axvline(np.log10(6*R23), color=col)
 #
     #    if col=='orange':
      #       plt.legend()
@@ -583,6 +583,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
             index=zoness.index(2)
         else:
             index=zoness.index(5)
+     #       index=0
         plt.plot(np.log10(taus[index:]), np.log10(G_tot[index:]), linewidth=3, color=col, label='total', alpha=1); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(taus[index:]), np.log10(G_tot_minus[index:]), linewidth=3, color=col, linestyle='dashed', alpha=1); #plt.xscale('log'); plt.yscale('log')
         #    plt.ylabel(r'$\log \Gamma / \Gamma_0$')
@@ -590,11 +591,11 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.xticks([-1, 0,1,2,3,4,5,6])
         #    plt.ylabel(r'$\log \Gamma / \Gamma_0$')
         plt.yticks([-4,-3,-2,-1,0,1])
-        plt.ylim([-3.2,1.95])
-        plt.xlim([1,5.6])
-        print (0.065*3e10/1e7/alpha**1.5)
-        plt.axvline(np.log10(0.5*0.065*3e10/0.64e7/alpha**1.5), color=col)
-        plt.axvline(np.log10(0.4*0.065*3e10/0.4e7/alpha**1.5), color=col)
+        plt.ylim([-3.2,0.95])
+        plt.xlim([3.9,5.6])
+        print (index)
+    #    plt.axvline(np.log10(0.5*0.065*3e10/0.64e7/alpha**1.5), color=col)
+     #   plt.axvline(np.log10(0.4*0.065*3e10/0.4e7/alpha**1.5), color=col)
 
     if fig_4_flag:
         Gamma_I_minus = [-x for x in Gamma_I]
@@ -619,7 +620,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.ylim([-4.5,0.4])
         plt.xlim([0.5,6.3])
         R12 = 449.842 * alpha**(2/21) * mm**(2/21) * m_dot**(16/21)
-        plt.axvline(np.log10(6*R12))
+      #  plt.axvline(np.log10(6*R12))
 # 
   #      plt.legend()
   #      plt.text(0.6,-0.3, 'log M=' + str(int(np.log10(1e8*mm))), color='black', size=26)
@@ -629,7 +630,6 @@ def plot_disc_solution(mm,m_dot,alpha, col):
             index=zoness.index(2)
         else:
             index=zoness.index(5)
-
         plt.plot(np.log10(taus[index:]), np.log10(Gamma_I[index:]), linewidth=3, color='black', alpha=1, label='type I'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(taus[index:]), np.log10(Gamma_I_minus[index:]), linewidth=3, color='black', alpha=1, linestyle='dashed'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(taus[index:]), np.log10(Gamma_thermal[index:]), linewidth=3, color='purple', alpha=1, label='thermal'); #plt.xscale('log'); plt.yscale('log')
@@ -637,7 +637,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.plot(np.log10(taus[index:]), np.log10(Gamma_tot[index:]), linewidth=3, color='blue', label='total', alpha=1); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(taus[index:]), np.log10(Gamma_tot_minus[index:]), linewidth=3, color='blue', alpha=1, linestyle='dashed'); #plt.xscale('log'); plt.yscale('log')
         plt.xticks([-1, 0,1,2,3,4,5,6])
-     #   plt.ylabel(r'$\log \Gamma / \Gamma_0$')
+        plt.xlabel(r'$\log \tau$')
         plt.yticks([-4,-3,-2,-1,0,1])
         plt.ylim([-4.5,0.4])
         plt.xlim([1,5.6])
@@ -645,13 +645,13 @@ def plot_disc_solution(mm,m_dot,alpha, col):
    
      #%% 
 shmuel_flag = True
-fig_1_flag = 1
+fig_1_flag = 0
 fig_2_flag=0
-fig_3_flag=0
+fig_3_flag=1
 fig_4_flag=0
 m_d=0.1; alp=0.01
 args1 = [10,m_d,alp, 'orange']
-args2 = [1, m_d,alp, 'red']
+args2 = [0.83, m_d,alp, 'red']
 args3 = [1e-1,m_d,alp, 'blue']
 args4 = [1e-2, m_d,alp, 'green']
 args5 = [1e-3, m_d,alp, 'slategrey']
@@ -661,10 +661,10 @@ args6 = [1e-4, m_d,alp, 'purple']
 #args4 = [1,0.1,1, 'blue']#[0.01,m_d,alp, 'green']
 #from IPython import get_ipython
 
-plot_disc_solution(*args1)
+#plot_disc_solution(*args1)
 plot_disc_solution(*args2)
 plot_disc_solution(*args3)
-plot_disc_solution(*args4)
+#plot_disc_solution(*args4)
 #plot_disc_solution(*args5)
 #plot_disc_solution(*args6)
 
@@ -820,31 +820,42 @@ plt.xlim([-3,-1.1])
 
 #%%
 if True:
-    N=100
+    N=20
     rs= np.logspace(6,0.1,2000)
     rgs = [6*r for r in rs]
     r1 = []
     r2 = []
-    alpha = 0.1
-    ms = np.logspace(-2,1,N)
-    m_dot = np.logspace(0,-3,N)
+    alpha = 0.01
+    ms = np.linspace(0.1,1,N)
+    m_dot = np.linspace(0.05,0.5,N)
     how_many_traps = np.zeros([N,N])   
+    log_AGN_lum = [[46.16 + np.log10(m) + np.log10(md) for m in ms] for md in m_dot]    
+    ll = np.asarray(log_AGN_lum)
+
     for i in range(0,N):
         for j in range(0,N):
-            if how_many_traps[i][j-1]==2:
-                how_many_traps[i][j:]=2
-                i=i+1
-                j=0
+            if ll[i][j]<=44.7:
+                how_many_traps[i][j]=2
+                break; 
+            elif ll[i][j]>=45.3:
+#                how_many_traps[i][j]=2
                 break;
+            else:
+                rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,ms[i],m_dot[j],alpha)[k] for x in rs] for k in range(0,13)]
+                chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(ms[i],m_dot[j],alpha)[k] for k in range (0,7)]
+                signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
+                for k in range(0, len(signs)-1):
+                    if signs[k+1] != signs[k]:
+                        how_many_traps[i,j]+=1
+                    
+     #       if how_many_traps[i][j-1]==0:
+      #          how_many_traps[i][j:]=0
+       #         i=i+1
+        #        j=0
+         #       break;
 
-            rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,ms[i],m_dot[j],alpha)[k] for x in rs] for k in range(0,13)]
-            chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(ms[i],m_dot[j],alpha)[k] for k in range (0,7)]
-            signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
-            for k in range(0, len(signs)-1):
-                if signs[k+1] != signs[k]:
-                    how_many_traps[i,j]+=1
 
-            print('m= ', ms[i], '; md= ', m_dot[j], '; #traps= ', how_many_traps[i][j])
+            print('m= ', ms[i], '; md= ', m_dot[j], '; #traps= ', how_many_traps[i][j], 'll= ', ll[i][j])
    #         print(i,j, how_many_traps[i][j])
 
  
@@ -853,9 +864,13 @@ m_sol_minus1=[]
 m_sol_minus2=[]
 dm1 = []
 dm2 = []
+#N=20
+ms = np.logspace(-1,0,N)
+m_dot = np.logspace(0,-2,N)
+#m_dot2 = np.logspace(0,-3,N)
 
 d_h = np.gradient(how_many_traps)[0]
-d_h2 = np.gradient(how_many2)[0]
+#d_h2 = np.gradient(how_many2)[0]
 for i in range(0,N):
     for j in range(N):                 
         if d_h[i][j] !=0:
@@ -863,30 +878,31 @@ for i in range(0,N):
             dm1.append(m_dot[j])
             break;
             
-for i in range(0,N):
-    for j in range(N):                             
-        if d_h2[i][j] !=0:
-            m_sol_minus2.append(ms[i])
-            dm2.append(m_dot[j])
-            break;
+#for i in range(0,N):
+ #   for j in range(N):                             
+  #      if d_h2[i][j] !=0:
+   #         m_sol_minus2.append(ms[i])
+    #        dm2.append(m_dot[j])
+     #       break;
 
 plt.plot(np.log10(m_sol_minus1)+8, np.log10(dm1), color='red', linewidth=3, label=r'$\alpha=0.1$')    
-plt.plot(np.log10(m_sol_minus2)+8, np.log10(dm2),color='green', linewidth=3, label=r'$\alpha=0.01$')    
-plt.contour(np.log10(ms)+8, np.log10(m_dot2), np.transpose(ll),levels=[ 44, 44.25, 44.5, 44.75, 45], alpha=0.3, linewidths=3, linestyles='dashed', cmap='flag')                
+#plt.plot(np.log10(m_sol_minus2)+8, np.log10(dm2),color='green', linewidth=3, label=r'$\alpha=0.01$')    
+plt.contour(np.log10(ms)+8, np.log10(m_dot), np.transpose(ll),levels=[ 44, 44.25, 44.5, 44.75, 45], alpha=0.3, linewidths=3, linestyles='dashed', cmap='flag')                
 plt.subplots_adjust(left=0.2, bottom=0.16, right=0.97, top=0.96)
 plt.xlabel(r'$\log M$')
 plt.ylabel(r'$\log \dot{m}$')
 plt.text(6.9, -1.5, r'$L_{\rm AGN}=10^{44}\ \rm erg\ s^{-1}$', rotation=-38, color='lightcoral', alpha=0.7, fontsize=24)
 plt.text(7.9, -1.1, r'$L_{\rm AGN}=10^{45}\ \rm erg\ s^{-1}$', rotation=-38, color='gray', alpha=0.7, fontsize=24)
-plt.text(7.9, -0.5, 'No traps', rotation=0, color='black', alpha=0.7, fontsize=20)
+plt.text(8.4, -0.2, 'No traps', rotation=0, color='black', alpha=0.7, fontsize=24)
+plt.text(6.98, -1.4, 'Outer\n trap', rotation=0, color='black', alpha=0.7, fontsize=24)
 
-plt.xlim([6.9,9.1])
-plt.ylim([-2.1,0.1])
+#plt.xlim([6.9,9.1])
+#plt.ylim([-2.1,0.1])
 plt.legend(fontsize=20, loc=3)
                     #%%
 m_dot2 = np.logspace(-3,0,N)
 
-log_AGN_lum = [[45.16 + np.log10(m) + np.log10(md) for m in ms] for md in m_dot2]    
+log_AGN_lum = [[46.16 + np.log10(m) + np.log10(md) for m in ms] for md in m_dot2]    
 ll = np.asarray(log_AGN_lum)
 #%%                
 #plt.imshow(ms, m_dot, how_many_traps)
@@ -1000,7 +1016,49 @@ if True:
      #           plt.ylabel(r'$\log r \ \rm [r_g] $')
       #          plt.xlim([3.8,8.2])
        #         plt.subplots_adjust(left=0.12, bottom=0.16, right=0.99, top=0.98)
+       #%%
+if True:       
+      plt.figure(figsize=(6,5))
+      plt.plot(np.log10(mmm[:len(r2)]) + 8, np.log10(r1[:len(r2)]), color='red', linewidth=3)
+      plt.plot(np.log10(mmm[:len(r2)]) + 8, np.log10(r2), color='blue', linewidth=3)
+#      plt.plot(np.log10(mms) + 8, np.log10(r_t1), color='purple', linewidth=3)
+#%%
+      plt.fill_between(np.log10(mmm[:len(r2)])+8, np.log10(r1[:len(r2)]), np.log10(r2), color='grey', alpha=0.4)
+      plt.xlabel(r'$\log\ M $')    
+      plt.ylabel(r'$\log r \ \rm [r_g] $')
+      plt.subplots_adjust(left=0.12, bottom=0.16, right=0.99, top=0.98)
 
+      import scipy.stats
+      x = [np.log10(mmm[i])+8 for i in range(0,len(r2))]
+      y1 = [np.log10(r1[i]) for i in range(0,len(r2))]
+      y2 = np.log10(r2)
+      plt.ylim([2,6.9])
+      plt.xlim([4,7.9])
+      #ax.xaxis.set_minor_locator(AutoMinorLocator(10))
+      #ax.yaxis.set_minor_locator(AutoMinorLocator(10))
+
+      slope, intercept, rr, p, se = scipy.stats.linregress(x, y1)
+      print (slope, intercept, rr, p, se*len(r2)**0.0, slope - 1.96*se, slope+1.96*se)
+
+      slope2, intercept2, rr2, p2, se2 = scipy.stats.linregress(x, y2)
+      print (slope2, intercept2, rr2, p2, se2*len(r2)**0.0,  slope2 - 1.96*se2, slope2+1.96*se2)
+      #plt.plot(x, [intercept2 + slope2*xx for xx in x])
+
+      x3 = [np.log10(mmm[i])+8 for i in range(0,110)]
+      y3 = [np.log10(r2[i]) for i in range(0,110)]
+      x4 = [np.log10(mmm[i])+8 for i in range(138,len(r2))]
+      y4 = [np.log10(r2[i]) for i in range(138,len(r2))]
+      slope3, intercept3, rr3, p3, se3 = scipy.stats.linregress(x3, y3)
+      print (slope3, intercept3, rr3, p3, se3*len(x3)**0.0,  slope3 - 1.96*se3, slope3+1.96*se3)
+      slope4, intercept4, rr4, p4, se4 = scipy.stats.linregress(x4, y4)
+      print (slope4, intercept4, rr4, p4, se4*len(x4)**0.0,  slope4 - 1.96*se4, slope4+1.96*se4)
+      plt.plot(x, [intercept + slope*xx for xx in x], color='black', linestyle='dashed', linewidth=3)
+      plt.plot(x3, [intercept3 + slope3*xx for xx in x3], color='black', linestyle='dashed', linewidth=3)
+      plt.plot(x4, [intercept4 + slope4*xx for xx in x4], color='black', linestyle='dashed', linewidth=3)
+      #plt.text(5,4, 'r='+str("%.3f" % slope))
+#%%
+m_to_show = []
+m_to_show.append()
 #plt.imshow((type_i_torque_matrix), cmap='hot', interpolation='nearest')
 #%%
 
@@ -1047,46 +1105,6 @@ plt.text(8, 6, 'P10', color='white', size=26)
 plt.text(1.3, 3, r'$\log\ |\Gamma_{\rm tot} / \Gamma_0|$', color='black', size=26, rotation=90)
 plt.text(10.8, 3, r'$\log\ |-\Gamma_{\rm tot} / \Gamma_0|$', color='black', size=26, rotation=90)
 
- #%%
-from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
-plt.figure(figsize=(6,5))
-plt.plot(np.log10(mmm[:len(r2)]) + 8, np.log10(r1[:len(r2)]), color='red', linewidth=3)
-plt.plot(np.log10(mmm[:len(r2)]) + 8, np.log10(r2), color='blue', linewidth=3)
-plt.plot(np.log10(mms) + 8, np.log10(r_t1), color='purple', linewidth=3)
-
-plt.fill_between(np.log10(mmm[:len(r2)])+8, np.log10(r1[:len(r2)]), np.log10(r2), color='grey', alpha=0.4)
-plt.xlabel(r'$\log\ M $')    
-plt.ylabel(r'$\log r \ \rm [r_g] $')
-plt.subplots_adjust(left=0.12, bottom=0.16, right=0.99, top=0.98)
-
-import scipy.stats
-x = [np.log10(mmm[i])+8 for i in range(0,len(r2))]
-y1 = [np.log10(r1[i]) for i in range(0,len(r2))]
-y2 = np.log10(r2)
-plt.ylim([2,6.9])
-plt.xlim([4,7.9])
-#ax.xaxis.set_minor_locator(AutoMinorLocator(10))
-#ax.yaxis.set_minor_locator(AutoMinorLocator(10))
-
-slope, intercept, rr, p, se = scipy.stats.linregress(x, y1)
-print (slope, intercept, rr, p, se*len(r2)**0.0, slope - 1.96*se, slope+1.96*se)
-
-slope2, intercept2, rr2, p2, se2 = scipy.stats.linregress(x, y2)
-print (slope2, intercept2, rr2, p2, se2*len(r2)**0.0,  slope2 - 1.96*se2, slope2+1.96*se2)
-#plt.plot(x, [intercept2 + slope2*xx for xx in x])
-
-x3 = [np.log10(mmm[i])+8 for i in range(0,110)]
-y3 = [np.log10(r2[i]) for i in range(0,110)]
-x4 = [np.log10(mmm[i])+8 for i in range(138,len(r2))]
-y4 = [np.log10(r2[i]) for i in range(138,len(r2))]
-slope3, intercept3, rr3, p3, se3 = scipy.stats.linregress(x3, y3)
-print (slope3, intercept3, rr3, p3, se3*len(x3)**0.0,  slope3 - 1.96*se3, slope3+1.96*se3)
-slope4, intercept4, rr4, p4, se4 = scipy.stats.linregress(x4, y4)
-print (slope4, intercept4, rr4, p4, se4*len(x4)**0.0,  slope4 - 1.96*se4, slope4+1.96*se4)
-plt.plot(x, [intercept + slope*xx for xx in x], color='black', linestyle='dashed', linewidth=3)
-plt.plot(x3, [intercept3 + slope3*xx for xx in x3], color='black', linestyle='dashed', linewidth=3)
-plt.plot(x4, [intercept4 + slope4*xx for xx in x4], color='black', linestyle='dashed', linewidth=3)
-#plt.text(5,4, 'r='+str("%.3f" % slope))
 #%%
 def rs(m, m_dot, alpha):
     R12 = 449.842 * alpha**(2/21) * m**(2/21) * m_dot**(16/21)
