@@ -245,19 +245,25 @@ def get_disc_params(r,m, m_dot, alpha):
         #optically thin limit
         if 0.1*Z*Sigma/2 <= 1:
             T_grad=0
+            
+    M = m * 1e8 * msun
+    R = r * (G * M / c**2)    
+    t_0 = (G*M/R**3)**-0.5 * (H/R)**3  * M**2 / Sigma/R**2 / 10 / msun/2
+  #  if r<1e4:
+   #     print (r, H/R, M/Sigma/R**2, M/10/msun, t_0/3.15e7/1e6)
    
-    return rho, H, cs, P, Sigma, T, kappa, zone, kappa_m17, P_grad, Sigma_grad, T_grad, gamma
+    return rho, H, cs, P, Sigma, T, kappa, zone, kappa_m17, P_grad, Sigma_grad, T_grad, gamma, t_0/3.15e7/1e6
 
 #which_prefactor = 'GS21'
 which_prefactor='GS21'
-
+#%%
 def get_disc_derived_quantities(mm,m_dot,alpha):
     gamma=5/3
     stellar_bh_m=10
     rg = G*msun*1e8*mm/c/c
     R12 = 449.842 * alpha**(2/21) * mm**(2/21) * m_dot**(16/21)
     
-    rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,mm,m_dot,alpha)[i] for x in rs] for i in range(0,13)]
+    rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mm,m_dot,alpha)[i] for x in rs] for i in range(0,14)]
     taus = [x*y/2 for (x,y) in zip(kappas, Sigmas)]
     taus_17 = [x*y/2 for (x,y) in zip(kappa_m17s, Sigmas)]
 
@@ -297,15 +303,15 @@ def get_disc_derived_quantities(mm,m_dot,alpha):
  #   print(l_ratio[10])        
     return chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratio, Gamma_thermal, Gamma_0
 GW_flag =True
-vv=get_disc_derived_quantities(1e-2,0.1, 0.01)
-
+vv=get_disc_derived_quantities(1e0,0.1, 0.01)
+vvp = get_disc_params(rs[-1], 1, 0.1, 0.01)
 #%%
 #rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness = [[get_disc_params(x,m,m_dot,alpha)[i] for x in rs] for i in range(0,8)]
 # Hs = [get_disc_params(x,m,m_dot,alpha, args)[1] for x in rs]
 #%%
 def plot_disc_solution(mm,m_dot,alpha, col):
     r_max=6.9
-    rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,mm,m_dot,alpha)[i] for x in rs] for i in range(0,13)]
+    rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mm,m_dot,alpha)[i] for x in rs] for i in range(0,14)]
     chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal, Gamma_0 = [get_disc_derived_quantities(mm,m_dot,alpha)[i] for i in range (0,8)]
 
     taus = [x*y/2 for (x,y) in zip(kappas, Sigmas)]
@@ -313,6 +319,12 @@ def plot_disc_solution(mm,m_dot,alpha, col):
   
     rgs = [6 * r for r in rs]
     which_prefactor = 'GS21'
+    
+    plt.figure(12)
+    plt.plot(np.log10(rgs), np.log10(t_0), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
+    plt.xlabel(r'$\log R / r_g $')
+    plt.ylabel(r'$t_0\ \rm [Myr]$')
+
 #    which_prefactor = 'JM17_lin_tot' 
     #which_prefactor = 'JM17_lin_iso'
     if fig_1_flag:
@@ -369,7 +381,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.plot(np.log10(rgs), np.log10(taus), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
 #        plt.plot(np.log10(rgs), np.log10(taus_17), linewidth=3, color=col, linestyle='dashed'); #plt.xscale('log'); plt.yscale('log')
         plt.axhline(np.log10(1), color='gray')
-        plt.text(1.2, 0.6+1.6*np.log10(mm), 'log M= ' + str(int(np.log10(1e8*mm))), color=col, size=22)
+        plt.text(1.2, 1.6+1.6*np.log10(mm), 'log M= ' + str(int(np.log10(1e8*mm))), color=col, size=22)
 
         plt.ylabel(r'$\log \tau$')
         plt.xticks([1,2,3,4,5,6])
@@ -482,7 +494,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
 
         plt.plot(np.log10(rgs), np.log10(css), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
         plt.xticks([1,2,3,4,5,6])
-        plt.xlabel(r'$\log r\ \rm{[r_g]}$')
+        plt.xlabel(r'$\log R / r_g $')
         plt.ylim([5.5,8.8])
         plt.yticks([6,7,8])   
         plt.ylabel(r'$\log c_s\ \rm[cm \ s^{-1}] $')
@@ -498,7 +510,9 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.ylabel('zone')
         plt.xticks([1,2,3,4,5,6])
         plt.yticks([1,2,3,4,5])
-        plt.xlabel(r'$\log r\ \rm{[r_g]}$')
+        plt.xlabel(r'$\log R / r_g $')
+        
+
         if mm==1:
             plt.text(3.4, 2, r'$\dot{m} = $' + str(m_d), color='black', size=26)
         plt.xlim([0.5,r_max])
@@ -518,7 +532,6 @@ def plot_disc_solution(mm,m_dot,alpha, col):
    #     plt.axvline(np.log10(R3Q), linestyle='dashed', color=col)
      #   plt.axvline(np.log10(R4Q), linestyle='dotted', color=col)
 
-
     if fig_2_flag:
         plt.figure(2, figsize=(10,5))
         plt.subplots_adjust(left=0.05, bottom=0.16, right=0.99, top=0.99, wspace=0.15)
@@ -526,11 +539,11 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.plot(np.log10(rgs), [np.log10(chi/h/cs) for (chi,h,cs) in zip(chis, Hs, css)], linewidth=3, color=col, label=r'$\log\ \chi/ H^2 \Omega$'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(rgs), np.log10(l_ratios), linewidth=3, color=col, linestyle='dashed', label=r'$\log \ L/L_c$'); #plt.xscale('log'); plt.yscale('log')
         #plt.ylabel(r'$\log \chi/ h^2 \Omega$')
-        plt.xlabel(r'$\log r\ \rm{[r_g]}$')
+        plt.xlabel(r'$\log R / r_g $')
         plt.xticks([0,1,2,3,4,5,6])
         plt.yticks([-3, -2,-1, 0,1, 2])
         plt.ylim([-3.5,2.2])
-        if mm==1:
+        if mm==1 or mm==1e-3:
             plt.legend()
             plt.axhline(0, color='grey')
 
@@ -538,11 +551,11 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.plot(np.log10(rgs), np.log10(lambdas) - np.log10(Hs), linewidth=3, color=col, label=r'$\log \lambda/H$'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(rgs), np.log10(np.fabs(x_cs)) - np.log10(lambdas), linewidth=3, color=col, linestyle='dashed', label=r'$\log x_c/\lambda$'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(rgs), np.log10(r_Hills) - np.log10(Hs), linewidth=3, color=col, linestyle='dotted', label=r'$\log r_H/H$'); #plt.xscale('log'); plt.yscale('log')
-        if mm == 1:
+        if mm == 1 or mm==1e-3:
             plt.legend()
             plt.axhline(0, color='grey')
  #       plt.ylabel(r'$\log \lambda/h$')
-        plt.xlabel(r'$\log r\ \rm{[r_g]}$')
+        plt.xlabel(r'$\log R / r_g $')
         plt.xticks([0,1,2,3,4,5,6])
         plt.yticks([-5,-4,-3,-2,-1, 0,1, 2,3,])
         plt.ylim([-3.5, 2.2]) #
@@ -647,24 +660,24 @@ def plot_disc_solution(mm,m_dot,alpha, col):
 shmuel_flag = True
 fig_1_flag = 0
 fig_2_flag=0
-fig_3_flag=1
+fig_3_flag=0
 fig_4_flag=0
 m_d=0.1; alp=0.01
 args1 = [10,m_d,alp, 'orange']
-args2 = [0.9, m_d,alp, 'red']
-args3 = [0.8,m_d,alp, 'blue']
-args4 = [1e-2, m_d,alp, 'green']
-args5 = [1e-3, m_d,alp, 'slategrey']
-args6 = [1e-4, m_d,alp, 'purple']
+args2 = [1, m_d,alp, 'red']
+args3 = [0.1,m_d,alp, 'blue']
+args4 = [0.01, m_d,alp, 'green']
+args5 = [1e-3, m_d,alp, 'red']
+args6 = [1e-4, m_d,alp, 'blue']
 
 #args3 = [1,0.1,0.1, 'green']#[0.1,m_d,alp, 'blue']
 #args4 = [1,0.1,1, 'blue']#[0.01,m_d,alp, 'green']
 #from IPython import get_ipython
 
-#plot_disc_solution(*args1)
+plot_disc_solution(*args1)
 plot_disc_solution(*args2)
 plot_disc_solution(*args3)
-#plot_disc_solution(*args4)
+plot_disc_solution(*args4)
 #plot_disc_solution(*args5)
 #plot_disc_solution(*args6)
 
@@ -676,7 +689,7 @@ which_prefactor='GS21'
 
 if True:
     N_r=1000
-    N_mm=20
+    N_mm=300
     rs= np.logspace(0.1,6,N_r)
     rgs = [6*r for r in rs]
     r1 = []
@@ -690,6 +703,7 @@ if True:
 
     type_i_torque_matrix = np.zeros(shape=(N_mm,N_r))
     tot_torque_matrix = np.zeros(shape=(N_mm,N_r))
+    t_0 = np.zeros(shape=(N_mm,N_r))
     migration_timescale = np.zeros(shape=(N_mm, N_r))
 
     mmm = []
@@ -698,7 +712,7 @@ if True:
         #    mm = 1e-2; 
         alpha =0.01; 
         m_dot=0.1;
-        rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,mms[i],m_dot,alpha)[j] for x in rs] for j in range(0,13)]
+        rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mms[i],m_dot,alpha)[j] for x in rs] for j in range(0,14)]
         chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal, Gamma_0 = [get_disc_derived_quantities(mms[i],m_dot,alpha)[j] for j in range (0,8)]
         signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
         signs_type1 = [np.sign(x) for x in Gamma_I]
@@ -710,8 +724,9 @@ if True:
 #        Gamma_0 = [q**2 * ss * (x* rg)**4 * G * mm*1e8 *h**3 for (q, ss, x, rg, mm, h) in zip(qi, Sigmas, rs rgi, mms, Hs)]
 #        Gamma_0 = [q**2 * ss* (x* rg)**4 *G * mm*1e8 *h**3  for (q,ss, x, rg, mm, h) in zip(qi,Sigmas,rs,rgi, mms, Hs)]
 
-        migration_timescale[i][:]  = np.divide(ang_mom[i], Gamma_0)
-   #     migration_timescale[i][:]  = np.divide(migration_timescale[i][:]/Gamma_0[i])
+        migration_timescale[i][:]  = t_0
+
+    #     migration_timescale[i][:]  = np.divide(migration_timescale[i][:]/Gamma_0[i])
         for j in range(0, len(signs)-1):  
          #if j==2:
    #             print (Gamma_I[j], type_i_torque_matrix[i][j], rs[j], Hs[j]/rs[j], Hs[j]/rs[j]/Rgs[i])
@@ -726,20 +741,34 @@ if True:
                     r2.append(rgs[j])
             if signs_type1[j+1] != signs_type1[j]:
                 r_t1.append(rgs[j])
-    migration_timescale = np.divide(migration_timescale, tot_torque_matrix)/ 86400 / 365.25 / 1e6 #convert to Myr
+  #  migration_timescale = np.divide(migration_timescale, tot_torque_matrix)/ 86400 / 365.25 / 1e6 #convert to Myr
 
         #         print (mms[i], np.log10(rgs[j]))
     #  d          plt.xlabel(r'$\log\ M $')    
      #           plt.ylabel(r'$\log r \ \rm [r_g] $')
       #          plt.xlim([3.8,8.2])
        #         plt.subplots_adjust(left=0.12, bottom=0.16, right=0.99, top=0.98)
+
+
 #%%
-CS=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(migration_timescale)),levels =np.linspace(-6, 3,801), cmap='bone')
-CS = plt.colorbar()
+actual_timescale = np.divide(migration_timescale, tot_torque_matrix)
+plt.figure(4, figsize=(10,6))
+CS=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),levels =np.linspace(-5, 1,801), cmap='Greys')
+CS = plt.colorbar(location='left')
 
-CS2=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-migration_timescale)), levels =np.linspace(-6, 3,801), cmap='winter')
+CS2=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)), levels =np.linspace(-6, 3,801), cmap='winter')
 
-CS2 = plt.colorbar(location='left')
+CS2 = plt.colorbar()
+CS3=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)),  levels =[-4,-2,0,2],cmap='plasma')
+CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),  levels =[-4,-2,0,2],cmap='plasma')
+plt.clabel(CS3, inline=True, fontsize=16)
+
+plt.subplots_adjust(left=0.03, bottom=0.15, right=0.96, top=0.9)      
+plt.text(2, 7.1, r'$\log\ |-t_{\rm mig}\  /\ \rm Myr|$', color='gray', size=26, rotation=0)
+plt.text(8.2, 7.1, r'$\log\ t_{\rm mig} \ /\ \rm Myr$', color='blue', size=26, rotation=0)
+plt.ylabel(r'$\log R / r_g $')
+plt.xlabel(r'$\log\ M / M_{\odot}$')    
+
 #%%
 if True:       
       plt.figure(figsize=(6,5))
@@ -846,7 +875,7 @@ if True:
         mm = 1e-1; 
     #    alpha =0.01; 
         m_dot=0.1;
-        rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,mm,m_dot,alpha)[i] for x in rs] for i in range(0,13)]
+        rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mm,m_dot,alpha)[i] for x in rs] for i in range(0,14)]
         chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(mm,m_dot,alpha)[i] for i in range (0,7)]
         signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
         for i in range(0, len(signs)-1):
@@ -908,7 +937,7 @@ if True:
       plt.plot(x4, [intercept4 + slope4*xx for xx in x4], color='black', linestyle='dashed', linewidth=3)
       #plt.text(5,4, 'r='+str("%.3f" % slope))
 #%%
-rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,1,0.1,0.01)[i] for x in rs] for i in range(0,13)]
+rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,1,0.1,0.01)[i] for x in rs] for i in range(0,14)]
 #%%
 #%%
 if True:
@@ -1033,7 +1062,7 @@ if True:
     for m_dot in dmms: #def find_when_torqrues_equal(mm, m_dot, alpha):
         mm = 1e0; 
         alpha =0.01; 
-        rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,mm,m_dot,alpha)[i] for x in rs] for i in range(0,13)]
+        rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mm,m_dot,alpha)[i] for x in rs] for i in range(0,14)]
         chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(mm,m_dot,alpha)[i] for i in range (0,7)]
         signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
         for i in range(0, len(signs)-1):
@@ -1096,7 +1125,7 @@ if True:
 #                how_many_traps[i][j]=2
                 break;
             else:
-                rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,ms[i],m_dot[j],alpha)[k] for x in rs] for k in range(0,13)]
+                rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,ms[i],m_dot[j],alpha)[k] for x in rs] for k in range(0,14)]
                 chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(ms[i],m_dot[j],alpha)[k] for k in range (0,7)]
                 signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
                 for k in range(0, len(signs)-1):
@@ -1197,7 +1226,7 @@ if True:
         #    mm = 1e-2; 
         alpha =0.01; 
         m_dot=1;
-        rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas = [[get_disc_params(x,mms[i],m_dot,alpha)[j] for x in rs] for j in range(0,13)]
+        rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mms[i],m_dot,alpha)[j] for x in rs] for j in range(0,14)]
         chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(mms[i],m_dot,alpha)[j] for j in range (0,7)]
         signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
         signs_type1 = [np.sign(x) for x in Gamma_I]
