@@ -247,7 +247,7 @@ def get_disc_params(r,m, m_dot, alpha):
             T_grad=0
             
     M = m * 1e8 * msun
-    R = r * (G * M / c**2)    
+    R = 6* r * (G * M / c**2)    
     t_0 = (G*M/R**3)**-0.5 * (H/R)**3  * M**2 / Sigma/R**2 / 10 / msun/2
   #  if r<1e4:
    #     print (r, H/R, M/Sigma/R**2, M/10/msun, t_0/3.15e7/1e6)
@@ -258,6 +258,7 @@ def get_disc_params(r,m, m_dot, alpha):
 which_prefactor='GS21'
 #%%
 def get_disc_derived_quantities(mm,m_dot,alpha):
+    
     gamma=5/3
     stellar_bh_m=10
     rg = G*msun*1e8*mm/c/c
@@ -275,7 +276,7 @@ def get_disc_derived_quantities(mm,m_dot,alpha):
       
     Gamma_0 = [sigma*(r*rg/h)**5 * (r*rg)**2 * cs**2 * (stellar_bh_m/1e8/mm)**2 for (sigma,h,cs, r) in zip(Sigmas,Hs,css, rs)]    
     if which_prefactor=='GS21':
-        Gamma_I = [(-0.8 - t_g - 0.9*sigma_g) * h/r/rg for (t_g, sigma_g, r,h) in zip(T_grad, Sigma_grad, rs, Hs)]
+        Gamma_I = [(-0.85 - t_g - 0.9*sigma_g) * h/r/rg for (t_g, sigma_g, r,h) in zip(T_grad, Sigma_grad, rs, Hs)]
     if which_prefactor=='JM_lin_iso':
         Gamma_I = [-(1.36 + 0.54*sigma_g + 0.5*t_g) * h/r/rg for (t_g, sigma_g, r,h) in zip(T_grad, Sigma_grad, rs, Hs)]
     if which_prefactor=='JM_lin_tot':
@@ -319,9 +320,9 @@ def plot_disc_solution(mm,m_dot,alpha, col):
   
     rgs = [6 * r for r in rs]
     which_prefactor = 'GS21'
-    
+    t_tot = [x/np.fabs(y+z) for (x,y,z) in zip(t_0, Gamma_I, Gamma_thermal)]
     plt.figure(12)
-    plt.plot(np.log10(rgs), np.log10(t_0), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
+    plt.plot(np.log10(rgs), np.log10(t_tot), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
     plt.xlabel(r'$\log R / r_g $')
     plt.ylabel(r'$t_0\ \rm [Myr]$')
 
@@ -658,7 +659,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
    
      #%% 
 shmuel_flag = True
-fig_1_flag = 0
+fig_1_flag = 1
 fig_2_flag=0
 fig_3_flag=0
 fig_4_flag=0
@@ -682,66 +683,126 @@ plot_disc_solution(*args4)
 #plot_disc_solution(*args6)
 
 #%%
-# generate fig 6
-which_prefactor='GS21'
-#which_prefactor = 'JM_lin_iso'
-#which_prefactor = 'JM_lin_tot'
+# fig 6
+def generate_fig_6(N_mm, m_min, m_max):
+    if not has_data:
+        N_r=1000
+        rs= np.logspace(0.1,6,N_r)
+        rgs = [6*r for r in rs]
+        r1 = []
+        r2 = []
+        r_t1 = []
+        mms= np.logspace(m_min,m_max,N_mm)
+        stellar_bh_m=10
+        rgi = [G*msun*1e8*mm/c/c for mm in mms]
 
-if True:
-    N_r=1000
-    N_mm=300
-    rs= np.logspace(0.1,6,N_r)
-    rgs = [6*r for r in rs]
-    r1 = []
-    r2 = []
-    r_t1 = []
-    mms= np.logspace(-4,1,N_mm)
-    stellar_bh_m=10
-    rgi = [G*msun*1e8*mm/c/c for mm in mms]
-    qi = [stellar_bh_m/1e8/mm for mm in mms]
+        type_i_torque_matrix = np.zeros(shape=(N_mm,N_r))
+        tot_torque_matrix = np.zeros(shape=(N_mm,N_r))
+        t_0 = np.zeros(shape=(N_mm,N_r))
+        migration_timescale = np.zeros(shape=(N_mm, N_r))
 
-
-    type_i_torque_matrix = np.zeros(shape=(N_mm,N_r))
-    tot_torque_matrix = np.zeros(shape=(N_mm,N_r))
-    t_0 = np.zeros(shape=(N_mm,N_r))
-    migration_timescale = np.zeros(shape=(N_mm, N_r))
-
-    mmm = []
-    for i in range(0,N_mm): #def find_when_torqrues_equal(mm, m_dot, alpha):
-        Rgs = [G*msun*1e8*mm/c/c for mm in mms]
-        #    mm = 1e-2; 
-        alpha =0.01; 
-        m_dot=0.1;
-        rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mms[i],m_dot,alpha)[j] for x in rs] for j in range(0,14)]
-        chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal, Gamma_0 = [get_disc_derived_quantities(mms[i],m_dot,alpha)[j] for j in range (0,8)]
-        signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
-        signs_type1 = [np.sign(x) for x in Gamma_I]
+        mmm = []
+        for i in range(0,N_mm): #def find_when_torqrues_equal(mm, m_dot, alpha):
+            Rgs = [G*msun*1e8*mm/c/c for mm in mms]
+            #    mm = 1e-2; 
+            alpha =0.01; 
+            m_dot=0.1;
+            rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mms[i],m_dot,alpha)[j] for x in rs] for j in range(0,14)]
+            chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal, Gamma_0 = [get_disc_derived_quantities(mms[i],m_dot,alpha)[j] for j in range (0,8)]
+            signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
+            signs_type1 = [np.sign(x) for x in Gamma_I]
         
-        type_i_torque_matrix[i][:] = np.divide(Gamma_I, np.divide(Hs,rs))*Rgs[i]
-        tot_torque_matrix[i][:] = [x+y for (x,y) in zip(Gamma_I,Gamma_thermal)]
-        ang_mom = [- stellar_bh_m * msun * (G * mms[i] * 1e8 * msun * x * rg)**0.5 for (x,rg) in zip(rs,rgi)]
+            type_i_torque_matrix[i][:] = np.divide(Gamma_I, np.divide(Hs,rs))*Rgs[i]
+            tot_torque_matrix[i][:] = [x+y for (x,y) in zip(Gamma_I,Gamma_thermal)]
+            ang_mom = [- stellar_bh_m * msun * (G * mms[i] * 1e8 * msun * x * rg)**0.5 for (x,rg) in zip(rs,rgi)]
+   
+            migration_timescale[i][:]  = t_0
+            for j in range(0, len(signs)-1):  
+                if signs[j+1] != signs[j]:
+           #         plt.scatter(np.log10(mms[i]) + 8, np.log10(rgs[j]), color='red')
+                    print(i)
+                    if len(mmm)==0 or mmm[-1] != mms[i]:
+                        r1.append(rgs[j])
+                        mmm.append(mms[i])
+                    else:
+                        r2.append(rgs[j])
+                    if signs_type1[j+1] != signs_type1[j]:
+                        r_t1.append(rgs[j])
+                        
+    if panel_a_flag:
+        plt.figure(7, figsize=(6,5))
+        plt.plot(np.log10(mmm[:len(r2)-3]) + 8, np.log10(r1[:len(r2)-3]), color='red', linewidth=3)
+        plt.plot(np.log10(mmm[:len(r2)-3]) + 8, np.log10(r2[:-3]), color='blue', linewidth=3)
+ 
+        plt.fill_between(np.log10(mmm[:len(r2)-3])+8, np.log10(r1[:len(r2)-3]), np.log10(r2[:-3]), color='grey', alpha=0.4)
+        plt.xlabel(r'$\log\ M / M_{\odot}$')    
+        plt.ylabel(r'$\log R / r_g $')
+        plt.subplots_adjust(left=0.12, bottom=0.16, right=0.99, top=0.98)
         
-#        Gamma_0 = [q**2 * ss * (x* rg)**4 * G * mm*1e8 *h**3 for (q, ss, x, rg, mm, h) in zip(qi, Sigmas, rs rgi, mms, Hs)]
-#        Gamma_0 = [q**2 * ss* (x* rg)**4 *G * mm*1e8 *h**3  for (q,ss, x, rg, mm, h) in zip(qi,Sigmas,rs,rgi, mms, Hs)]
+        if do_stats:
+            import scipy.stats
+            x1 = [np.log10(mmm[i])+8 for i in range(120,len(r2)-3)]
+            y1 = [np.log10(r1[i]) for i in range(120,len(r2)-3)]
+            x2 = [np.log10(mmm[i])+8 for i in range(0,len(r2))]
 
-        migration_timescale[i][:]  = t_0
+            y2 = np.log10(r2)
+            plt.ylim([2,6.9])
+            plt.xlim([4,7.9])
 
-    #     migration_timescale[i][:]  = np.divide(migration_timescale[i][:]/Gamma_0[i])
-        for j in range(0, len(signs)-1):  
-         #if j==2:
-   #             print (Gamma_I[j], type_i_torque_matrix[i][j], rs[j], Hs[j]/rs[j], Hs[j]/rs[j]/Rgs[i])
-            #print (i)
-            if signs[j+1] != signs[j]:
-                plt.scatter(np.log10(mms[i]) + 8, np.log10(rgs[j]), color='red')
-                print(i)
-                if len(mmm)==0 or mmm[-1] != mms[i]:
-                    r1.append(rgs[j])
-                    mmm.append(mms[i])
-                else:
-                    r2.append(rgs[j])
-            if signs_type1[j+1] != signs_type1[j]:
-                r_t1.append(rgs[j])
-  #  migration_timescale = np.divide(migration_timescale, tot_torque_matrix)/ 86400 / 365.25 / 1e6 #convert to Myr
+            slope, intercept, rr, p, se = scipy.stats.linregress(x1, y1)
+            print (slope, intercept, rr, p, se*len(r2)**0.0, slope - 1.96*se, slope+1.96*se)
+
+            slope2, intercept2, rr2, p2, se2 = scipy.stats.linregress(x2, y2)
+            print (slope2, intercept2, rr2, p2, se2*len(r2)**0.0,  slope2 - 1.96*se2, slope2+1.96*se2)
+
+            x3 = [np.log10(mmm[i])+8 for i in range(0,140)]
+            y3 = [np.log10(r2[i]) for i in range(0,140)]
+            x4 = [np.log10(mmm[i])+8 for i in range(189,len(r2)-3)]
+            y4 = [np.log10(r2[i]) for i in range(189,len(r2)-3)]
+            slope3, intercept3, rr3, p3, se3 = scipy.stats.linregress(x3, y3)
+            print (slope3, intercept3, rr3, p3, se3*len(x3)**0.0,  slope3 - 1.96*se3, slope3+1.96*se3)
+            slope4, intercept4, rr4, p4, se4 = scipy.stats.linregress(x4, y4)
+            print (slope4, intercept4, rr4, p4, se4*len(x4)**0.0,  slope4 - 1.96*se4, slope4+1.96*se4)
+            plt.plot(x1, [intercept + slope*xx for xx in x1], color='black', linestyle='dashed', linewidth=3)
+            plt.plot(x3, [intercept3 + slope3*xx for xx in x3], color='black', linestyle='dashed', linewidth=3)
+            plt.plot(x4, [intercept4 + slope4*xx for xx in x4], color='black', linestyle='dashed', linewidth=3)
+ 
+    if panel_b_flag:
+        plt.figure(4, figsize=(10,6))
+        CS=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(tot_torque_matrix)),levels =np.linspace(-2, 3,801), cmap='Greys')
+        CS = plt.colorbar(location='left')
+
+        CS2=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-tot_torque_matrix)), levels =np.linspace(-6, 3,801), cmap='winter')
+
+        CS2 = plt.colorbar()
+        CS3=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(tot_torque_matrix)),  levels =[-4,-2,0,2],cmap='plasma')
+        CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-tot_torque_matrix)),  levels =[-4,-2,0,2],cmap='plasma')
+        plt.clabel(CS3, inline=True, fontsize=16)
+
+        plt.subplots_adjust(left=0.03, bottom=0.15, right=0.96, top=0.9)      
+        plt.text(2, 7.1, r'$\log\ \Gamma_{\rm tot} / \Gamma_0$', color='gray', size=26, rotation=0)
+        plt.text(8.2, 7.1, r'$\log\|- \Gamma_{\rm tot} / \Gamma_0|$', color='blue', size=26, rotation=0)
+        plt.ylabel(r'$\log R / r_g $')
+        plt.xlabel(r'$\log\ M / M_{\odot}$')    
+        
+    if panel_c_flag:
+        actual_timescale = np.divide(migration_timescale, tot_torque_matrix)
+        plt.figure(9, figsize=(10,6))
+        CS=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),levels =np.linspace(-5, 0,801), cmap='Greys')
+        CS = plt.colorbar(location='left')
+
+        CS2=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)), levels =np.linspace(-6, 3,801), cmap='winter')
+
+        CS2 = plt.colorbar()
+        CS3=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)),  levels =[-4,-2,0,2],cmap='plasma')
+        CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),  levels =[-4,-2,0,2],cmap='plasma')
+        plt.clabel(CS3, inline=True, fontsize=16)
+
+        plt.subplots_adjust(left=0.03, bottom=0.15, right=0.96, top=0.9)      
+        plt.text(2, 7.1, r'$\log\ |-t_{\rm mig}\  /\ \rm Myr|$', color='gray', size=26, rotation=0)
+        plt.text(8.2, 7.1, r'$\log\ t_{\rm mig} \ /\ \rm Myr$', color='blue', size=26, rotation=0)
+        plt.ylabel(r'$\log R / r_g $')
+        plt.xlabel(r'$\log\ M / M_{\odot}$')    
 
         #         print (mms[i], np.log10(rgs[j]))
     #  d          plt.xlabel(r'$\log\ M $')    
@@ -749,69 +810,20 @@ if True:
       #          plt.xlim([3.8,8.2])
        #         plt.subplots_adjust(left=0.12, bottom=0.16, right=0.99, top=0.98)
 
-
+# generate fig 6
+which_prefactor='GS21'
+#which_prefactor = 'JM_lin_iso'
+#which_prefactor = 'JM_lin_tot'
+N_mm=300 # for differen number some tweaking is required for the range of panel a
+has_data=False
+do_stats=False
+panel_a_flag=True
+panel_b_flag=True
+panel_c_flag=True
+generate_fig_6(N_mm, m_min=-4, m_max=1)
 #%%
-actual_timescale = np.divide(migration_timescale, tot_torque_matrix)
-plt.figure(4, figsize=(10,6))
-CS=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),levels =np.linspace(-5, 1,801), cmap='Greys')
-CS = plt.colorbar(location='left')
 
-CS2=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)), levels =np.linspace(-6, 3,801), cmap='winter')
-
-CS2 = plt.colorbar()
-CS3=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)),  levels =[-4,-2,0,2],cmap='plasma')
-CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),  levels =[-4,-2,0,2],cmap='plasma')
-plt.clabel(CS3, inline=True, fontsize=16)
-
-plt.subplots_adjust(left=0.03, bottom=0.15, right=0.96, top=0.9)      
-plt.text(2, 7.1, r'$\log\ |-t_{\rm mig}\  /\ \rm Myr|$', color='gray', size=26, rotation=0)
-plt.text(8.2, 7.1, r'$\log\ t_{\rm mig} \ /\ \rm Myr$', color='blue', size=26, rotation=0)
-plt.ylabel(r'$\log R / r_g $')
-plt.xlabel(r'$\log\ M / M_{\odot}$')    
-
-#%%
-if True:       
-      plt.figure(figsize=(6,5))
-      plt.plot(np.log10(mmm[:len(r2)-3]) + 8, np.log10(r1[:len(r2)-3]), color='red', linewidth=3)
-      plt.plot(np.log10(mmm[:len(r2)-3]) + 8, np.log10(r2[:-3]), color='blue', linewidth=3)
-#      plt.plot(np.log10(mms) + 8, np.log10(r_t1), color='purple', linewidth=3)
-
-      plt.fill_between(np.log10(mmm[:len(r2)-3])+8, np.log10(r1[:len(r2)-3]), np.log10(r2[:-3]), color='grey', alpha=0.4)
-      plt.xlabel(r'$\log\ M / M_{\odot}$')    
-      plt.ylabel(r'$\log R / r_g $')
-      plt.subplots_adjust(left=0.12, bottom=0.16, right=0.99, top=0.98)
-
-      import scipy.stats
-      x1 = [np.log10(mmm[i])+8 for i in range(120,len(r2)-3)]
-      y1 = [np.log10(r1[i]) for i in range(120,len(r2)-3)]
-      x2 = [np.log10(mmm[i])+8 for i in range(0,len(r2))]
-
-      y2 = np.log10(r2)
-      plt.ylim([2,6.9])
-      plt.xlim([4,7.9])
-      #ax.xaxis.set_minor_locator(AutoMinorLocator(10))
-      #ax.yaxis.set_minor_locator(AutoMinorLocator(10))
-
-      slope, intercept, rr, p, se = scipy.stats.linregress(x1, y1)
-      print (slope, intercept, rr, p, se*len(r2)**0.0, slope - 1.96*se, slope+1.96*se)
-
-      slope2, intercept2, rr2, p2, se2 = scipy.stats.linregress(x2, y2)
-      print (slope2, intercept2, rr2, p2, se2*len(r2)**0.0,  slope2 - 1.96*se2, slope2+1.96*se2)
-      #plt.plot(x, [intercept2 + slope2*xx for xx in x])
-
-
-      x3 = [np.log10(mmm[i])+8 for i in range(0,140)]
-      y3 = [np.log10(r2[i]) for i in range(0,140)]
-      x4 = [np.log10(mmm[i])+8 for i in range(189,len(r2)-3)]
-      y4 = [np.log10(r2[i]) for i in range(189,len(r2)-3)]
-      slope3, intercept3, rr3, p3, se3 = scipy.stats.linregress(x3, y3)
-      print (slope3, intercept3, rr3, p3, se3*len(x3)**0.0,  slope3 - 1.96*se3, slope3+1.96*se3)
-      slope4, intercept4, rr4, p4, se4 = scipy.stats.linregress(x4, y4)
-      print (slope4, intercept4, rr4, p4, se4*len(x4)**0.0,  slope4 - 1.96*se4, slope4+1.96*se4)
-      plt.plot(x1, [intercept + slope*xx for xx in x1], color='black', linestyle='dashed', linewidth=3)
-      plt.plot(x3, [intercept3 + slope3*xx for xx in x3], color='black', linestyle='dashed', linewidth=3)
-      plt.plot(x4, [intercept4 + slope4*xx for xx in x4], color='black', linestyle='dashed', linewidth=3)
-      #plt.text(5,4, 'r='+str("%.3f" % slope))
+#%%t.text(5,4, 'r='+str("%.3f" % slope))
 #%% 
 #generate 6b
 plt.figure(figsize=(10,7))
@@ -860,21 +872,26 @@ plt.text(7.6, 5.65, r'$H/R \sim 1$', color='Black', size=26, rotation=-40)
 plt.text(1.3, 3, r'$\log\ |\Gamma_{\rm tot} / \Gamma_0|$', color='black', size=26, rotation=90)
 plt.text(10.8, 3, r'$\log\ |-\Gamma_{\rm tot} / \Gamma_0|$', color='black', size=26, rotation=90)
 #%%
-# gnerate figure 6
-if True:
-    N=300
+# gnerate figure 7
+alpha_min=-4.7
+alpha_max=0
+mass=1e-1
+md=0.1
+plot_alpha_flag=True
+
+def plot_traps_alphas(N, mass, md,  alpha_min, alpha_max):
     rs= np.logspace(6,1,1000)
     rgs = [6*r for r in rs]
     r1 = []
     r2 = []
     r3=[]
     r4=[]
-    alphass = np.logspace(-4.7,0,N)
+    alphass = np.logspace(alpha_min,alpha_max,N)
     alphasss = []
     for alpha in alphass: #def find_when_torqrues_equal(mm, m_dot, alpha):
-        mm = 1e-1; 
+        mm = mass; 
     #    alpha =0.01; 
-        m_dot=0.1;
+        m_dot=md;
         rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mm,m_dot,alpha)[i] for x in rs] for i in range(0,14)]
         chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(mm,m_dot,alpha)[i] for i in range (0,7)]
         signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
@@ -889,71 +906,31 @@ if True:
                 elif len(r2)!=len(r3):
                     r3.append(rgs[i])
                 print (alpha, np.log10(rgs[i]))
-        #        plt.scatter(np.log10(alpha), np.log10(rgs[i]), color='red')
+                plt.scatter(np.log10(alpha), np.log10(rgs[i]), color='red')
               #  plt.xlabel(r'$\log\ \alpha $')    
              #   plt.ylabel(r'$\log r \ \rm [r_g] $')
           #      plt.xlim([3.8,8.2])
          #       plt.subplots_adjust(left=0.12, bottom=0.16, right=0.99, top=0.98)
-
-    
-#%%
-if True:       
-      plt.figure(figsize=(6,5))
-      plt.plot(np.log10(mmm[:len(r2)]) + 8, np.log10(r3[:len(r2)]), color='red', linewidth=3)
-      plt.plot(np.log10(mmm[:len(r2)]) + 8, np.log10(r2), color='blue', linewidth=3)
-#      plt.plot(np.log10(mms) + 8, np.log10(r_t1), color='purple', linewidth=3)
-
-      plt.fill_between(np.log10(mmm[:len(r2)])+8, np.log10(r1[:len(r2)]), np.log10(r2), color='grey', alpha=0.4)
-      plt.xlabel(r'$\log\ M $')    
-      plt.ylabel(r'$\log r \ \rm [r_g] $')
-      plt.subplots_adjust(left=0.12, bottom=0.16, right=0.99, top=0.98)
-#%%
-      import scipy.stats
-      x = [np.log10(mmm[i])+8 for i in range(0,len(r2))]
-      y1 = [np.log10(r1[i]) for i in range(0,len(r2))]
-      y2 = np.log10(r2)
-      plt.ylim([2,6.9])
-      plt.xlim([4,7.9])
-      #ax.xaxis.set_minor_locator(AutoMinorLocator(10))
-      #ax.yaxis.set_minor_locator(AutoMinorLocator(10))
-
-      slope, intercept, rr, p, se = scipy.stats.linregress(x, y1)
-      print (slope, intercept, rr, p, se*len(r2)**0.0, slope - 1.96*se, slope+1.96*se)
-
-      slope2, intercept2, rr2, p2, se2 = scipy.stats.linregress(x, y2)
-      print (slope2, intercept2, rr2, p2, se2*len(r2)**0.0,  slope2 - 1.96*se2, slope2+1.96*se2)
-      #plt.plot(x, [intercept2 + slope2*xx for xx in x])
-#%%
-      x3 = [np.log10(mmm[i])+8 for i in range(0,110)]
-      y3 = [np.log10(r2[i]) for i in range(0,110)]
-      x4 = [np.log10(mmm[i])+8 for i in range(138,len(r2))]
-      y4 = [np.log10(r2[i]) for i in range(138,len(r2))]
-      slope3, intercept3, rr3, p3, se3 = scipy.stats.linregress(x3, y3)
-      print (slope3, intercept3, rr3, p3, se3*len(x3)**0.0,  slope3 - 1.96*se3, slope3+1.96*se3)
-      slope4, intercept4, rr4, p4, se4 = scipy.stats.linregress(x4, y4)
-      print (slope4, intercept4, rr4, p4, se4*len(x4)**0.0,  slope4 - 1.96*se4, slope4+1.96*se4)
-      plt.plot(x, [intercept + slope*xx for xx in x], color='black', linestyle='dashed', linewidth=3)
-      plt.plot(x3, [intercept3 + slope3*xx for xx in x3], color='black', linestyle='dashed', linewidth=3)
-      plt.plot(x4, [intercept4 + slope4*xx for xx in x4], color='black', linestyle='dashed', linewidth=3)
-      #plt.text(5,4, 'r='+str("%.3f" % slope))
-#%%
-rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,1,0.1,0.01)[i] for x in rs] for i in range(0,14)]
-#%%
-#%%
-if True:
-    plt.figure(11)
-    nn = 300-len(r1)
-    plt.plot(np.log10(alphass[nn:]) , np.log10(r1), color='blue', linewidth=3)
-    plt.plot(np.log10(alphasss[:len(r2)]) , np.log10(r2), color='blue', linewidth=3)
-    plt.plot(np.log10(alphasss[:len(r3)]) , np.log10(r3), color='red', linewidth=3)
+    if plot_alpha_flag:        
+        plt.figure(11)
+        nn = N-len(r1)
+        plt.plot(np.log10(alphass[nn:]) , np.log10(r1), color='blue', linewidth=3)
+        plt.plot(np.log10(alphasss[:len(r2)]) , np.log10(r2), color='blue', linewidth=3)
+        plt.plot(np.log10(alphasss[:len(r3)]) , np.log10(r3), color='red', linewidth=3)
  
-    plt.fill_between(np.log10(alphasss[-len(r1):]), 2, np.log10(r1), color='grey', alpha=0.4)
-    plt.fill_between(np.log10(alphasss[:len(r3)]), np.log10(r2[:len(r3)]), np.log10(r3), color='grey', alpha=0.4)
-    plt.xlabel(r'$\log\ \alpha $')    
-    plt.ylabel(r'$\log r \ \rm [r_g] $')
-    plt.subplots_adjust(left=0.15, bottom=0.16, right=0.97, top=0.98)
-    plt.ylim([2.2,4.9])
-    plt.xlim([-4.7,0])
+        plt.fill_between(np.log10(alphasss[-len(r1):]), 2, np.log10(r1), color='grey', alpha=0.4)
+        plt.fill_between(np.log10(alphasss[:len(r3)]), np.log10(r2[:len(r3)]), np.log10(r3), color='grey', alpha=0.4)
+        plt.xlabel(r'$\log\ \alpha $')    
+        plt.ylabel(r'$\log r \ \rm [r_g] $')
+        plt.subplots_adjust(left=0.15, bottom=0.16, right=0.97, top=0.98)
+        plt.ylim([2.2,4.9])
+        plt.xlim([-4.7,0])
+        
+        return r1, r2, r3, r4, alphass, alphasss
+    
+plot_alpha_flag=True
+vv=plot_traps_alphas(20, mass=0.1, md=0.1, alpha_min=-4.7, alpha_max=0)
+#%%
     #%%
 X=0.75
 Y=0.24
@@ -1041,11 +1018,7 @@ def plot_kappa_regions():
         rho, H, cs, P, Sigma, T, kappa, zone, kappa_m17, P_grad, Sigma_grad, T_grad, gammas = get_disc_params(R_shmuel6[i]/6/r_isco6, 1e-2, 0.1, 0.01)
         print(T,rho)
         plt.scatter(np.log10(T_shmuel6), np.log10(rho_shmuel6), color='green',  label=r'$\log M=6$')
-        plt.scatter(np.log10(T), np.log10(rho), color='blue')
-
-#        plt.legend()
-
-
+        plt.scatter(np.log10(T), np.log10(rho), color='blu
 plot_kappa_regions()
 
 #%%
