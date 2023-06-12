@@ -271,7 +271,7 @@ def get_disc_derived_quantities(mm,m_dot,alpha):
     chis = [ 16 * gamma * (gamma-1) * sb * t**4 / 3 / k/ rho**2 /cs**2 for (t,k,cs,rho, gamma) in zip(Ts, kappas,css, rhos, gammas)]  
     lambdas = [(2 * chi / 3/gamma/cs*h)**0.5 for (chi,cs,h, gamma) in zip(chis, css, Hs, gammas)]
   #  print(mm, lambdas[0]/1.5e13)
-    x_cs = [np.fabs(-P_g * h**2/gamma /r/rg) for (P_g,h,r, gamma) in zip(P_grad, Hs, rs, gammas)]
+    x_cs = [np.fabs(-P_g * h**2/3/gamma /r/rg) for (P_g,h,r, gamma) in zip(P_grad, Hs, rs, gammas)]
     r_Hills = [r*rg * (stellar_bh_m/1e8/mm/3)**(1/3) for r in rs]
       
     Gamma_0 = [sigma*(r*rg/h)**5 * (r*rg)**2 * cs**2 * (stellar_bh_m/1e8/mm)**2 for (sigma,h,cs, r) in zip(Sigmas,Hs,css, rs)]    
@@ -280,7 +280,9 @@ def get_disc_derived_quantities(mm,m_dot,alpha):
     if which_prefactor=='JM_lin_iso':
         Gamma_I = [-(1.36 + 0.54*sigma_g + 0.5*t_g) * h/r/rg for (t_g, sigma_g, r,h) in zip(T_grad, Sigma_grad, rs, Hs)]
     if which_prefactor=='JM_lin_tot':
-       Gamma_I = [(- (2.34 - 0.1*sigma_g + 1.5*t_g) / gamma  + (0.46 - 0.96*sigma_g + 1.8*t_g) / gamma) * h/r/rg for (t_g, sigma_g, r,h, gamma) in zip(T_grad, Sigma_grad, rs, Hs, gammas)]      
+       xx = [chi / h/cs for (chi, h, cs) in zip(chis, Hs, css)]
+       ff = [((x/2)**0.5 + 1/gamma) /(1 + (x/2)**0.5) for x in xx]
+       Gamma_I = [(- (2.34 - 0.1*sigma_g + 1.5*t_g) * f + (0.46 - 0.96*sigma_g + 1.8*t_g) / gamma) * h/r/rg for (t_g, sigma_g, r,h, gamma, f) in zip(T_grad, Sigma_grad, rs, Hs, gammas, ff)]      
 
     if GW_flag:
         Gamma_GW = [-32/5 * (c/cs)**3 * (h/r/rg/6)**6 * r**(-4) * mm * 1e8*msun/sg/r/r/rg/rg for (cs,h,r,sg) in zip(css,Hs,rs,Sigmas)]
@@ -319,7 +321,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
     taus_17 = [x*y/2 for (x,y) in zip(kappa_m17s, Sigmas)]
   
     rgs = [6 * r for r in rs]
-    which_prefactor = 'GS21'
+   # which_prefactor = 'GS21'
     t_tot = [x/np.fabs(y+z) for (x,y,z) in zip(t_0, Gamma_I, Gamma_thermal)]
     plt.figure(12)
     plt.plot(np.log10(rgs), np.log10(t_tot), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
@@ -573,7 +575,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.subplot(121)
         plt.plot(np.log10(rgs), np.log10(G_tot), linewidth=3, color=col, label='total', alpha=1); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(rgs), np.log10(G_tot_minus), linewidth=3, color=col, linestyle='dashed', alpha=1); #plt.xscale('log'); plt.yscale('log')
-        plt.xlabel(r'$\log r\ \rm{[r_g]}$')
+        plt.xlabel(r'$\log R / r_g $')
         plt.xticks([0,1,2,3,4,5,6])
         plt.ylabel(r'$\log \Gamma / \Gamma_0$')
         plt.yticks([-4,-3,-2,-1,0,1])
@@ -660,9 +662,9 @@ def plot_disc_solution(mm,m_dot,alpha, col):
    
      #%% 
 shmuel_flag = True
-fig_1_flag = 1
+fig_1_flag = 0
 fig_2_flag=0
-fig_3_flag=0
+fig_3_flag=1
 fig_4_flag=0
 m_d=0.1; alp=0.01
 args1 = [10,m_d,alp, 'orange']
@@ -812,7 +814,7 @@ def generate_fig_6(N_mm, m_min, m_max):
        #         plt.subplots_adjust(left=0.12, bottom=0.16, right=0.99, top=0.98)
 
 # generate fig 6
-which_prefactor='GS21'
+#which_prefactor='GS21'
 #which_prefactor = 'JM_lin_iso'
 #which_prefactor = 'JM_lin_tot'
 N_mm=300 # for differen number some tweaking is required for the range of panel a
@@ -1177,7 +1179,7 @@ plt.xlim([6,9])
 
 
     #%%             
-which_prefactor='GS21'
+#which_prefactor='GS21'
 #which_prefactor = 'JM_lin_iso'
 #which_prefactor = 'JM_lin_tot'
 
