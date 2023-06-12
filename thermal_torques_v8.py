@@ -255,7 +255,7 @@ def get_disc_params(r,m, m_dot, alpha):
     return rho, H, cs, P, Sigma, T, kappa, zone, kappa_m17, P_grad, Sigma_grad, T_grad, gamma, t_0/3.15e7/1e6
 
 #which_prefactor = 'GS21'
-which_prefactor='GS21'
+which_prefactor='JM_lin_tot'
 #%%
 def get_disc_derived_quantities(mm,m_dot,alpha):
     
@@ -659,10 +659,10 @@ def plot_disc_solution(mm,m_dot,alpha, col):
    
      #%% 
 shmuel_flag = True
-fig_1_flag = 1
+fig_1_flag = 0
 fig_2_flag=0
-fig_3_flag=0
-fig_4_flag=0
+fig_3_flag=1
+fig_4_flag=1
 m_d=0.1; alp=0.01
 args1 = [10,m_d,alp, 'orange']
 args2 = [1, m_d,alp, 'red']
@@ -675,8 +675,8 @@ args6 = [1e-4, m_d,alp, 'blue']
 #args4 = [1,0.1,1, 'blue']#[0.01,m_d,alp, 'green']
 #from IPython import get_ipython
 
-plot_disc_solution(*args1)
-plot_disc_solution(*args2)
+#plot_disc_solution(*args1)
+#plot_disc_solution(*args2)
 plot_disc_solution(*args3)
 plot_disc_solution(*args4)
 #plot_disc_solution(*args5)
