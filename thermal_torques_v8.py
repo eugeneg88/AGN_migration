@@ -382,7 +382,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.plot(np.log10(rgs), np.log10(taus), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
 #        plt.plot(np.log10(rgs), np.log10(taus_17), linewidth=3, color=col, linestyle='dashed'); #plt.xscale('log'); plt.yscale('log')
         plt.axhline(np.log10(1), color='gray')
-        plt.text(1.2, 1.6+1.6*np.log10(mm), 'log M= ' + str(int(np.log10(1e8*mm))), color=col, size=22)
+        plt.text(0.7, 0.6+1.6*np.log10(mm), r'$\log M/M_\odot= \ $' + str(int(np.log10(1e8*mm))), color=col, size=22)
 
         plt.ylabel(r'$\log \tau$')
         plt.xticks([1,2,3,4,5,6])
@@ -409,7 +409,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.ylabel(r'$\log \Sigma \  \rm [g\ cm^{-2}]$')
         plt.xticks([1,2,3,4,5,6])
         plt.yticks([-2,0,2,4,6])
-        plt.ylim([0,7])
+        plt.ylim([0.5, 6.6])
 #        plt.text(1.1, 1+1.5*np.log10(mm), 'log M= ' + str(int(np.log10(1e8*mm))), color=col, size=26)
         plt.xlim([0.5,r_max])
        
@@ -433,6 +433,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.xticks([1,2,3,4,5,6])
         plt.yticks([3,4,5,6])
         plt.xlim([0.5,r_max])
+        plt.ylim([3.2,6.5])
 
         plt.subplot(425)  
         if shmuel_flag:
@@ -496,7 +497,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.plot(np.log10(rgs), np.log10(css), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
         plt.xticks([1,2,3,4,5,6])
         plt.xlabel(r'$\log R / r_g $')
-        plt.ylim([5.5,8.8])
+        plt.ylim([5.5,8.6])
         plt.yticks([6,7,8])   
         plt.ylabel(r'$\log c_s\ \rm[cm \ s^{-1}] $')
         plt.xlim([0.5,r_max])
@@ -659,10 +660,10 @@ def plot_disc_solution(mm,m_dot,alpha, col):
    
      #%% 
 shmuel_flag = True
-fig_1_flag = 0
+fig_1_flag = 1
 fig_2_flag=0
-fig_3_flag=1
-fig_4_flag=1
+fig_3_flag=0
+fig_4_flag=0
 m_d=0.1; alp=0.01
 args1 = [10,m_d,alp, 'orange']
 args2 = [1, m_d,alp, 'red']
@@ -675,8 +676,8 @@ args6 = [1e-4, m_d,alp, 'blue']
 #args4 = [1,0.1,1, 'blue']#[0.01,m_d,alp, 'green']
 #from IPython import get_ipython
 
-#plot_disc_solution(*args1)
-#plot_disc_solution(*args2)
+plot_disc_solution(*args1)
+plot_disc_solution(*args2)
 plot_disc_solution(*args3)
 plot_disc_solution(*args4)
 #plot_disc_solution(*args5)
