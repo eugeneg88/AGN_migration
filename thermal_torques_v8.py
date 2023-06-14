@@ -46,6 +46,7 @@ cs_shmuel9=TSD9[:,6]*100
 r_isco9 = 1 * G * msun * 1e9/c**2
 kappa_shmuel9 = np.loadtxt('shmuel_data/Kappa_1e9.txt')*10 
 tau_shmuel9 = np.loadtxt('shmuel_data/Tau_1e9.txt') 
+t_mig_shmuel9 = np.loadtxt('shmuel_data/migration_time_1e9_gam_1.6.txt') 
 
 R_shmuel8 = TSD8[:,0]*100
 T_shmuel8=TSD8[:,1]
@@ -57,6 +58,7 @@ cs_shmuel8=TSD8[:,6]*100
 r_isco8 = 1 * G * msun * 1e8/c**2
 kappa_shmuel8 = np.loadtxt('shmuel_data/Kappa_1e8.txt')*10 
 tau_shmuel8 = np.loadtxt('shmuel_data/Tau_1e8.txt') 
+t_mig_shmuel8 = np.loadtxt('shmuel_data/migration_time_1e8_gam_1.6.txt') 
 
 
 R_shmuel7 = TSD7[:,0]*100
@@ -69,6 +71,7 @@ cs_shmuel7=TSD7[:,6]*100
 r_isco7 = 1 * G * msun * 1e7/c**2
 kappa_shmuel7 = np.loadtxt('shmuel_data/Kappa_1e7.txt')*10 
 tau_shmuel7 = np.loadtxt('shmuel_data/Tau_1e7.txt') 
+t_mig_shmuel7 = np.loadtxt('shmuel_data/migration_time_1e7_gam_1.6.txt') 
 
 R_shmuel6 = TSD6[:,0]*100
 T_shmuel6=TSD6[:,1]
@@ -80,6 +83,7 @@ cs_shmuel6=TSD6[:,6]*100
 r_isco6 = 1 * G * msun * 1e6/c**2
 kappa_shmuel6 = np.loadtxt('shmuel_data/Kappa_1e6.txt')*10 
 tau_shmuel6 = np.loadtxt('shmuel_data/Tau_1e6.txt') 
+t_mig_shmuel6 = np.loadtxt('shmuel_data/migration_time_1e6_gam_1.6.txt') 
 
 R_shmuel5 = TSD5[:,0]*100
 T_shmuel5=TSD5[:,1]
@@ -283,6 +287,7 @@ def get_disc_derived_quantities(mm,m_dot,alpha):
        xx = [chi / h/cs for (chi, h, cs) in zip(chis, Hs, css)]
        ff = [((x/2)**0.5 + 1/gamma) /(1 + (x/2)**0.5) for x in xx]
        Gamma_I = [(- (2.34 - 0.1*sigma_g + 1.5*t_g) * f + (0.46 - 0.96*sigma_g + 1.8*t_g) / gamma) * h/r/rg for (t_g, sigma_g, r,h, gamma, f) in zip(T_grad, Sigma_grad, rs, Hs, gammas, ff)]      
+   #    Gamma_I = [(- (2.34 - 0.1*sigma_g + 1.5*t_g) * f + (0.46 - 0.96*sigma_g + 1.8*t_g) / gamma) * 1 for (t_g, sigma_g, r,h, gamma, f) in zip(T_grad, Sigma_grad, rs, Hs, gammas, ff)]      
 
     if GW_flag:
         Gamma_GW = [-32/5 * (c/cs)**3 * (h/r/rg/6)**6 * r**(-4) * mm * 1e8*msun/sg/r/r/rg/rg for (cs,h,r,sg) in zip(css,Hs,rs,Sigmas)]
@@ -306,8 +311,8 @@ def get_disc_derived_quantities(mm,m_dot,alpha):
  #   print(l_ratio[10])        
     return chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratio, Gamma_thermal, Gamma_0
 GW_flag =True
-vv=get_disc_derived_quantities(1e0,0.1, 0.01)
-vvp = get_disc_params(rs[-1], 1, 0.1, 0.01)
+vv=get_disc_derived_quantities(1e-1,0.1, 0.01)
+vvp = get_disc_params(rs[483], 0.1, 0.1, 0.01)
 #%%
 #rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness = [[get_disc_params(x,m,m_dot,alpha)[i] for x in rs] for i in range(0,8)]
 # Hs = [get_disc_params(x,m,m_dot,alpha, args)[1] for x in rs]
@@ -322,11 +327,6 @@ def plot_disc_solution(mm,m_dot,alpha, col):
   
     rgs = [6 * r for r in rs]
    # which_prefactor = 'GS21'
-    t_tot = [x/np.fabs(y+z) for (x,y,z) in zip(t_0, Gamma_I, Gamma_thermal)]
-    plt.figure(12)
-    plt.plot(np.log10(rgs), np.log10(t_tot), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
-    plt.xlabel(r'$\log R / r_g $')
-    plt.ylabel(r'$t_0\ \rm [Myr]$')
 
 #    which_prefactor = 'JM17_lin_tot' 
     #which_prefactor = 'JM17_lin_iso'
@@ -495,6 +495,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
                 plt.plot(np.log10(R_shmuel5/r_isco5), np.log10(cs_shmuel5), linestyle='dashed',color=col)
             if mm==1e-4:
                 plt.plot(np.log10(R_shmuel4/r_isco4), np.log10(cs_shmuel4),linestyle='dashed', color=col)
+        plt.axvline(2.748, color='gray', linestyle = 'dashed')
 
         plt.plot(np.log10(rgs), np.log10(css), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
         plt.xticks([1,2,3,4,5,6])
@@ -590,28 +591,53 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         R3Q = 580.65 * alpha**(28/45) * mm**(-52/45) * m_dot**(-22/45)
 #       R4Q = 2550.56 * alpha**(-0.467) * mm**(-0.033) * m_dot**(0.63333)
         R4Q = 1737.68 * alpha**(-0.467) * mm**(-0.033) * m_dot**(0.63333)
-      #  plt.axvline(np.log10(6*R23), color=col)
-#
-    #    if col=='orange':
-     #       plt.legend()
-
+ 
         plt.subplot(122)
-        if 2 in zoness:
-            index=zoness.index(2)
-        else:
-            index=zoness.index(5)
-     #       index=0
-        plt.plot(np.log10(taus[index:]), np.log10(G_tot[index:]), linewidth=3, color=col, label='total', alpha=1); #plt.xscale('log'); plt.yscale('log')
-        plt.plot(np.log10(taus[index:]), np.log10(G_tot_minus[index:]), linewidth=3, color=col, linestyle='dashed', alpha=1); #plt.xscale('log'); plt.yscale('log')
-        #    plt.ylabel(r'$\log \Gamma / \Gamma_0$')
-        plt.xlabel(r'$\log \tau$')
-        plt.xticks([-1, 0,1,2,3,4,5,6])
-        #    plt.ylabel(r'$\log \Gamma / \Gamma_0$')
-        plt.yticks([-4,-3,-2,-1,0,1])
-        plt.ylim([-3.2,0.95])
-        plt.xlim([3.9,5.6])
-        print (index)
-    #    plt.axvline(np.log10(0.5*0.065*3e10/0.64e7/alpha**1.5), color=col)
+        transparency=0.5
+        if shmuel_flag:
+            if mm==10:
+                plt.plot(np.log10(R_shmuel9/r_isco9), np.log10(-t_mig_shmuel9), linestyle='dashed',color=col, alpha=transparency)
+                plt.plot(np.log10(R_shmuel9/r_isco9), np.log10(t_mig_shmuel9),color=col, alpha=transparency)
+
+            if mm==1:
+                plt.plot(np.log10(R_shmuel8/r_isco8), np.log10(-t_mig_shmuel8), linestyle='dashed',color=col, alpha=transparency)
+                plt.plot(np.log10(R_shmuel8/r_isco8), np.log10(t_mig_shmuel8),color=col, alpha=transparency)
+
+            if mm==1e-1:
+                plt.plot(np.log10(R_shmuel7/r_isco7), np.log10(-t_mig_shmuel7),linestyle='dashed', color=col, alpha=transparency)
+                plt.plot(np.log10(R_shmuel7/r_isco7), np.log10(t_mig_shmuel7),color=col, alpha=transparency)
+
+            if mm==1e-2:
+                plt.plot(np.log10(R_shmuel6/r_isco6), np.log10(-t_mig_shmuel6),linestyle='dashed', color=col, alpha=transparency)
+                plt.plot(np.log10(R_shmuel6/r_isco6), np.log10(t_mig_shmuel6),color=col, alpha=transparency)
+
+                
+        t_tot = [x/(y+z) for (x,y,z) in zip(t_0, Gamma_I, Gamma_thermal)]
+        plt.plot(np.log10(rgs), np.log10(t_tot), linewidth=3, linestyle='dashed', color=col); #plt.xscale('log'); plt.yscale('log')
+        plt.plot(np.log10(rgs), [np.log10(-x) for x in t_tot], linewidth=3,  color=col); #plt.xscale('log'); plt.yscale('log')
+        plt.xlabel(r'$\log R / r_g $')
+        plt.ylabel(r'$t_0\ \rm [Myr]$')
+        plt.xlim([0.5,6.3])
+        plt.ylim([-5.1,3.1])
+        plt.subplots_adjust(left=0.1, bottom=0.16, right=0.99, top=0.99, wspace=0.2)
+
+
+    #     if 2 in zoness:
+    #         index=zoness.index(2)
+    #     else:
+    #         index=zoness.index(5)
+    #  #       index=0
+    #     plt.plot(np.log10(taus[index:]), np.log10(G_tot[index:]), linewidth=3, color=col, label='total', alpha=1); #plt.xscale('log'); plt.yscale('log')
+    #     plt.plot(np.log10(taus[index:]), np.log10(G_tot_minus[index:]), linewidth=3, color=col, linestyle='dashed', alpha=1); #plt.xscale('log'); plt.yscale('log')
+    #     #    plt.ylabel(r'$\log \Gamma / \Gamma_0$')
+    #     plt.xlabel(r'$\log \tau$')
+    #     plt.xticks([-1, 0,1,2,3,4,5,6])
+    #     #    plt.ylabel(r'$\log \Gamma / \Gamma_0$')
+    #     plt.yticks([-4,-3,-2,-1,0,1])
+    #     plt.ylim([-3.2,0.95])
+    #     plt.xlim([3.9,5.6])
+    #     print (index)
+    # #    plt.axvline(np.log10(0.5*0.065*3e10/0.64e7/alpha**1.5), color=col)
      #   plt.axvline(np.log10(0.4*0.065*3e10/0.4e7/alpha**1.5), color=col)
 
     if fig_4_flag:
@@ -624,48 +650,61 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.subplots_adjust(left=0.1, bottom=0.16, right=0.99, top=0.99, wspace=0.15)
         plt.subplot(121)
          
-        plt.plot(np.log10(rgs), np.log10(Gamma_I), linewidth=3, color='black', alpha=1, label='type I'); #plt.xscale('log'); plt.yscale('log')
+        plt.plot(np.log10(rgs), np.log10(Gamma_I), linewidth=3, color='black', alpha=1, label='type I + GW'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(rgs), np.log10(Gamma_I_minus), linewidth=3, color='black', alpha=1, linestyle='dashed'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(rgs), np.log10(Gamma_thermal), linewidth=3, color='purple', alpha=1, label='thermal'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(rgs), np.log10(Gamma_thermal_minus), linewidth=3, color='purple', alpha=1, linestyle='dashed'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(rgs), np.log10(Gamma_tot), linewidth=3, color='blue', label='total', alpha=1); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(rgs), np.log10(Gamma_tot_minus), linewidth=3, color='blue', linestyle='dashed', alpha=1); #plt.xscale('log'); plt.yscale('log')
-        plt.xlabel(r'$\log r\ \rm{[r_g]}$')
+        plt.xlabel(r'$\log R / r_g $')
         plt.xticks([0,1,2,3,4,5,6])
         plt.ylabel(r'$\log \Gamma / \Gamma_0$')
         plt.yticks([-4,-3,-2,-1,0])
-        plt.ylim([-4.5,0.4])
+        plt.ylim([-4.1,0.4])
         plt.xlim([0.5,6.3])
         R12 = 449.842 * alpha**(2/21) * mm**(2/21) * m_dot**(16/21)
+     #   plt.axvline(2.748, color='gray', linestyle = 'dashed')
+  
       #  plt.axvline(np.log10(6*R12))
 # 
   #      plt.legend()
   #      plt.text(0.6,-0.3, 'log M=' + str(int(np.log10(1e8*mm))), color='black', size=26)
   
         plt.subplot(122)
+        tau_pm = 2 * c / 9 / (5/3 -1) / 10**6.668 / alpha
+     #   tau_0 = 0.693*tau_pm
+        A = 0.3 *(5/3-1)**0.5/1.6667**2 * 51/20/alpha**0.5/1.275
+        print(A)
+        tau_0 = tau_pm * 10**0.09 * A / (1+A)
         if 2 in zoness:
             index=zoness.index(2)
         else:
             index=zoness.index(5)
-        plt.plot(np.log10(taus[index:]), np.log10(Gamma_I[index:]), linewidth=3, color='black', alpha=1, label='type I'); #plt.xscale('log'); plt.yscale('log')
+     #   index=0
+        plt.plot(np.log10(taus[index:]), np.log10(Gamma_I[index:]), linewidth=3, color='black', alpha=1, label='type I+GW'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(taus[index:]), np.log10(Gamma_I_minus[index:]), linewidth=3, color='black', alpha=1, linestyle='dashed'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(taus[index:]), np.log10(Gamma_thermal[index:]), linewidth=3, color='purple', alpha=1, label='thermal'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(taus[index:]), np.log10(Gamma_thermal_minus[index:]), linewidth=3, color='purple', alpha=1, linestyle='dashed'); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(taus[index:]), np.log10(Gamma_tot[index:]), linewidth=3, color='blue', label='total', alpha=1); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(taus[index:]), np.log10(Gamma_tot_minus[index:]), linewidth=3, color='blue', alpha=1, linestyle='dashed'); #plt.xscale('log'); plt.yscale('log')
+        plt.axvline(np.log10(tau_pm), color='green', linestyle = 'dashed')
+        plt.text(np.log10(tau_pm)+0.015, 0, r'$\tau_\pm$', color='green', fontsize=24)
+        plt.axvline(np.log10(tau_0), color='red', linestyle = 'dashed')
+        plt.text(np.log10(tau_0)-0.28, 0, r'$\tau_0$', color='red', fontsize=24)
+
         plt.xticks([-1, 0,1,2,3,4,5,6])
         plt.xlabel(r'$\log \tau$')
         plt.yticks([-4,-3,-2,-1,0,1])
-        plt.ylim([-4.5,0.4])
-        plt.xlim([1,5.6])
-        plt.legend(loc=3)
+        plt.ylim([-4.1,0.4])
+        plt.xlim([2.9,5.7])
+        plt.legend(loc='center left', fontsize=18)
    
      #%% 
 shmuel_flag = True
 fig_1_flag = 0
 fig_2_flag=0
-fig_3_flag=1
-fig_4_flag=0
+fig_3_flag=0
+fig_4_flag=1
 m_d=0.1; alp=0.01
 args1 = [10,m_d,alp, 'orange']
 args2 = [1, m_d,alp, 'red']
@@ -678,24 +717,33 @@ args6 = [1e-4, m_d,alp, 'blue']
 #args4 = [1,0.1,1, 'blue']#[0.01,m_d,alp, 'green']
 #from IPython import get_ipython
 
-plot_disc_solution(*args1)
-plot_disc_solution(*args2)
+#plot_disc_solution(*args1)
+#plot_disc_solution(*args2)
 plot_disc_solution(*args3)
-plot_disc_solution(*args4)
+#plot_disc_solution(*args4)
 #plot_disc_solution(*args5)
 #plot_disc_solution(*args6)
 
 #%%
 # fig 6
-def generate_fig_6(N_mm, m_min, m_max):
-    if not has_data:
-        N_r=1000
-        rs= np.logspace(0.1,6,N_r)
-        rgs = [6*r for r in rs]
+N_mm=300 # for differen number some tweaking is required for the range of panel a
+has_data=False
+do_stats=True
+panel_a_flag=True
+panel_b_flag=True
+panel_c_flag=True
+if True:#def generate_fig_6(N_mm, m_min, m_max):
+    N_r=1000
+    mms= np.logspace(-4,1,N_mm)
+    rs= np.logspace(0.1,6,N_r)
+    rgs = [6*r for r in rs]
+ 
+
+    if True:
+    #    rgs = [6*r for r in rs]
         r1 = []
         r2 = []
         r_t1 = []
-        mms= np.logspace(m_min,m_max,N_mm)
         stellar_bh_m=10
         rgi = [G*msun*1e8*mm/c/c for mm in mms]
 
@@ -731,7 +779,8 @@ def generate_fig_6(N_mm, m_min, m_max):
                         r2.append(rgs[j])
                     if signs_type1[j+1] != signs_type1[j]:
                         r_t1.append(rgs[j])
-                        
+        mss = mmm
+          #%%           
     if panel_a_flag:
         plt.figure(7, figsize=(6,5))
         plt.plot(np.log10(mmm[:len(r2)-3]) + 8, np.log10(r1[:len(r2)-3]), color='red', linewidth=3)
@@ -741,11 +790,11 @@ def generate_fig_6(N_mm, m_min, m_max):
         plt.xlabel(r'$\log\ M / M_{\odot}$')    
         plt.ylabel(r'$\log R / r_g $')
         plt.subplots_adjust(left=0.12, bottom=0.16, right=0.99, top=0.98)
-        
+     
         if do_stats:
             import scipy.stats
-            x1 = [np.log10(mmm[i])+8 for i in range(120,len(r2)-3)]
-            y1 = [np.log10(r1[i]) for i in range(120,len(r2)-3)]
+            x1 = [np.log10(mmm[i])+8 for i in range(90,len(r2)-3)]
+            y1 = [np.log10(r1[i]) for i in range(90,len(r2)-3)]
             x2 = [np.log10(mmm[i])+8 for i in range(0,len(r2))]
 
             y2 = np.log10(r2)
@@ -758,52 +807,55 @@ def generate_fig_6(N_mm, m_min, m_max):
             slope2, intercept2, rr2, p2, se2 = scipy.stats.linregress(x2, y2)
             print (slope2, intercept2, rr2, p2, se2*len(r2)**0.0,  slope2 - 1.96*se2, slope2+1.96*se2)
 
-            x3 = [np.log10(mmm[i])+8 for i in range(0,140)]
-            y3 = [np.log10(r2[i]) for i in range(0,140)]
-            x4 = [np.log10(mmm[i])+8 for i in range(189,len(r2)-3)]
-            y4 = [np.log10(r2[i]) for i in range(189,len(r2)-3)]
-            slope3, intercept3, rr3, p3, se3 = scipy.stats.linregress(x3, y3)
+            x3 = [np.log10(mmm[i])+8 for i in range(0,110)]
+            y3 = [np.log10(r2[i]) for i in range(0,110)]
+            x4 = [np.log10(mmm[i])+8 for i in range(145,len(r2)-3)]
+            y4 = [np.log10(r2[i]) for i in range(145,len(r2)-3)]
+            slope3, intercept3, rr3, p3, se3 =  scipy.stats.linregress(x3, y3)
             print (slope3, intercept3, rr3, p3, se3*len(x3)**0.0,  slope3 - 1.96*se3, slope3+1.96*se3)
             slope4, intercept4, rr4, p4, se4 = scipy.stats.linregress(x4, y4)
             print (slope4, intercept4, rr4, p4, se4*len(x4)**0.0,  slope4 - 1.96*se4, slope4+1.96*se4)
             plt.plot(x1, [intercept + slope*xx for xx in x1], color='black', linestyle='dashed', linewidth=3)
             plt.plot(x3, [intercept3 + slope3*xx for xx in x3], color='black', linestyle='dashed', linewidth=3)
             plt.plot(x4, [intercept4 + slope4*xx for xx in x4], color='black', linestyle='dashed', linewidth=3)
- 
+ #%%
     if panel_b_flag:
-        plt.figure(4, figsize=(10,6))
-        CS=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(tot_torque_matrix)),levels =np.linspace(-2, 3,801), cmap='Greys')
+        plt.figure(4, figsize=(9,6))
+        CS=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(tot_torque_matrix)),levels =np.linspace(-2.1, 3.5,801), cmap='bone')
         CS = plt.colorbar(location='left')
 
-        CS2=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-tot_torque_matrix)), levels =np.linspace(-6, 3,801), cmap='winter')
+        CS2=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-tot_torque_matrix)), levels =np.linspace(-3, 0,801), cmap='winter')
 
         CS2 = plt.colorbar()
-        CS3=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(tot_torque_matrix)),  levels =[-4,-2,0,2],cmap='plasma')
-        CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-tot_torque_matrix)),  levels =[-4,-2,0,2],cmap='plasma')
+        CS3=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(tot_torque_matrix)),  levels =[-2, -1, 0, 1, 2],cmap='plasma')
+        CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-tot_torque_matrix)),  levels =[-2,-1,0,1,2],cmap='plasma')
         plt.clabel(CS3, inline=True, fontsize=16)
 
-        plt.subplots_adjust(left=0.03, bottom=0.15, right=0.96, top=0.9)      
+        plt.subplots_adjust(left=0.03, bottom=0.15, right=0.94, top=0.9)      
         plt.text(2, 7.1, r'$\log\ \Gamma_{\rm tot} / \Gamma_0$', color='gray', size=26, rotation=0)
         plt.text(8.2, 7.1, r'$\log\|- \Gamma_{\rm tot} / \Gamma_0|$', color='blue', size=26, rotation=0)
+        plt.text(7.2, 5.5, r'$H/R \gtrsim 1$', color='black', size=26, rotation=-23)
+        plt.text(4.5, 1.2, r'$|\Gamma_{\rm GW}| \gg |\Gamma_I|$', color='black', size=26, rotation=-7)
+
         plt.ylabel(r'$\log R / r_g $')
         plt.xlabel(r'$\log\ M / M_{\odot}$')    
-        
+        #%%
     if panel_c_flag:
         actual_timescale = np.divide(migration_timescale, tot_torque_matrix)
-        plt.figure(9, figsize=(10,6))
-        CS=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),levels =np.linspace(-5, 0,801), cmap='Greys')
+        plt.figure(9, figsize=(9,6))
+        CS=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),levels =np.linspace(-8, -0.5,801), cmap='Greys')
         CS = plt.colorbar(location='left')
 
-        CS2=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)), levels =np.linspace(-6, 3,801), cmap='winter')
+        CS2=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)), levels =np.linspace(-5, 3,801), cmap='turbo')
 
         CS2 = plt.colorbar()
-        CS3=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)),  levels =[-4,-2,0,2],cmap='plasma')
-        CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),  levels =[-4,-2,0,2],cmap='plasma')
+        CS3=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)),  levels =[-6, -5, -4,-3, -2,-1, 0,1, 2],cmap='plasma')
+        CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),  levels =[-6, -5, -4,-3, -2,-1, 0,1, 2],cmap='plasma')
         plt.clabel(CS3, inline=True, fontsize=16)
 
         plt.subplots_adjust(left=0.03, bottom=0.15, right=0.96, top=0.9)      
         plt.text(2, 7.1, r'$\log\ |-t_{\rm mig}\  /\ \rm Myr|$', color='gray', size=26, rotation=0)
-        plt.text(8.2, 7.1, r'$\log\ t_{\rm mig} \ /\ \rm Myr$', color='blue', size=26, rotation=0)
+        plt.text(8.2, 7.1, r'$\log\ t_{\rm mig} \ /\ \rm Myr$', color='navy', size=26, rotation=0)
         plt.ylabel(r'$\log R / r_g $')
         plt.xlabel(r'$\log\ M / M_{\odot}$')    
 
@@ -817,9 +869,10 @@ def generate_fig_6(N_mm, m_min, m_max):
 #which_prefactor='GS21'
 #which_prefactor = 'JM_lin_iso'
 #which_prefactor = 'JM_lin_tot'
+#%%
 N_mm=300 # for differen number some tweaking is required for the range of panel a
 has_data=False
-do_stats=False
+do_stats=True
 panel_a_flag=True
 panel_b_flag=True
 panel_c_flag=True
