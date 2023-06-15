@@ -701,11 +701,11 @@ def plot_disc_solution(mm,m_dot,alpha, col):
    
      #%% 
 shmuel_flag = True
-fig_1_flag = 0
+fig_1_flag = 1
 fig_2_flag=0
 fig_3_flag=0
 fig_4_flag=1
-m_d=0.1; alp=0.01
+m_d=0.1; alp=10**-0.75
 args1 = [10,m_d,alp, 'orange']
 args2 = [1, m_d,alp, 'red']
 args3 = [0.1,m_d,alp, 'blue']
@@ -850,7 +850,7 @@ if True:#def generate_fig_6(N_mm, m_min, m_max):
 
         CS2 = plt.colorbar()
         CS3=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)),  levels =[-6, -5, -4,-3, -2,-1, 0,1, 2],cmap='plasma')
-        CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),  levels =[-6, -5, -4,-3, -2,-1, 0,1, 2],cmap='plasma')
+        CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),  levels =[ -6,  -4,-2,0,2],cmap='plasma')
         plt.clabel(CS3, inline=True, fontsize=16)
 
         plt.subplots_adjust(left=0.03, bottom=0.15, right=0.96, top=0.9)      
@@ -936,9 +936,9 @@ md=0.1
 plot_alpha_flag=True
 
 def plot_traps_alphas(N, mass, md,  alpha_min, alpha_max):
-    rs= np.logspace(6,1,1000)
+    rs= np.logspace(0.1,6,1000)
     rgs = [6*r for r in rs]
-    r1 = []
+  #  r1 = []
     r2 = []
     r3=[]
     r4=[]
@@ -954,14 +954,20 @@ def plot_traps_alphas(N, mass, md,  alpha_min, alpha_max):
         for i in range(0, len(signs)-1):
         #print (i)
             if signs[i+1] != signs[i]:
-                if  alpha>=0.1 and rgs[i]<=400:
-                    r1.append(rgs[i])
-                elif len(alphasss)==0 or alphasss[-1] != alpha:
+
+                if len(alphasss)==0 or alphasss[-1] != alpha:
                     r2.append(rgs[i])
                     alphasss.append(alpha)
                 elif len(r2)!=len(r3):
-                    r3.append(rgs[i])
-                print (alpha, np.log10(rgs[i]))
+                    if rgs[i] > 1.15* r2[-1] and alphasss[-1]> 1e-3:
+                        print (alpha, np.log10(rgs[i]), 'small')
+
+                        r3.append(rgs[i])
+                    elif  len(r2)!=len(r3) and alphasss[-1] < 1e-3:
+                        print (alpha, np.log10(rgs[i]), 'big')
+
+                        r3.append(rgs[i])
+                       
                 plt.scatter(np.log10(alpha), np.log10(rgs[i]), color='red')
               #  plt.xlabel(r'$\log\ \alpha $')    
              #   plt.ylabel(r'$\log r \ \rm [r_g] $')
@@ -970,22 +976,22 @@ def plot_traps_alphas(N, mass, md,  alpha_min, alpha_max):
     if plot_alpha_flag:        
         plt.figure(11)
         nn = N-len(r1)
-        plt.plot(np.log10(alphass[nn:]) , np.log10(r1), color='blue', linewidth=3)
-        plt.plot(np.log10(alphasss[:len(r2)]) , np.log10(r2), color='blue', linewidth=3)
-        plt.plot(np.log10(alphasss[:len(r3)]) , np.log10(r3), color='red', linewidth=3)
+    #    plt.plot(np.log10(alphass[nn:]) , np.log10(r1), color='blue', linewidth=3)
+        plt.plot(np.log10(alphasss[:len(r2)]) , np.log10(r2), color='red', linewidth=3)
+        plt.plot(np.log10(alphasss[:len(r3)]) , np.log10(r3), color='blue', linewidth=3)
  
-        plt.fill_between(np.log10(alphasss[-len(r1):]), 2, np.log10(r1), color='grey', alpha=0.4)
+      #  plt.fill_between(np.log10(alphasss[-len(r1):]), 2, np.log10(r1), color='grey', alpha=0.4)
         plt.fill_between(np.log10(alphasss[:len(r3)]), np.log10(r2[:len(r3)]), np.log10(r3), color='grey', alpha=0.4)
         plt.xlabel(r'$\log\ \alpha $')    
         plt.ylabel(r'$\log r \ \rm [r_g] $')
         plt.subplots_adjust(left=0.15, bottom=0.16, right=0.97, top=0.98)
-        plt.ylim([2.2,4.9])
-        plt.xlim([-4.7,0])
+        plt.ylim([2.2,5.6])
+        plt.xlim([-5,0])
         
-        return r1, r2, r3, r4, alphass, alphasss
+        return r2, r3, r4, alphass, alphasss
     
 plot_alpha_flag=True
-vv=plot_traps_alphas(20, mass=0.1, md=0.1, alpha_min=-4.7, alpha_max=0)
+vv=plot_traps_alphas(300, mass=0.01, md=0.1, alpha_min=-5, alpha_max=0)
 #%%
     #%%
 X=0.75
@@ -1133,27 +1139,71 @@ plt.xlim([-3,-1.1])
 
 #%%
 if True:
-    N=20
-    rs= np.logspace(6,0.1,2000)
+    N=300
+    rs= np.logspace(6, 1.5,1000)
+    rgs = [6*r for r in rs]
+    m1 = []
+    md1 = []
+    alpha=0.01
+    alpha = 0.01
+    mm = np.random.uniform(-2,1,N)
+    mdd = np.random.uniform(-1.5,-0.5,N)
+    for i in range(0,N):
+        m = 10**mm[i]
+        m_dot = 10**(mdd[i] - 1*mm[i])
+        if m_dot >= 1:
+            m_dot = 10**np.random.uniform(-0.5,0)
+        if i%10 ==0:
+            print (i, m, m_dot) 
+           
+        rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,m,m_dot,alpha)[k] for x in rs] for k in range(0,14)]
+        chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(m,m_dot,alpha)[k] for k in range (0,7)]
+        signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
+        for k in range(0, len(signs)-1):
+            if signs[k+1] != signs[k]:
+                plt.scatter(np.log10(m)+8, np.log10(m_dot), s=rgs[k]**0.5, alpha=1, color ='blue')
+                break;
+            elif k==N-2:
+                plt.scatter(np.log10(m)+8, np.log10(m_dot), s=rgs[-1]**0.5, alpha=0.5, color ='red')
+                
+                
+            plt.xlabel(r'$\log M$')
+            plt.ylabel(r'$\log \dot{m}$')
+
+ms = np.logspace(-2,1,100)
+mds = np.logspace(-3,0,100)          
+log_AGN_lum = [[46.16 + np.log10(m) + np.log10(md) for m in ms] for md in mds]    
+ll = np.asarray(log_AGN_lum)
+plt.contour(np.log10(ms)+8, np.log10(mds), np.transpose(ll),levels=[ 44, 44.5, 45, 45.5, 46], alpha=0.3, linewidths=3, linestyles='dashed', cmap='flag')                
+plt.subplots_adjust(left=0.2, bottom=0.16, right=0.97, top=0.96)
+                
+
+#%%
+if True:
+    N=10
+    rs= np.logspace(6,2,1000)
     rgs = [6*r for r in rs]
     r1 = []
     r2 = []
     alpha = 0.01
-    ms = np.linspace(0.1,1,N)
-    m_dot = np.linspace(0.05,0.5,N)
+    ms = np.logspace(-1,1,N)
+    m_dot = np.logspace(-2,0,N)
     how_many_traps = np.zeros([N,N])   
     log_AGN_lum = [[46.16 + np.log10(m) + np.log10(md) for m in ms] for md in m_dot]    
     ll = np.asarray(log_AGN_lum)
 
     for i in range(0,N):
         for j in range(0,N):
-            if ll[i][j]<=44.7:
+            if ll[i][j]<=44.:
+                print(i, j, 'a')   
                 how_many_traps[i][j]=2
-                break; 
-            elif ll[i][j]>=45.3:
-#                how_many_traps[i][j]=2
-                break;
+  #              break; 
+            elif ll[i][j]>=46:
+                how_many_traps[i][j]=0
+                print(i, j, 'b')   
             else:
+                print(i, j, 'c')   
+
                 rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,ms[i],m_dot[j],alpha)[k] for x in rs] for k in range(0,14)]
                 chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(ms[i],m_dot[j],alpha)[k] for k in range (0,7)]
                 signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
@@ -1168,7 +1218,7 @@ if True:
          #       break;
 
 
-            print('m= ', ms[i], '; md= ', m_dot[j], '; #traps= ', how_many_traps[i][j], 'll= ', ll[i][j])
+       #     print('m= ', ms[i], '; md= ', m_dot[j], '; #traps= ', how_many_traps[i][j], 'll= ', ll[i][j])
    #         print(i,j, how_many_traps[i][j])
 
  
@@ -1178,8 +1228,8 @@ m_sol_minus2=[]
 dm1 = []
 dm2 = []
 #N=20
-ms = np.logspace(-1,0,N)
-m_dot = np.logspace(0,-2,N)
+#ms = np.logspace(-1,1,N)
+#m_dot = np.logspace(-2,0,N)
 #m_dot2 = np.logspace(0,-3,N)
 
 d_h = np.gradient(how_many_traps)[0]
@@ -1198,9 +1248,9 @@ for i in range(0,N):
     #        dm2.append(m_dot[j])
      #       break;
 
-plt.plot(np.log10(m_sol_minus1)+8, np.log10(dm1), color='red', linewidth=3, label=r'$\alpha=0.1$')    
-#plt.plot(np.log10(m_sol_minus2)+8, np.log10(dm2),color='green', linewidth=3, label=r'$\alpha=0.01$')    
-plt.contour(np.log10(ms)+8, np.log10(m_dot), np.transpose(ll),levels=[ 44, 44.25, 44.5, 44.75, 45], alpha=0.3, linewidths=3, linestyles='dashed', cmap='flag')                
+plt.contourf(np.log10(ms)+8, np.log10(m_dot), how_many_traps)    
+plt.plot(np.log10(m_sol_minus1)+8, np.log10(dm1),color='green', linewidth=3, label=r'$\alpha=0.01$')    
+plt.contour(np.log10(ms)+8, np.log10(m_dot), np.transpose(ll),levels=[ 45, 45.2, 45.4, 45.6, 45.8, 46], alpha=0.3, linewidths=3, linestyles='dashed', cmap='flag')                
 plt.subplots_adjust(left=0.2, bottom=0.16, right=0.97, top=0.96)
 plt.xlabel(r'$\log M$')
 plt.ylabel(r'$\log \dot{m}$')
