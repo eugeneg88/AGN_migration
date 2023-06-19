@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jun 16 11:02:43 2023
+
+@author: evgeni
+"""
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import make_circles
+n_samples = 1000
+X,y = make_circles(n_samples,
+                   noise = 0.03,
+                   random_state=42)
+
+print (X.shape, y.shape)
+
+circles = pd.DataFrame({"X0":X[:,0], "X1":X[:,1], "label":y})
+circles.head()
+
+plt.scatter(X[:,0],X[:,1], c = y, cmap =plt.cm.RdYlBu);
+#%%
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+print (X_train.shape, X_test.shape, y_train.shape, y_test.shape)
+
+import tensorflow as tf
+model = tf.keras.Sequential([
+          tf.keras.layers.Dense(20,activation='relu'),
+          tf.keras.layers.Dense(1, activation = 'sigmoid')
+])
+model.compile(loss = tf.keras.losses.BinaryCrossentropy(),
+                optimizer = tf.keras.optimizers.Adam(),                        metrics = ['accuracy']
+)
+model.fit(X_train, y_train, epochs=100)
+
+x_min, x_max = X[:, 0].min() - 0.1, X[:,0].max() + 0.1
+y_min, y_max = X[:, 1].min() - 0.1, X[:, 1].max() + 0.1
+
+xx, yy = np.meshgrid(np.linspace(x_min,x_max, 100),
+np.linspace(y_min, y_max, 100))
+
+x_in = np.c_[xx.ravel(), yy.ravel()]
+
+y_pred = model.predict(x_in)
+y_pred = np.round(y_pred).reshape(xx.shape)
+
+plt.contourf(xx, yy, y_pred, cmap=plt.cm.RdYlBu, alpha=0.7 )
+plt.scatter(X[:,0], X[:, 1], c=y, s=40, cmap=plt.cm.RdYlBu)
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
