@@ -153,7 +153,7 @@ def get_disc_params(r,m, m_dot, alpha):
         gamma=5/3
         rho = 7.495e-6 * alpha**-0.7 * m**-0.7 * m_dot**(2/5) * r**(-33/20)
         H = 2.13e11 * m**0.9 * m_dot**0.2 * r**(21/20) * alpha**-0.1
-        cs = 2.945e7 * m**-0.1 *alpha**-0.1 * r**(-9/20) * m_dot**0.2
+        cs = 2.945e7 * m**-0.1 *alpha**-0.1 * r**(-0.45) * m_dot**0.2
         P = 6.5e9 * alpha**-0.9 * m**-0.9 * r**(-51/20) * m_dot**0.8
         Sigma = 3.196e6 * alpha**-0.8 * m**0.2 * m_dot**(3/5) * r**(-3/5)
         T = 6.3e6 * alpha**-0.2 * m**-0.2 * m_dot**(2/5) * r**(-9/10)
@@ -574,6 +574,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         Gamma_thermal_minus = [-x for x in Gamma_thermal]
         G_tot = [x+y for (x,y) in zip(Gamma_I,Gamma_thermal)]
         G_tot_minus = [x+y for (x,y) in zip(Gamma_I_minus, Gamma_thermal_minus)]
+        
         plt.subplot(121)
         plt.plot(np.log10(rgs), np.log10(G_tot), linewidth=3, color=col, label='total', alpha=1); #plt.xscale('log'); plt.yscale('log')
         plt.plot(np.log10(rgs), np.log10(G_tot_minus), linewidth=3, color=col, linestyle='dashed', alpha=1); #plt.xscale('log'); plt.yscale('log')
@@ -620,6 +621,8 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.ylabel(r'$t_0\ \rm [Myr]$')
         plt.xlim([0.5,6.3])
         plt.ylim([-5.1,3.1])
+        plt.xticks([0,1,2,3,4,5,6])
+
         plt.subplots_adjust(left=0.1, bottom=0.16, right=0.99, top=0.99, wspace=0.2)
 
 
@@ -676,7 +679,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
      #   tau_0 = 0.693*tau_pm
         A = 0.3 *(5/3-1)**0.5/1.6667**2 * 51/20/alpha**0.5/1.275
         print(A)
-        tau_0 = tau_pm * 10**0.09 * A / (1+A)
+        tau_0 = tau_pm * 10**0.08 * A / (1+A)
         if 2 in zoness:
             index=zoness.index(2)
         else:
@@ -703,7 +706,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
      #%% 
 shmuel_flag = True
 GW_flag = True
-fig_1_flag = 1
+fig_1_flag = 0
 fig_2_flag=0
 fig_3_flag=1
 fig_4_flag=0
@@ -719,25 +722,26 @@ args6 = [1e-4, m_d,alp, 'maroon']
 #args4 = [1,0.1,1, 'blue']#[0.01,m_d,alp, 'green']
 #from IPython import get_ipython
 
-#plot_disc_solution(*args1)
-#plot_disc_solution(*args2)
+plot_disc_solution(*args1)
+plot_disc_solution(*args2)
 plot_disc_solution(*args3)
 plot_disc_solution(*args4)
-plot_disc_solution(*args5)
-plot_disc_solution(*args6)
+#plot_disc_solution(*args5)
+#plot_disc_solution(*args6)
 
 #%%
 # fig 6
-N_mm=300# for differen number some tweaking is required for the range of panel a
+N_mm=30# for differen number some tweaking is required for the range of panel a
 has_data=False
 do_stats=True
 panel_a_flag=True
 panel_b_flag=True
 panel_c_flag=True
+GW_flag = True
 if True:#def generate_fig_6(N_mm, m_min, m_max):
-    N_r=5000
+    N_r=3000
     mms= np.logspace(-4,1,N_mm)
-    rs= np.logspace(1.8,6.2,N_r)
+    rs= np.logspace(0.1,6.2,N_r)
     rgs = [6*r for r in rs]
  
 
@@ -745,7 +749,11 @@ if True:#def generate_fig_6(N_mm, m_min, m_max):
     #    rgs = [6*r for r in rs]
         r1 = []
         r2 = []
+        taus1 = []
         r_t1 = []
+        cs1 = []
+        sigma1 = []
+        kappa1 = []
         stellar_bh_m=10
         rgi = [G*msun*1e8*mm/c/c for mm in mms]
 
@@ -753,6 +761,9 @@ if True:#def generate_fig_6(N_mm, m_min, m_max):
         tot_torque_matrix = np.zeros(shape=(N_mm,N_r))
         t_0 = np.zeros(shape=(N_mm,N_r))
         migration_timescale = np.zeros(shape=(N_mm, N_r))
+        K_kan = np.zeros(shape=(N_mm, N_r))
+        T_p = np.zeros(shape=(N_mm, N_r))
+        t_ratio = np.zeros(shape=(N_mm, N_r))
 
         mmm = []
         for i in range(0,N_mm): #def find_when_torqrues_equal(mm, m_dot, alpha):
@@ -768,8 +779,10 @@ if True:#def generate_fig_6(N_mm, m_min, m_max):
             type_i_torque_matrix[i][:] = np.divide(Gamma_I, np.divide(Hs,rs))*Rgs[i]
             tot_torque_matrix[i][:] = [x+y for (x,y) in zip(Gamma_I,Gamma_thermal)]
             ang_mom = [- stellar_bh_m * msun * (G * mms[i] * 1e8 * msun * x * rg)**0.5 for (x,rg) in zip(rs,rgi)]
-   
+            K_kan[i][:] = (stellar_bh_m/1e8/mms[i])**2/(alpha*(np.divide(Hs,rs))**5/Rgs[i]**5)
             migration_timescale[i][:]  = t_0
+            T_p[i][:] = 2 * np.pi / 2e-3 * mms[i] * rs**1.5  /86400/365.25/1e6
+            t_ratio = np.divide(migration_timescale, T_p)
             j_min = 0
             if i>=1:
                 j_min = rgs.index(r1[-1])
@@ -779,10 +792,16 @@ if True:#def generate_fig_6(N_mm, m_min, m_max):
 
 
                 if signs[j+1] != signs[j]:
-                    plt.scatter(np.log10(mms[i]) + 8, np.log10(rgs[j]), color='red')
-                    print(i, j, mms[i], rgs[j])
+                    print(i, j, mms[i], np.divide(Hs,rs)[j]/Rgs[i], K_kan[i][j])
+
+                    plt.scatter(np.log10(mms[i]) + 8, np.log10(kappas[j]*Sigmas[j]/2), color='red')
                     if len(mmm)==0 or mmm[-1] != mms[i]:
+
                         r1.append(rgs[j])
+                        taus1.append(kappas[j]*Sigmas[j]/2)
+                        cs1.append(css[j])
+                        sigma1.append(Sigmas[j])
+                        kappa1.append(kappas[j])
                         mmm.append(mms[i])
                     else:
                         r2.append(rgs[j])
@@ -813,20 +832,20 @@ if True:
             plt.xlim([4,7.9])
 
             slope, intercept, rr, p, se = scipy.stats.linregress(x1, y1)
-            print (slope, intercept, rr, p, se*len(r2)**0.0, slope - 1.96*se, slope+1.96*se)
+            print (slope,  se*len(r2)**0.1, slope - 1.96*se, slope+1.96*se)
 
             slope2, intercept2, rr2, p2, se2 = scipy.stats.linregress(x2, y2)
-            print (slope2, intercept2, rr2, p2, se2*len(r2)**0.0,  slope2 - 1.96*se2, slope2+1.96*se2)
+            print (slope2, intercept2, rr2, p2, se2*len(r2)**1.0,  slope2 - 1.96*se2, slope2+1.96*se2)
 
-            x3 = [np.log10(mmm[i])+8 for i in range(0,110)]
-            y3 = [np.log10(r2[i]) for i in range(0,110)]
-            x4 = [np.log10(mmm[i])+8 for i in range(145,len(r2)-1)]
-            y4 = [np.log10(r2[i]) for i in range(145,len(r2)-1)]
+            x3 = [np.log10(mmm[i])+8 for i in range(0,115)]
+            y3 = [np.log10(r2[i]) for i in range(0,115)]
+            x4 = [np.log10(mmm[i])+8 for i in range(155,len(r2)-1)]
+            y4 = [np.log10(r2[i]) for i in range(155,len(r2)-1)]
             slope3, intercept3, rr3, p3, se3 =  scipy.stats.linregress(x3, y3)
             print (slope3, intercept3, rr3, p3, se3*len(x3)**0.0,  slope3 - 1.96*se3, slope3+1.96*se3)
             slope4, intercept4, rr4, p4, se4 = scipy.stats.linregress(x4, y4)
             print (slope4, intercept4, rr4, p4, se4*len(x4)**0.0,  slope4 - 1.96*se4, slope4+1.96*se4)
-            plt.plot(x1, [intercept + (0*slope+1*0.0952)*xx for xx in x1], color='black', linestyle='dashed', linewidth=3)
+            plt.plot(x1, [intercept + (1*slope+0*0.0952)*xx for xx in x1], color='black', linestyle='dashed', linewidth=3)
             plt.plot(x3, [intercept3 + slope3*xx for xx in x3], color='black', linestyle='dashed', linewidth=3)
             plt.plot(x4, [intercept4 + slope4*xx for xx in x4], color='black', linestyle='dashed', linewidth=3)
  #%%
@@ -840,6 +859,9 @@ if True:
         CS2 = plt.colorbar()
         CS3=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(tot_torque_matrix)),  levels =[-2, -1, 0, 1, 2],cmap='plasma')
         CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-tot_torque_matrix)),  levels =[-2,-1,0,1,2],cmap='plasma')
+        CS5=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(K_kan),  levels =[25], colors='black', linestyles='dashed',  linewidths=[4])
+        CS6=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(T_p),  levels =[1e-6], colors='red', linestyles='dashed', linewidths=[4])
+ 
         plt.clabel(CS3, inline=True, fontsize=16)
 
         plt.subplots_adjust(left=0.03, bottom=0.15, right=0.94, top=0.9)      
@@ -854,20 +876,25 @@ if True:
         #%%
     if panel_c_flag:
         actual_timescale = np.divide(migration_timescale, tot_torque_matrix)
+        tt = np.divide(actual_timescale, -T_p)
         plt.figure(9, figsize=(9,6))
-        CS=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),levels =np.linspace(-8, -0.5,801), cmap='Greys')
+        CS=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),levels =np.linspace(-6.00, -2.0,41), cmap='Greys')
         CS = plt.colorbar(location='left')
 
-        CS2=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)), levels =np.linspace(-5, 3,801), cmap='turbo')
+        CS2=plt.contourf(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)), levels =np.linspace(-5, 3,81), cmap='turbo')
 
         CS2 = plt.colorbar()
         CS3=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(-actual_timescale)),  levels =[-6, -5, -4,-3, -2,-1, 0,1, 2],cmap='plasma')
-        CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),  levels =[ -6,  -4,-2,0,2],cmap='plasma')
+        CS4=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(np.log10(actual_timescale)),  linstyle='dashed', levels =[-6, -5, -4,-3, -2,-1, 0,1, 2],cmap='plasma')
         plt.clabel(CS3, inline=True, fontsize=16)
+        plt.clabel(CS4, inline=True, fontsize=16)
+
+        CS5=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(K_kan),  levels =[25], colors='black', linestyles='dashed',  linewidths=[4])
+        CS6=plt.contour(np.log10(mms)+8, np.log10(rgs), np.transpose(T_p),  levels =[1e-6], colors='red', linestyles='dashed', linewidths=[4])
 
         plt.subplots_adjust(left=0.03, bottom=0.15, right=0.96, top=0.9)      
-        plt.text(2, 7.1, r'$\log\ |-t_{\rm mig}\  /\ \rm Myr|$', color='gray', size=26, rotation=0)
-        plt.text(8.2, 7.1, r'$\log\ t_{\rm mig} \ /\ \rm Myr$', color='navy', size=26, rotation=0)
+        plt.text(2, 7.3, r'$\log\ |-t_{\rm mig}\  /\ \rm Myr|$', color='gray', size=26, rotation=0)
+        plt.text(8.2, 7.3, r'$\log\ t_{\rm mig} \ /\ \rm Myr$', color='navy', size=26, rotation=0)
         plt.ylabel(r'$\log R / r_g $')
         plt.xlabel(r'$\log\ M / M_{\odot}$')    
 
@@ -941,21 +968,29 @@ plt.text(1.3, 3, r'$\log\ |\Gamma_{\rm tot} / \Gamma_0|$', color='black', size=2
 plt.text(10.8, 3, r'$\log\ |-\Gamma_{\rm tot} / \Gamma_0|$', color='black', size=26, rotation=90)
 #%%
 # gnerate figure 8
-alpha_min=-4.7
+alpha_min=-5
 alpha_max=0
 mass=1e-1
 md=0.1
 plot_alpha_flag=True
+N=10
 
-def plot_traps_alphas(N, mass, md,  alpha_min, alpha_max):
-    rs= np.logspace(0.1,6,1000)
+if True: #def plot_traps_alphas(N, mass, md,  alpha_min, alpha_max):
+    N_r=3000
+    rs= np.logspace(0.1,6,N_r)
     rgs = [6*r for r in rs]
+    Rgs = G*msun*1e8*mass/c/c
   #  r1 = []
     r2 = []
     r3=[]
     r4=[]
     alphass = np.logspace(alpha_min,alpha_max,N)
     alphasss = []
+    
+    K_kan = np.zeros(shape=(N, N_r))
+    T_p = np.zeros(shape=(N, N_r))
+    migration_timescale = np.zeros(shape=(N, N_r))
+    
     for alpha in alphass: #def find_when_torqrues_equal(mm, m_dot, alpha):
         mm = mass; 
     #    alpha =0.01; 
@@ -963,7 +998,18 @@ def plot_traps_alphas(N, mass, md,  alpha_min, alpha_max):
         rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mm,m_dot,alpha)[i] for x in rs] for i in range(0,14)]
         chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(mm,m_dot,alpha)[i] for i in range (0,7)]
         signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
+
+        s = np.where(alphass == alpha)[0][0]        
+        migration_timescale[s][:]  = t_0
+        K_kan[s][:] = (stellar_bh_m/1e8/mass)**2 /(alpha*(np.divide(Hs,rs))**5/Rgs**5)         
+        T_p[s][:] = 2 * np.pi / 2e-3 * mass * rs**1.5 / 86400/365.25
+         
         for i in range(0, len(signs)-1):
+     #       print (alpha)
+       #     K_kan[i][:] = (stellar_bh_m/1e8/mass)**2 * alpha#(np.multiply(alpha, np.divide(Hs,rs)**5)/Rgs[i]**5)
+            
+       #     T_p[i][:] = 2 * np.pi / 2e-3 * mass * rs**1.5 / 86400/365.25
+ 
         #print (i)
             if signs[i+1] != signs[i]:
 
@@ -985,13 +1031,17 @@ def plot_traps_alphas(N, mass, md,  alpha_min, alpha_max):
              #   plt.ylabel(r'$\log r \ \rm [r_g] $')
           #      plt.xlim([3.8,8.2])
          #       plt.subplots_adjust(left=0.12, bottom=0.16, right=0.99, top=0.98)
+         #%%
+if True:
     if plot_alpha_flag:        
         plt.figure(11)
-        nn = N-len(r1)
     #    plt.plot(np.log10(alphass[nn:]) , np.log10(r1), color='blue', linewidth=3)
         plt.plot(np.log10(alphasss[:len(r2)]) , np.log10(r2), color='red', linewidth=3)
         plt.plot(np.log10(alphasss[:len(r3)]) , np.log10(r3), color='blue', linewidth=3)
+        CS5=plt.contour(np.log10(alphass), np.log10(rgs), np.transpose(K_kan),  levels =[25], colors='black', linestyles='dashed',  linewidths=[4])
+        CS6=plt.contour(np.log10(alphass), np.log10(rgs), np.transpose(T_p),  levels =[1], colors='red', linestyles='dashed', linewidths=[4])
  
+
       #  plt.fill_between(np.log10(alphasss[-len(r1):]), 2, np.log10(r1), color='grey', alpha=0.4)
         plt.fill_between(np.log10(alphasss[:len(r3)]), np.log10(r2[:len(r3)]), np.log10(r3), color='grey', alpha=0.4)
         plt.xlabel(r'$\log\ \alpha $')    
@@ -1000,10 +1050,10 @@ def plot_traps_alphas(N, mass, md,  alpha_min, alpha_max):
         plt.ylim([2.2,5.6])
         plt.xlim([-5,0])
         
-        return r2, r3, r4, alphass, alphasss
+      #  return r2, r3, r4, alphass, alphasss, T_p, K_Kan
     
-plot_alpha_flag=True
-vv=plot_traps_alphas(10, mass=0.01, md=0.1, alpha_min=-5, alpha_max=0)
+
+#r2, r3, r4, alphass, alphasss, T_p, K_Kan = plot_traps_alphas(10, mass=0.01, md=0.1, alpha_min=-5, alpha_max=0)
 #%%
     #%%
 X=0.75
@@ -1100,7 +1150,7 @@ plot_kappa_regions()
 if True:
     N_r=1000
     N_mm=300
-    rs= np.logspace(6,0.5,N_r)
+    rs= np.logspace(6,0.1,N_r)
     rgs = [6*r for r in rs]
     r1 = []
     r2 = []
@@ -1108,7 +1158,7 @@ if True:
     
     dmmm = []
     for m_dot in dmms: #def find_when_torqrues_equal(mm, m_dot, alpha):
-        mm = 1e-1; 
+        mm = 1e0; 
         alpha =0.01; 
         rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mm,m_dot,alpha)[i] for x in rs] for i in range(0,14)]
         chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal = [get_disc_derived_quantities(mm,m_dot,alpha)[i] for i in range (0,7)]
