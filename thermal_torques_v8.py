@@ -810,7 +810,7 @@ if True:#def generate_fig_6(N_mm, m_min, m_max):
  
         mss = mmm
           #%%  
-if True:
+if True: #
     if panel_a_flag:
         plt.figure(7, figsize=(6,5))
         plt.plot(np.log10(mmm[:len(r2)-3]) + 8, np.log10(r1[:len(r2)-3]), color='red', linewidth=3)
