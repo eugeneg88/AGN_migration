@@ -706,9 +706,9 @@ def plot_disc_solution(mm,m_dot,alpha, col):
      #%% 
 shmuel_flag = True
 GW_flag = True
-fig_1_flag = 0
-fig_2_flag=0
-fig_3_flag=1
+fig_1_flag = 1
+fig_2_flag=1
+fig_3_flag=0
 fig_4_flag=0
 m_d=0.1; alp=0.01
 args1 = [10,m_d,alp, 'orange']
@@ -716,18 +716,18 @@ args2 = [1, m_d,alp, 'red']
 args3 = [0.1,m_d,alp, 'blue']
 args4 = [0.01, m_d,alp, 'green']
 args5 = [1e-3, m_d,alp, 'red']
-args6 = [1e-4, m_d,alp, 'maroon']
+args6 = [1e-4, m_d,alp, 'blue']
 
 #args3 = [1,0.1,0.1, 'green']#[0.1,m_d,alp, 'blue']
 #args4 = [1,0.1,1, 'blue']#[0.01,m_d,alp, 'green']
 #from IPython import get_ipython
 
-plot_disc_solution(*args1)
-plot_disc_solution(*args2)
-plot_disc_solution(*args3)
-plot_disc_solution(*args4)
-#plot_disc_solution(*args5)
-#plot_disc_solution(*args6)
+#plot_disc_solution(*args1)
+#plot_disc_solution(*args2)
+#plot_disc_solution(*args3)
+#plot_disc_solution(*args4)
+plot_disc_solution(*args5)
+plot_disc_solution(*args6)
 
 #%%
 # fig 6
