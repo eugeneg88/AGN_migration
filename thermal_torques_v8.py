@@ -385,7 +385,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.plot(np.log10(rgs), np.log10(taus), linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
 #        plt.plot(np.log10(rgs), np.log10(taus_17), linewidth=3, color=col, linestyle='dashed'); #plt.xscale('log'); plt.yscale('log')
         plt.axhline(np.log10(1), color='gray')
-        plt.text(0.7, 0.6+1.6*np.log10(mm), r'$\log M/M_\odot= \ $' + str(int(np.log10(1e8*mm))), color=col, size=22)
+        plt.text(0.7, 0.6+1.7*np.log10(mm), r'$\log M/M_\odot= \ $' + str(int(np.log10(1e8*mm))), color=col, size=22)
 
         plt.ylabel(r'$\log \tau$')
         plt.xticks([1,2,3,4,5,6])
@@ -454,7 +454,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
                 plt.plot(np.log10(R_shmuel4/r_isco4), np.log10(H_shmuel4/R_shmuel4),linestyle='dashed', color=col)
             
         plt.plot(np.log10(rgs), [np.log10(x/r/(G*msun*1e8*mm/c/c)) for (x,r) in zip(Hs,rgs)], linewidth=3, color=col); #plt.xscale('log'); plt.yscale('log')
-        plt.ylabel(r'$\log H/r$')
+        plt.ylabel(r'$\log H/R$')
         plt.xticks([1,2,3,4,5,6])
         plt.ylim([-2.7,-0.7])
         plt.xlim([0.5,r_max])
@@ -707,7 +707,7 @@ def plot_disc_solution(mm,m_dot,alpha, col):
 shmuel_flag = True
 GW_flag = True
 fig_1_flag = 1
-fig_2_flag=1
+fig_2_flag=0
 fig_3_flag=0
 fig_4_flag=0
 m_d=0.1; alp=0.01
@@ -722,12 +722,12 @@ args6 = [1e-4, m_d,alp, 'blue']
 #args4 = [1,0.1,1, 'blue']#[0.01,m_d,alp, 'green']
 #from IPython import get_ipython
 
-#plot_disc_solution(*args1)
-#plot_disc_solution(*args2)
-#plot_disc_solution(*args3)
-#plot_disc_solution(*args4)
-plot_disc_solution(*args5)
-plot_disc_solution(*args6)
+plot_disc_solution(*args1)
+plot_disc_solution(*args2)
+plot_disc_solution(*args3)
+plot_disc_solution(*args4)
+#plot_disc_solution(*args5)
+#plot_disc_solution(*args6)
 
 #%%
 # fig 6
@@ -1461,3 +1461,99 @@ CS2=plt.colorbar()
 plt.text(8, 6, 'P10', color='white', size=26)
 plt.text(1.3, 3, r'$\log\ |\Gamma_{\rm tot} / \Gamma_0|$', color='black', size=26, rotation=90)
 plt.text(10.8, 3, r'$\log\ |-\Gamma_{\rm tot} / \Gamma_0|$', color='black', size=26, rotation=90)
+#%%
+#generate 2d map
+#%%
+
+N_masses=50
+N_m_dots=40
+N_r=1000
+alpha=0.01
+tellar_bh=10
+mms= np.logspace(-2,1,N_masses)
+mdd = np.logspace(-2,0, N_m_dots)
+rs= np.logspace(0.1,6.2,N_r)
+rgs = [6*r for r in rs]
+ 
+#%%
+r1_array = np.zeros(shape=[N_masses, N_m_dots])
+r2_array= np.zeros(shape=[N_masses, N_m_dots])
+H1_array= np.zeros(shape=[N_masses, N_m_dots])
+H2_array= np.zeros(shape=[N_masses, N_m_dots])
+
+
+for i, mass in enumerate(mms):
+    Rgs = [G*msun*1e8*mm/c/c for mm in mms]
+    for j,md in enumerate(mdd):
+        rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mass,md,alpha)[j] for x in rs] for j in range(0,14)]
+        chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal, Gamma_0 = [get_disc_derived_quantities(mass,md,alpha)[j] for j in range (0,8)]
+        signs = [np.sign(x+y) for (x,y) in zip(Gamma_I,Gamma_thermal)]
+        
+        tmp=0
+        for k,r in enumerate(rgs):
+            if k==len(rgs)-3:
+                break;
+            if signs[k+1] != signs[k] and tmp==0:
+                r1_array[i][j] = r
+                H1_array[i][j] = Hs[k]/Rgs[i]/r
+                k=k+3
+                tmp=1
+                if i%5==0 and j%10==0:
+                    print(mass, md, r, tmp)
+
+            if signs[k+1] != signs[k] and tmp==1:
+                r2_array[i][j] = r
+                H2_array[i][j] = Hs[k]/Rgs[i]/r
+                k=k+3
+                tmp=0
+                if i%5==0 and  j%10==0:
+                    print(mass, md, r, tmp)
+           
+#%%
+v_esc = 2**0.5*3e5/r2_array**0.5 
+v_disc_esc = np.multiply(v_esc, H2_array)
+#%%
+CS=plt.contourf(np.log10(mms),np.log10(mdd),np.log10(np.transpose(v_esc)), levels=np.linspace(2.8,4.6,19))
+plt.colorbar()
+CS=plt.contour(np.log10(mms),np.log10(mdd),np.log10(np.transpose(v_esc)), levels=np.linspace(2.8,8.8,31), cmap='gray')
+plt.clabel(CS, inline=True, colors='black')
+plt.xlabel(r'$\log\ M/10^8M_\odot$')
+plt.ylabel(r'$\log\ \dot{M}/\dot{M}_{\rm cr}$')
+plt.text(-0.6,-0.2,r'$\log \ v_{\rm esc}/ \rm [km/s]$')
+plt.subplots_adjust(left=0.2, right=0.96, top=0.95, bottom=0.17)
+#%%
+CS=plt.contourf(np.log10(mms),np.log10(mdd),np.log10(np.transpose(v_disc_esc)), levels=np.linspace(0.6,1.6,11))
+plt.colorbar()
+CS=plt.contour(np.log10(mms),np.log10(mdd),np.log10(np.transpose(v_disc_esc)), levels=np.linspace(0.6,2.6,21), cmap='gray')
+plt.clabel(CS, inline=True, colors='black')
+plt.xlabel(r'$\log\ M/10^8M_\odot$')
+plt.ylabel(r'$\log\ \dot{M}/\dot{M}_{\rm cr}$')
+plt.text(-0.7,-0.2,r'$\log \ v^{\rm disc}_{\rm esc}/ \rm [km/s]$')
+plt.subplots_adjust(left=0.2, right=0.96, top=0.95, bottom=0.17)
+
+#%%
+#%%
+CS=plt.contourf(np.log10(mms),np.log10(mdd),np.log10(np.transpose(r2_array)), levels=np.linspace(2.4,5.4,31))
+plt.colorbar()
+CS=plt.contour(np.log10(mms),np.log10(mdd),np.log10(np.transpose(r2_array)), levels=np.linspace(2.4,8.4,31), cmap='gray')
+plt.clabel(CS, inline=True, colors='black')
+plt.xlabel(r'$\log\ M/10^8M_\odot$')
+plt.ylabel(r'$\log\ \dot{M}/\dot{M}_{\rm cr}$')
+plt.text(-0.0,-0.2,r'$\log r/r_g$')
+plt.subplots_adjust(left=0.2, right=0.96, top=0.95, bottom=0.17)
+#%%
+CS=plt.contourf(np.log10(mms),np.log10(mdd),np.log10(np.transpose(H2_array)), levels=np.linspace(-3,-1.8,13))
+plt.colorbar()
+CS=plt.contour(np.log10(mms),np.log10(mdd),np.log10(np.transpose(H2_array)), levels=np.linspace(-3,-1,21), cmap='gray')
+plt.clabel(CS, inline=True, colors='black')
+plt.xlabel(r'$\log\ M/10^8M_\odot$')
+plt.ylabel(r'$\log\ \dot{M}/\dot{M}_{\rm cr}$')
+plt.text(-0.0,-0.2,r'$\log H/R$')
+plt.subplots_adjust(left=0.2, right=0.96, top=0.95, bottom=0.17)
+#%%
+np.savetxt('m_dots.out', mdd, delimiter=',')
+np.savetxt('masses.out', mms, delimiter=',')
+np.savetxt('r1.out', r1_array, delimiter=',')
+np.savetxt('r2.out', r2_array, delimiter=',')
+np.savetxt('aspect1.out', r1_array, delimiter=',')
+np.savetxt('aspect2.out', r2_array, delimiter=',')

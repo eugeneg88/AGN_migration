@@ -254,11 +254,11 @@ m_dot=0.1
 #alpha viscosity
 alpha=0.01
 # SMBH mass in units of 1e8 M_\odot
-m_smbh = 1
+m_smbh = 0.1
 # mass of stellar mass BH - in m_\odot
 m_stellar = 10
 # whici law for type I to use
-which_prefactor = 'p10' 
+which_prefactor = 'JM_tot' 
 
 rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, Gamma_0 = [[get_disc_params(x,m_smbh,m_dot,alpha, m_stellar)[i] for x in rs] for i in range(0,14)]
 chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratio, Gamma_thermal = get_disc_torques(m_smbh, m_stellar, m_dot,alpha, which_prefactor)
@@ -267,7 +267,7 @@ plt.plot()
 plt.subplot(221)
 plt.plot(np.log10(rs), np.log10(rhos))
 plt.subplot(222)
-plt.plot(np.log10(rs),np.log10( Gamma_I))
+plt.plot(np.log10(rs),np.log10( Gamma_thermal))
 plt.subplot(223)
 plt.plot(np.log10(rs), np.log10([-x for x in Gamma_thermal]))
 plt.subplot(224)
