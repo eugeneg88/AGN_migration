@@ -274,7 +274,8 @@ def get_disc_derived_quantities(mm,m_dot,alpha):
 
     chis = [ 16 * gamma * (gamma-1) * sb * t**4 / 3 / k/ rho**2 /cs**2 for (t,k,cs,rho, gamma) in zip(Ts, kappas,css, rhos, gammas)]  
     lambdas = [(2 * chi / 3/gamma/cs*h)**0.5 for (chi,cs,h, gamma) in zip(chis, css, Hs, gammas)]
-  #  print(mm, lambdas[0]/1.5e13)
+    m_thermal = [xx*cc/G/msun for (xx,cc) in zip(chis,css)]
+    #print(m_thermal/msun)
     x_cs = [np.fabs(-P_g * h**2/3/gamma /r/rg) for (P_g,h,r, gamma) in zip(P_grad, Hs, rs, gammas)]
     r_Hills = [r*rg * (stellar_bh_m/1e8/mm/3)**(1/3) for r in rs]
       
@@ -310,7 +311,7 @@ def get_disc_derived_quantities(mm,m_dot,alpha):
     l_ratio = [gamma*c/k/rho/chi* min(1,ll) for (r,k,rho,chi, gamma, ll) in zip(rs,kappas,rhos, chis, gammas, l_BHL_over_L_edd)]
     Gamma_thermal = [(1-np.exp(-tt*alpha**0.5))*1.61*(gamma-1)/gamma * x/lambda_c*(l-1) for (x,lambda_c,l,tt, gamma) in zip(x_cs, lambdas, l_ratio, taus, gammas)]
  #   print(l_ratio[10])        
-    return chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratio, Gamma_thermal, Gamma_0
+    return chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratio, Gamma_thermal, Gamma_0, m_thermal
 GW_flag =True
 vv=get_disc_derived_quantities(1e-1,0.1, 0.01)
 vvp = get_disc_params(rs[483], 0.1, 0.1, 0.01)
@@ -321,7 +322,7 @@ vvp = get_disc_params(rs[483], 0.1, 0.1, 0.01)
 def plot_disc_solution(mm,m_dot,alpha, col):
     r_max=6.9
     rhos, Hs, css, Ps, Sigmas, Ts, kappas, zoness, kappa_m17s, P_grad, Sigma_grad, T_grad, gammas, t_0 = [[get_disc_params(x,mm,m_dot,alpha)[i] for x in rs] for i in range(0,14)]
-    chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal, Gamma_0 = [get_disc_derived_quantities(mm,m_dot,alpha)[i] for i in range (0,8)]
+    chis, lambdas, x_cs, r_Hills, Gamma_I, l_ratios, Gamma_thermal, Gamma_0, m_thermal = [get_disc_derived_quantities(mm,m_dot,alpha)[i] for i in range (0,9)]
 
     taus = [x*y/2 for (x,y) in zip(kappas, Sigmas)]
     taus_17 = [x*y/2 for (x,y) in zip(kappa_m17s, Sigmas)]
@@ -702,11 +703,23 @@ def plot_disc_solution(mm,m_dot,alpha, col):
         plt.ylim([-4.1,0.4])
         plt.xlim([2.9,5.7])
         plt.legend(loc='center left', fontsize=18)
-   
+        
+    if thermal_mass_flag:
+        plt.plot(np.log10(rgs), np.log10(m_thermal), linewidth=3, color=col, alpha=1, label=r'$m_{\rm thermal}/M_\odot$'); #plt.xscale('log'); plt.yscale('log')
+   #     plt.plot(np.log10(rgs), chis, linewidth=3, color=col, alpha=1, linestyle='dashed', label=r'$m_{\rm thermal}/M_\odot$'); #plt.xscale('log'); plt.yscale('log')
+        plt.xlabel(r'$\log R / r_g $')
+        plt.ylim([-3,3.5])
+#        plt.yticks([6,7,8])   
+        plt.ylabel(r'$\log m_{\rm cr}/M_\odot$')
+        plt.xlim([0.4,5.3])
+        plt.axhline(np.log10(10), color='gray')
+        plt.subplots_adjust(left=0.15, bottom=0.16, right=0.99, top=0.99)
+  
      #%% 
 shmuel_flag = True
 GW_flag = True
-fig_1_flag = 1
+thermal_mass_flag=True
+fig_1_flag = 0
 fig_2_flag=0
 fig_3_flag=0
 fig_4_flag=0
